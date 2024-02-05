@@ -340,14 +340,15 @@
             var num = parseInt(nm);
             if(!isNaN(num)) {
               num -= 1
-            }
-            nm = num+")"
+            } else num = null;
+            nm = num?num+")":nm;
             var cnt = "";
             Array.from(bd.children).forEach(g=> {
               var nodesHTML = "";
               g.childNodes.forEach(c=> {
+              
                 var tn = c.tagName;
-                var el = tn?document.createElement(tn):document.createTextNode(c.textContent||c.text);
+                var el = tn?document.createElement(tn):document.createTextNode(c.textContent||c.text||(c+""));
                 el.textContent=c.textContent;
                 nodesHTML+=el.outerHTML;
               })
