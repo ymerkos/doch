@@ -328,7 +328,8 @@
           var doc = dp.parseFromString(inputHTML,"text/html")
           var fn = Array.from(doc.querySelectorAll(".footnote"))
           var notes = []
-          fn.forEach(w=> {
+          fn.forEach((w,i)=> {
+          
             var a = w.querySelector("a");
             var bd = w.querySelector(".footnote__body");
             if(!bd || !a) {
@@ -348,9 +349,13 @@
               g.childNodes.forEach(c=> {
               
                 var tn = c.tagName;
-                var el = tn?document.createElement(tn):document.createTextNode(c.textContent||c.text||(c+""));
-                el.textContent=c.textContent;
-                nodesHTML+=el.outerHTML;
+                var isTxt = !tn;
+                var el = tn?document.createElement(tn):document.createTextNode(c.textContent);
+                
+                console.log("Hi!",{c},c.textContent)
+                var p = isTxt?"textContent":"innerHTML"
+                el[p]=c[p]
+                nodesHTML+=el.outerHTML || el.textContent;
               })
               cnt += nodesHTML+ "<br>"
             })
@@ -433,6 +438,13 @@
               if (attributeName !== 'data-group') {
                 element.removeAttribute(attributeName);
               }
+            }
+            var nm = parseInt(element.textContent)
+            if(!isNaN(nm)) {
+              nm--
+            } else nm = null;
+            if(nm) {
+              element.textContent=nm;
             }
           }
 
