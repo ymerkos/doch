@@ -417,14 +417,16 @@
         }
 
         function removeInlineStyles(element) {
-          if(element.classList.contains("title")) {
+          
+          if (element.nodeType === 1) {
+            if(element.classList.contains("title")) {
                 var h2 = document.createElement("h2")
                 h2.innerHTML = element.innerHTML;
                 element.replaceWith(h2)
+                element = h2;
               }
-          if (element.nodeType === 1) {
             // Remove inline styles for specified tags
-            if (['SUP', 'B', 'I', 'P'].includes(element.tagName)) {
+            if (['SUP', "BR",'B', 'I', 'P'].includes(element.tagName)) {
               element.removeAttribute('style');
               
               element.removeAttribute("class")

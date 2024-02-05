@@ -136,7 +136,7 @@ function processText(MainText, EnglishText="") {
     et = parseDoc(EnglishText)
    }
    var resultHTML = "";
-   resultHTML += d.slice(0,2).map(w=>w.outerHTML).join("")
+   resultHTML += d.slice(0,1).map(w=>w.outerHTML).join("")
    d = d.filter(w=>{
      return w.tagName == "P"
    })
