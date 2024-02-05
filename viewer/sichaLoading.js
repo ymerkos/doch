@@ -184,7 +184,7 @@ function footnotify(sicha) {
     var notes = {}
     ar.forEach(w=> {
         var reg = /^(\d+\*?)\)/;
-        var par = w.innerText;
+        var par = w.innerHTML;
         var info = null;
         const match = par.match(reg);
         if(match) {

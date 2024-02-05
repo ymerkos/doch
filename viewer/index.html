@@ -352,10 +352,11 @@
                 var isTxt = !tn;
                 var el = tn?document.createElement(tn):document.createTextNode(c.textContent);
                 
-                console.log("Hi!",{c},c.textContent)
                 var p = isTxt?"textContent":"innerHTML"
                 el[p]=c[p]
-                nodesHTML+=el.outerHTML || el.textContent;
+                
+                console.log("Hi!",{c},c.textContent,el.outerHTML)
+                nodesHTML+=el.outerHTML || el.textContent
               })
               cnt += nodesHTML+ "<br>"
             })
