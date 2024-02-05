@@ -1,0 +1,115 @@
+<!--B"H-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Cleaner</title>
+</head>
+<body>
+
+<textarea id="myTextarea" rows="10" cols="50" placeholder="Paste your HTML here" onpaste="handlePaste(event)"></textarea>
+<button onclick="cleanHTML()">Clean HTML</button>
+<div id="cleanedHTML"></div>
+
+<script>
+function handlePaste(event) {
+  // Prevent the default paste behavior
+  event.preventDefault();
+
+  // Get the clipboard data
+  var clipboardData = event.clipboardData || window.clipboardData;
+  var pastedHTML = clipboardData.getData('text/html');
+
+  // Insert the HTML into the textarea
+  document.getElementById('myTextarea').value = pastedHTML;
+}
+
+function cleanHTML() {
+  // Get the HTML from the textarea
+  const inputHTML = document.getElementById('myTextarea').value;
+
+  // Create a temporary element to parse the HTML
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = inputHTML;
+
+  // Remove inline styles
+  removeInlineStyles(tempElement);
+
+  // Remove unnecessary attributes and classes from the sup tag
+  removeSupAttributes(tempElement);
+
+  // Add space after span with "firstword" class
+  addSpaceAfterFirstwordSpan(tempElement);
+
+  // Remove span tags and their attributes
+  removeSpanTags(tempElement);
+
+  // Get the cleaned HTML
+  const cleanedHTML = tempElement.innerHTML;
+
+  // Display the cleaned HTML
+  document.getElementById('myTextarea').value = cleanedHTML;
+}
+
+function removeInlineStyles(element) {
+  if (element.nodeType === 1) {
+    // Remove inline styles for specified tags
+    if (['SUP', 'B', 'I', 'P'].includes(element.tagName)) {
+      element.removeAttribute('style');
+    }
+
+    // Recursively remove inline styles for child elements
+    for (const child of element.childNodes) {
+      removeInlineStyles(child);
+    }
+  }
+}
+
+function removeSupAttributes(element) {
+  if (element.nodeType === 1 && element.tagName === 'SUP') {
+    // Remove all attributes from the sup tag
+    const attributes = element.attributes;
+    for (let i = attributes.length - 1; i >= 0; i--) {
+      const attributeName = attributes[i].name;
+      if (attributeName !== 'data-group') {
+        element.removeAttribute(attributeName);
+      }
+    }
+  }
+
+  // Recursively remove attributes for child elements
+  for (const child of element.childNodes) {
+    removeSupAttributes(child);
+  }
+}
+
+function addSpaceAfterFirstwordSpan(element) {
+  if (element.tagName === 'SPAN' && element.classList.contains('firstword')) {
+    // Add space after the closing tag of the span
+    element.insertAdjacentHTML('afterend', ' ');
+  } else {
+    // Recursively add space for child elements
+    for (const child of element.childNodes) {
+      addSpaceAfterFirstwordSpan(child);
+    }
+  }
+}
+
+function removeSpanTags(element) {
+  if (element.tagName === 'SPAN') {
+    // Replace span tag with its content
+    const spanContent = element.innerHTML;
+    element.insertAdjacentHTML('beforebegin', spanContent);
+    element.remove();
+  } else {
+    // Recursively remove span tags for child elements
+    for (const child of element.childNodes) {
+      removeSpanTags(child);
+    }
+  }
+}
+</script>
+
+</body>
+</html>

@@ -318,12 +318,18 @@
           var pastedHTML = clipboardData.getData('text/html');
 
           // Insert the HTML into the textarea
-          document.getElementById('myTextarea').value = pastedHTML;
+          document.getElementById('LOLmt').value = pastedHTML;
+          cleanHTML()
+        }
+
+        function removeSegments(txt) {
+          txt = txt.split("<!--StartFragment-->").join("")
+          .split("<!--EndFragment-->").join("")
         }
 
         function cleanHTML() {
           // Get the HTML from the textarea
-          const inputHTML = document.getElementById('myTextarea').value;
+          const inputHTML = removeSegments(document.getElementById('LOLmt').value);
 
           // Create a temporary element to parse the HTML
           const tempElement = document.createElement('div');
@@ -345,7 +351,7 @@
           const cleanedHTML = tempElement.innerHTML;
 
           // Display the cleaned HTML
-          document.getElementById('myTextarea').value = cleanedHTML;
+          document.getElementById('LOLmt').value = cleanedHTML;
         }
 
         function removeInlineStyles(element) {
