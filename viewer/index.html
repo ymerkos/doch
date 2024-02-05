@@ -189,7 +189,7 @@
                           </div>
 
                           <div class="form-row">
-                              <textarea name="Footnotes" id="LOLfn" placeholder="Footnotes" rows="4" class="form-item" ></textarea>
+                              <textarea onpaste="handleFPaste(event)" name="Footnotes" id="LOLfn" placeholder="Footnotes" rows="4" class="form-item" ></textarea>
                           </div>
 
                           <!-- Submit Button -->
@@ -307,6 +307,61 @@
       });
       }
 
+      window.handleFPaste=handleFPaste
+      function handleFPaste(event) {
+        event.preventDefault();
+
+        // Get the clipboard data
+        var clipboardData = event.clipboardData || window.clipboardData;
+        var pastedHTML = clipboardData.getData('text/html');
+
+        // Insert the HTML into the textarea
+        document.getElementById('LOLfn').value = pastedHTML;
+        cleanFHTML()
+      }
+
+      function cleanFHTML() {
+          // Get the HTML from the textarea
+          const inputHTML = removeSegments(document.getElementById('LOLfn').value);
+          // Create a temporary element to parse the HTML
+          var dp = new DOMParser()
+          var doc = dp.parseFromString(inputHTML,"text/html")
+          var fn = Array.from(doc.querySelectorAll(".footnote"))
+          var notes = []
+          fn.forEach(w=> {
+            var a = w.querySelector("a");
+            var bd = w.querySelector(".footnote__body");
+            if(!bd || !a) {
+             // return alert("Issue!");
+              return console.log("ISSUE",w)
+            }
+            var nm = a.innerHTML.split(".").join("")
+            //try o decremate
+            var num = parseInt(nm);
+            if(!isNaN(num)) {
+              num -= 1
+            }
+            nm = num+")"
+            var cnt = "";
+            Array.from(bd.children).forEach(g=> {
+              var nodesHTML = "";
+              g.childNodes.forEach(c=> {
+                var tn = c.tagName;
+                var el = tn?document.createElement(tn):document.createTextNode();
+                el.textContent=c.textContent;
+                nodesHTML+=el.outerHTML;
+              })
+              cnt += nodesHTML+ "<br>"
+            })
+
+            notes.push(nm +" "+cnt)
+          });
+          var rs = notes.map(w=>`<p>${w}</p>`).join("")
+          document.getElementById("LOLfn").value=rs;
+          console.log(fn,window.k=doc,rs)
+      }
+
+
       window.handlePaste=handlePaste;
         function handlePaste(event) {
           console.log("Pastin?",event.target)
@@ -323,8 +378,8 @@
         }
 
         function removeSegments(txt) {
-          txt = txt.split("<!--StartFragment-->").join("")
-          .split("<!--EndFragment-->").join("")
+          return txt.split("<!--StartFragment-->").join("")
+          .split("<!--EndFragment-->").join("").trim()
         }
 
         function cleanHTML() {
