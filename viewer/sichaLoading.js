@@ -140,7 +140,7 @@ function processText(MainText, EnglishText="") {
    d = d.filter(w=>{
      return w.tagName == "P"
    })
-    d.slice(2).forEach((w,i) => {
+    d.forEach((w,i) => {
         var d = document.createElement("div");
         d.className="p-div";
         d.appendChild(w);
