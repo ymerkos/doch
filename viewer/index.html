@@ -347,7 +347,7 @@
               var nodesHTML = "";
               g.childNodes.forEach(c=> {
                 var tn = c.tagName;
-                var el = tn?document.createElement(tn):document.createTextNode();
+                var el = tn?document.createElement(tn):document.createTextNode(c.textContent||c.text);
                 el.textContent=c.textContent;
                 nodesHTML+=el.outerHTML;
               })
