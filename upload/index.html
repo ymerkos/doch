@@ -279,8 +279,198 @@ async function addAllMeluket(alM) {
 
 window.addAllMeluket=addAllMeluket;
 
+
+// Function to create a file input element and handle file selection
+function loadJsonFromFile() {
+    return new Promise((r,j) => {
+      // Create a file input element
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = '.json'; // Accept only JSON files
+    
+      // Listen for file selection
+      fileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0]; // Get the selected file
+    
+        if (file) {
+          // Use FileReader to read the file's contents
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const text = e.target.result;
+        
+            // Parse the JSON text
+            try {
+              const json = JSON.parse(text);
+                r(json)
+              // Load the JSON data into memory or use it as needed
+              console.log("JSON data loaded into memory:", json);
+              // Perform further actions with the json variable here
+            } catch (error) {
+              console.error("Error parsing JSON:", error);
+            }
+          };
+    
+          reader.readAsText(file); // Read the file as text
+        }
+      });
+    
+      // Programmatically click the file input to open the file dialog
+      fileInput.click();
+    })
+}
+
+
+var table = {
+        
+        "תנש\"א" :5,
+         
+        "תשנ\"ב" :6, 
+        "תש\"נ" :4, 
+        "תשמ\"ט" :3, 
+
+        
+        "תשמ\"ח":2,
+
+        "תשמ\"ז":2,
+        
+        "תשנ\"א":5,
+
+        
+    }
+
+    var table = {
+        
+        "תנש\"א" :5,
+         
+        "תשנ\"ב" :6, 
+        "תש\"נ" :4, 
+        "תשמ\"ט" :3, 
+
+        
+        "תשמ\"ח":2,
+
+        "תשמ\"ז":2,
+        
+        "תשנ\"א":5,
+
+        
+    }
+    
+    var table = {
+
+"תנש\"א": 5,
+
+"תשנ\"ב": 6,
+"תש\"נ": 4,
+"תשמ\"ט": 3,
+
+
+"תשמ\"ח": 2,
+
+"תשמ\"ז": 2,
+
+"תשנ\"א": 5,
+
+
+}
+
+function matchChabadOrgToAwtsfaria(chabad /*primary array*/ , awtsfaria, table) {
+var matched = [];
+chabad.forEach((w, i) => {
+  var ht = w["hebrew-title"]
+  var kuntress = w["hebrew-subtitle"];
+  var year = null;
+  if (!kuntress) {
+
+    var y = getYearFromTitle(ht)
+    if (!y) console.log("Issue", w)
+    else {
+      year = y;
+    }
+
+  }
+  if (!year) {
+    var y = getYearFromSubtitle(kuntress)
+    if (!y) {
+      var ht = w["hebrew-title"]
+      var y = getYearFromTitle(ht)
+      if (y) {
+        year = y;
+
+      } else console.log("issue", w)
+    } else {
+      year = y;
+    }
+
+  }
+
+  var book = table[year]
+  console.log("Tried", i, book, year)
+})
+
+
+function extractHebrewYear(inputString) {
+  try {
+    // Adjusted pattern to match a 'ת' followed by two or three Hebrew letters, 
+    // a quotation mark as the second to last character, and ending with a Hebrew letter.
+    // The pattern specifically looks for 'ת' followed by one or two Hebrew characters, 
+    // then a quotation mark, and finally another Hebrew character.
+    const pattern = /ת[א-ת]{1,2}"[א-ת]/;
+    const match = inputString.match(pattern);
+
+    if (match) {
+      // Return the matched year
+      return match[0];
+    } else {
+      // If no match is found, return null
+      return null;
+    }
+  } catch (e) {
+    return null
+  }
+}
+
+function getYearFromTitle(t) {
+  return extractHebrewYear(t)
+}
+
+function getYearFromSubtitle(st) {
+  return extractHebrewYear(st)
+  var spl = st.split("–")
+  var y = spl[spl.length - 1]
+  return y;
+}
+}
+
+
+  function isTitleSimilar(primaryTitle, bookletTitle, threshold = 5) {
+      const tokenize = (title) => title.split(' ');
+
+      const primaryTokens = tokenize(primaryTitle);
+      const bookletTokens = tokenize(bookletTitle);
+
+      // Check if any token from one title is within a certain Levenshtein distance to any token in the other title
+      for (let primaryToken of primaryTokens) {
+          for (let bookletToken of bookletTokens) {
+              const distance = calculateLevenshteinDistance(primaryToken, bookletToken);
+              if (distance <= threshold) {
+                  return true; // Consider titles similar if any token matches within the threshold
+              }
+          }
+      }
+      return false; // Titles are not considered similar
+  }
+
+
+window.matchChabadOrgToAwtsfaria=matchChabadOrgToAwtsfaria
+
+window.loadJsonFromFile=loadJsonFromFile
+
 window.formatMeluketData=formatMeluketData;
 window.downloadObjectAsJson=downloadObjectAsJson;
 window.getMeluketTOC=getMeluketTOC;
+
+
+
 
 </script>
