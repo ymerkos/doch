@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        .form-row {
+            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .form-item {
+            flex: 1; /* Each item takes equal width */
+            margin-right: 10px; /* Adjust as needed for spacing between items */
+        }
+
+        .form-item-full {
+            flex: 1 100%; /* Takes full width */
+        }
+
+        .horizontal-row {
+            flex-wrap: nowrap; /* Ensure items stay on the same line */
+        }
+
+        input[type="submit"] {
+            width: 100%; /* Full width for the submit button */
+        }
+    </style>
+    <title>Your Simple Form</title>
+</head>
+<body>
+
+<form action="/submit-form" method="post">
+    <!-- First Row -->
+    <div class="form-row horizontal-row">
+        <input type="number" name="volume" placeholder="Volume" class="form-item" required>
+        <input type="number" name="page_number" placeholder="Page Number" class="form-item" required>
+        <input type="text" name="parsha" placeholder="Parsha/Special Days" class="form-item-full" required>
+    </div>
+
+    <!-- Second Row -->
+    <div class="form-row horizontal-row">
+        <input type="number" name="sicha_num" placeholder="Sicha Num" class="form-item" required>
+        <input type="text" name="sicha_name" placeholder="Sicha Name" class="form-item-full" required>
+    </div>
+
+    <!-- Remaining Rows -->
+    <div class="form-row">
+        <textarea name="description" placeholder="Description" rows="4" class="form-item-full" required></textarea>
+    </div>
+
+    <div class="form-row">
+        <textarea name="summary" placeholder="Summary" rows="4" class="form-item-full" required></textarea>
+    </div>
+
+    <div class="form-row">
+        <textarea name="main_text" placeholder="Main Text" rows="6" class="form-item-full" required></textarea>
+    </div>
+
+    <div class="form-row">
+        <textarea name="footnotes" placeholder="Footnotes" rows="4" class="form-item-full" required></textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="form-row">
+        <input type="submit" value="Submit" class="form-item-full">
+    </div>
+</form>
+
+</body>
+</html>

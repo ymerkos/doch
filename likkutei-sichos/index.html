@@ -1,0 +1,58 @@
+<!--B"H-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+<header class="header">
+    <div class="left">
+      <div class="logo">Dach | דא״ח</div>
+      <div class="menu-item">Community</div>
+      <div class="menu-item">Texts</div>
+    </div>
+    <div class="right">
+      <div class="menu-btn">א</div>
+      <div class="menu-btn loginBtn">Log in</div>
+    </div>
+  </header>
+<div class="book_vol_index">
+    <div class="tile-grid" id="tileGrid">
+     
+    </div>
+ </div>
+ <script>
+ document.addEventListener("DOMContentLoaded", function () {
+    // Get the container
+    const buttonGrid = document.getElementById("tileGrid");
+
+    // Array of hardcoded Hebrew numerals for 1-39
+    const hebrewNumerals = [
+      "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י",
+      "יא", "יב", "יג", "יד", "טו", "טז", "יז", "יח", "יט", "כ",
+      "כא", "כב", "כג", "כד", "כה", "כו", "כז", "כח", "כט", "ל",
+      "לא", "לב", "לג", "לד", "לה", "לו", "לז", "לח", "לט"
+    ];
+
+    // Generate buttons using hardcoded Hebrew numerals
+    for (let i = 0; i < hebrewNumerals.length; i++) {
+        (i => {
+            const button = document.createElement("a");
+            button.className = "tile";
+            button.href="./"+(i+1)
+            button.textContent = hebrewNumerals[i];
+            button.onclick = () => {
+
+            }
+            // Append the button to the container
+            buttonGrid.appendChild(button);
+        })(i);
+      
+    }
+  });
+</script>
+
+ </body>
+ </html>

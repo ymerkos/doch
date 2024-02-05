@@ -1,0 +1,286 @@
+<!--B"H-->
+<script type="module">
+     // Import the functions you need from the SDKs you need
+     
+    import firebaseConfig from "../config.js"
+     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+            getFirestore, 
+            doc, 
+            setDoc, 
+      query,
+      deleteDoc,
+      where,
+      getDocs,
+          getDoc,
+          addDoc,
+          collection,
+          orderBy
+        } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        import { getAuth, 
+            createUserWithEmailAndPassword ,
+            signInWithEmailAndPassword,
+            GoogleAuthProvider,
+            signInWithPopup,
+            onAuthStateChanged ,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const db = getFirestore();
+
+        console.log("B\"H")
+        var provider = new GoogleAuthProvider();
+        console.log(provider)
+        signInWithPopup(auth, provider).then(r => console.log("You're in")).catch(e=>console.log(e));
+        window.doc=doc;
+        window.db=db;
+        window.setDoc=setDoc;
+        window.getDoc=getDoc;
+        window.collection=collection;
+        window.addDoc=addDoc;
+        window.where=where;
+        window.orderBy=orderBy
+        window.getDocs=getDocs;
+
+
+        async function getMeluketTOC() {
+          // Specify the collection and document path
+          const collectionRef = collection(db, 'books', 'Meluket', 'TOC_VOL');
+
+          // Get documents from the specified collection
+          const querySnapshot = await getDocs(collectionRef);
+
+          var d ={}
+          // Loop through the documents
+          querySnapshot.forEach((doc) => {
+            // Access the document ID (name)
+            const documentId = doc.id;
+            console.log('Document ID:', documentId);
+
+            // Access the document data
+            const data = doc.data();
+            d[id]=data;
+            console.log('Document data:', data);
+          });
+          return d;
+        }
+        async function addNewSicha(newSichaData) {
+            // Reference the collection where the new document will be added
+            const sichosCollectionRef = collection(db, "books/Likkutei Sichos/Sichos");
+            var customId = newSichaData.Page + "_"
+                +newSichaData.Volume;
+            try {
+                const docRef = doc(sichosCollectionRef, customId);
+                await setDoc(docRef, newSichaData);
+                console.log("New Sicha added with ID: ", docRef.id);
+            } catch (e) {
+                console.error("Error adding new Sicha: ", e);
+            }
+        }
+
+        function realSicha(data) {
+            return {
+                Main_text:data.mainText.join(""),
+                Footnotes:data.footnotes.join(""),
+                Parsha_id:data.parsha,
+                Volume: data.vol_eng+"",
+                Title: data.title,
+                Page: data.page
+            }
+        }
+
+function convertHtmlToFirestoreJson(html) {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(html, "text/html");
+
+  const items = xmlDoc.body.getElementsByTagName("item");
+  const result = {
+    booklets: []
+  };
+  console.log(items,xmlDoc)
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    var bookletName = item.querySelector("booklet_name");
+    if(bookletName)
+      bookletName = bookletName.textContent;
+    const titles = Array.from(item.querySelectorAll("title"))
+
+    
+    var existingBooklet = {
+        booklet_name: bookletName,
+        contents: []
+      };
+      result.booklets.push(existingBooklet);
+    
+
+    titles.forEach(title=> {
+      var page = title.previousElementSibling
+      if(!page) {
+        console.log("What?",title,titles,page)
+        return result
+      }
+      existingBooklet.contents.push({ page:page.textContent,
+         title:title.textContent});
+    })
+
+  }
+
+  return result;
+}
+
+window.convertHtmlToFirestoreJson = convertHtmlToFirestoreJson
+// Function to add items to Firestore with custom document names
+const addItemsToFirestore = async (collectionPath, items) => {
+  const itemsCollection = collection(db, collectionPath);
+
+  for (const [documentName, item] of Object.entries(items)) {
+    const documentRef = doc(itemsCollection, documentName);
+    await setDoc(documentRef, item);
+  }
+
+  console.log('Items added to Firestore successfully!');
+};
+window.addItemsToFirestore = addItemsToFirestore
+async function addMaamer(maamerData) {
+    /*
+      example:
+
+        // New document data
+        const newDocumentData = {
+          Title: "Your New Document Title",
+          Main_text: "Content of the main text",
+          Footnotes: "Content of the footnotes"
+        };
+
+    */
+  // Reference to the collection
+  const maamarimCollection = collection(db,'/books/Meluket/Maamarim/');
+    // Reference to the new document
+  const newDocumentRef = doc(maamarimCollection,maamerData.Title);
+
+  // Add a new document to the collection
+  setDoc(newDocumentRef,maamerData)
+    .then(() => {
+      console.log("Document written with ID: ",maamerData.Title);
+    })
+    .catch((error) => {
+      console.error("Error adding document: ", error);
+    });
+}
+
+
+window.addMaamer=addMaamer;
+
+
+async function addMaamarim(json) {
+  //B"H
+  var j = json;
+  if(!j) return console.log("Nothing!",j)
+  Object.keys(j).forEach(w=>{
+      var h = Object.keys(j[w])
+      console.log(w,h,j[w]);
+      h.forEach(f=> {
+          var ma = j[w][f];
+          console.log(j[w][f])
+          
+      })
+  })
+}
+// Function to upload JSON data to Firestore
+const uploadDataToFirestore = async (data) => {
+  try {
+    const collectionRef = collection(db, 'books', 'Likkutei Sichos', 'TOC_VOL');
+
+    // Loop through the sub-arrays and add each one as a document with a unique ID
+    data[1].forEach(async (subArray, index) => {
+      // Create a new document with a unique ID corresponding to the current index + 1
+      const newDocRef = await addDoc(collectionRef, { [`${index + 1}`]: subArray });
+      
+      console.log(`Sub-array ${index + 1} uploaded with ID: ${newDocRef.id}`);
+    });
+
+    console.log('JSON data uploaded to Firestore');
+  } catch (error) {
+    console.error('Error uploading JSON data:', error);
+  }
+};
+
+
+
+    window.uploadDataToFirestore=uploadDataToFirestore;
+        window.query=query;
+        window.readSicha = realSicha;
+        window.addNewSicha = addNewSicha;
+
+        function downloadObjectAsJson(obj, filename) {
+  // Convert the object to a JSON string
+  const jsonString = JSON.stringify(obj, null, 2);
+
+  // Create a Blob containing the JSON data
+  const blob = new Blob([jsonString], { type: 'application/json' });
+
+  // Create a download link
+  const downloadLink = document.createElement('a');
+
+  // Create a URL for the Blob and set it as the href attribute of the link
+  downloadLink.href = URL.createObjectURL(blob);
+
+  // Set the filename for the download
+  downloadLink.download = filename;
+
+  // Append the link to the document
+  document.body.appendChild(downloadLink);
+
+  // Simulate a click on the link to trigger the download
+  downloadLink.click();
+
+  // Remove the link from the document
+  document.body.removeChild(downloadLink);
+}
+
+function formatMeluketData(md) {
+    var allM = [];
+    Object.keys(md).forEach(w=>{
+        var m = md[w];
+        console.log("HI",m,w)
+        m.booklets.forEach(m => {
+            var c = m.contents;
+            c.forEach(f=> {
+                allM.push({
+                    ...f,
+                    volume:w
+                })
+            })
+        })
+    })
+    return allM
+}
+
+async function addAllMeluket(alM) {
+    alM.forEach(async w=> {
+        var id=w.volume+"_"+w.page
+        var dr = doc(db,'books', 'Meluket', 'Maamarim', id);
+        var data = {
+          Footnotes: "",
+          Main_text: "",
+          Page: w.page,
+          Title: "",
+          Volume: w.volume,
+          Year: ""
+        };
+        await setDoc(dr, data)
+    });
+}
+
+window.addAllMeluket=addAllMeluket;
+
+window.formatMeluketData=formatMeluketData;
+window.downloadObjectAsJson=downloadObjectAsJson;
+window.getMeluketTOC=getMeluketTOC;
+
+</script>

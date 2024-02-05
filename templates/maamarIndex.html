@@ -1,0 +1,135 @@
+<!--B"H-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+  <link rel="stylesheet" href="/style.css">
+  <title>Your Page Title</title>
+  <style>
+    body {
+      direction: rtl;
+      text-align: right;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .outer-text {
+      text-align: right;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      align-items: flex-end; /* Align items to the bottom */
+
+    }
+
+    .dotted-line {
+      flex: 1;
+      min-width: 50px;
+      border-top: 1px dotted #000;
+      margin: 0 10px;
+    }
+  </style>
+</head>
+<body>
+    <header class="header">
+        <div class="left">
+          <div class="logo">Dach | דא״ח</div>
+          <div class="menu-item">Community</div>
+          <div class="menu-item">Texts</div>
+        </div>
+        <div class="right">
+          <div class="menu-btn">א</div>
+          <div class="menu-btn loginBtn">Log in</div>
+        </div>
+      </header>
+  <div class="container">
+    
+    <div class="loader"></div>
+  </div>
+  
+<script src="./scripts/login.js" type="module"></script>
+<script type="module">
+    /*
+
+books
+Meluket
+TOC_VOL
+1
+*/
+
+import firebaseConfig from "../config.js"
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import {
+    getFirestore,
+    getDoc,
+    doc
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+initializeApp(firebaseConfig);
+
+var db = getFirestore();
+
+var container = document.querySelector(".container")
+var p = location.pathname.split("/");
+var ls = p[p.length-1];
+var VOLUME = ls;
+
+var dr = await doc(db,"books","Meluket","TOC_VOL",ls);
+var ds = await getDoc(dr);
+
+if(ds.exists()) {
+    var b = await ds.data();
+    var bl = b.booklets;
+    console.log(b,bl)
+    container.innerHTML = "";
+
+    bl.forEach(w=> {
+        var h = setMeluketBooklet(w,container);
+    })
+}
+
+function setMeluketBooklet(b, c) {
+    var bn = b.booklet_name || '';
+    if(bn) {
+        const bookletName = document.createElement('div');
+        bookletName.classList.add('booklet-name');
+        bookletName.textContent = bn
+        c.appendChild(bookletName)
+    }
+    b.contents.forEach((g) => {
+        const item = document.createElement('div');
+        item.classList.add('item');
+
+        const title = document.createElement('div');
+        title.classList.add('title');
+        title.textContent = g.title;
+        item.appendChild(title);
+
+        const dottedLine = document.createElement('div');
+        dottedLine.classList.add('dotted-line');
+        item.appendChild(dottedLine);
+
+        const page = document.createElement('div');
+        page.classList.add('page');
+        page.textContent = g.page;
+        item.appendChild(page);
+
+        c.appendChild(item);
+
+        var id = VOLUME+"_"+g.page;
+        console.log("HI!",id,VOLUME,g.page)
+        item.onclick=() => {
+            location.href="/viewer/meluket/"+id;
+        };
+    });
+}
+</script>
+</body>
+</html>

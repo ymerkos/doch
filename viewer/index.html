@@ -1,0 +1,435 @@
+<!--B"H-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@100..900&display=swap" rel="stylesheet">
+    <script>
+        function startDrag(e) {
+          if (window.matchMedia('(max-width: 500px)').matches) {
+            let mouseY;
+            if (e.touches) {
+              mouseY = e.touches[0].clientY;
+            } else {
+              mouseY = e.clientY;
+            }
+
+            const bottomSheet =  document.querySelector('.viewer .left-box');
+   
+            function handleDrag(e) {
+              e.preventDefault(); // Prevent pull-to-refresh behavior on mobile
+
+              const newHeight = bottomSheet.clientHeight + mouseY - (e.touches ? e.touches[0].clientY : e.clientY);
+              if (newHeight > 60) {
+                bottomSheet.style.height = newHeight + 'px';
+              }
+              mouseY = e.touches ? e.touches[0].clientY : e.clientY;
+            }
+
+            function stopDrag() {
+              document.removeEventListener('mousemove', handleDrag);
+              document.removeEventListener('touchmove', handleDrag);
+              document.removeEventListener('mouseup', stopDrag);
+              document.removeEventListener('touchend', stopDrag);
+            }
+
+            document.addEventListener('mousemove', handleDrag);
+            document.addEventListener('touchmove', handleDrag, { passive: false }); // Ensure preventDefault works
+            document.addEventListener('mouseup', stopDrag);
+            document.addEventListener('touchend', stopDrag);
+        }
+      }
+      function increaseFont() {
+        adjustFontSize("#content0", "increase")
+        adjustFontSize(".paragraph-container p", "increase")
+      }
+
+      function decreaseFont() {
+        adjustFontSize("#content0", "decrease")
+        adjustFontSize(".paragraph-container p", "decrease")
+      }
+
+      function adjustFontSize(sl, action) {
+       
+        const paragraphs = Array.from(document.querySelectorAll(sl));
+        console.log("Trying",sl,paragraphs,action)
+        paragraphs.forEach(paragraph => {
+          const currentFontSize = window.getComputedStyle(paragraph).fontSize;
+          let newSize;
+
+          if (action === 'increase') {
+            newSize = parseFloat(currentFontSize) * 1.2 + 'px';
+          } else if (action === 'decrease') {
+            newSize = parseFloat(currentFontSize) * 0.8 + 'px';
+          }
+
+          paragraph.style.fontSize = newSize;
+        });
+      }
+
+
+      /*
+    function startDrag(e) {
+      // Check if the media query is active
+      if (window.matchMedia('(max-width: 600px)').matches) {
+        let mouseY = e.clientY;
+        const leftBox = document.querySelector('.viewer .left-box');
+
+        function handleDrag(e) {
+          const newHeight = leftBox.clientHeight + mouseY - e.clientY;
+          if (newHeight > 100) { // Set a minimum height for the left box
+            leftBox.style.height = newHeight + 'px';
+          }
+          mouseY = e.clientY;
+        }
+
+        function stopDrag() {
+          document.removeEventListener('mousemove', handleDrag);
+          document.removeEventListener('mouseup', stopDrag);
+        }
+
+
+        document.addEventListener('mousemove', handleDrag);
+        document.addEventListener('mouseup', stopDrag);
+      }
+    }*/
+    
+    </script>
+  </head>
+  <body>
+    <div class="viewer page">
+        <header class="header">
+            <div class="left">
+              <div class="logo">Dach | דא״ח</div>
+              <div class="menu-item">Community</div>
+              <div class="menu-item">Texts</div>
+            </div>
+            <div class="right">
+              <div class="menu-btn">א</div>
+              <div class="menu-btn loginBtn">Log in</div>
+            </div>
+          </header>
+          <div class="flex-container">
+            <div class="left-box" id="resizableBox">
+                
+                <div class="tab-container" onmousedown="startDrag(event)" ontouchstart="startDrag(event)">
+                    <div class="tabs">
+                        <div class="tab">שיעורים</div>
+                        <div class="tab">תרגומים</div>
+                        <div class="tab">קיצור</div>
+                        <div class="tab">הערות</div>
+                        <div class="tab-indicator"></div>
+                    </div>
+                    <div class="content footnotesCnt" id="content0">Content for Tab 1</div>
+                    <div class="content" id="content1">
+
+
+                      <!DOCTYPE html>
+                      <html lang="en">
+                      <head>
+                          <meta charset="UTF-8">
+                          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                          <style>
+                              /* Basic styling for the form */
+                              .form-row {
+                                  margin-bottom: 10px;
+                                  display: flex;
+                                  flex-wrap: wrap;
+                              }
+
+                              /* Style the individual items within each row */
+                              .form-item {
+                                  flex: 1;
+                      padding: 15px;
+                                  margin-right: 10px;
+                                  min-width: 0;
+                              }
+
+                              .horizontal-row .form-item:nth-child(3) {
+                                  flex: 3;
+                              }
+
+                              input[type="submit"] {
+                                  width: 100%;
+                              }
+                          </style>
+                          <title>Your Simple Form</title>
+                      </head>
+                      <body>
+
+                      <form id="LOL" action="/submit-form" method="post">
+                          <!-- First Row -->
+                          <div class="form-row horizontal-row">
+                             <!-- <input type="number" name="volume" placeholder="Volume" class="form-item" >
+                              <input type="number" name="page_number" placeholder="Page Number" class="form-item" >-->
+                              <input type="text" name="parsha" placeholder="Parsha/Special Days" class="form-item" style="flex: 3;" >
+                          </div>
+
+                          <!-- Second Row -->
+                          <div class="form-row horizontal-row">
+                              <input type="number" name="sicha_num" placeholder="Sicha Num" class="form-item" >
+                              <input type="text" name="Title" placeholder="Title" class="form-item" style="flex: 3;" >
+                          </div>
+
+                          <!-- Remaining Rows -->
+                          <div class="form-row">
+                              <textarea name="description" placeholder="Description" rows="4" class="form-item" ></textarea>
+                          </div>
+
+                          <div class="form-row">
+                              <textarea name="summary" placeholder="Summary" rows="4" class="form-item" ></textarea>
+                          </div>
+
+                          <div class="form-row">
+                              <textarea onpaste="handlePaste(event)" name="Main_text" id="LOLmt" placeholder="Main Text" rows="6" class="form-item" ></textarea>
+                          </div>
+
+                          <div class="form-row">
+                              <textarea name="Footnotes" id="LOLfn" placeholder="Footnotes" rows="4" class="form-item" ></textarea>
+                          </div>
+
+                          <!-- Submit Button -->
+                          <div class="form-row">
+                              <input type="submit" value="Submit" class="form-item">
+                          </div>
+                      </form>
+
+                      </body>
+                      </html>
+                    </div>
+                    <div class="content" id="content2">Content for Tab 3</div>
+                    <div class="content" id="content3">Content for Tab 4</div>
+                </div>
+
+            </div>
+            <div class="right-box">
+                <div class="app-bar">
+                    <div class="app-barContent">
+                        <div id="app-barButtons-hidden">
+                        <div id="indexButton" class="list toggle-button btn"></div>
+                        <div id="settingsButton" class="settingsIcon toggle-button btn"></div>
+                       
+                      </div>
+                      <div class="appbar-title-container">
+                        <div class="default-title">לקוטי שיחות חט״ו</div>
+                        <!-- <div class="settings-expanded-title">Settings Title</div>
+                        <div class="index-expanded-title">Index Title</div> -->
+                    </div>
+                    
+                      <div id="app-barButtons">
+                        <div id="indexButton" class="list toggle-button btn"></div>
+                        <div id="settingsButton" class="settingsIcon toggle-button btn">
+                        </div>
+                      </div>
+                        
+                    </div>
+                    <div id="expanded">Content for the expanded div</div>
+                  </div>
+                  <div class="paragraph-content">
+                    <div class="paragraph-container">
+                      <div class="loader"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/viewer/viewerhighlight.js"></script>
+    <script src="/viewer/sichaLoading.js" type="module"></script>
+    
+    <script src="/scripts/login.js" type="module"></script>
+    <script src="/viewer/settingsMenu.js"></script>
+    <script type="module">
+      
+      import firebaseConfig from "/config.js"
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        getDoc,
+        doc,
+        updateDoc
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+          
+    
+      initializeApp(firebaseConfig);
+
+      var db = getFirestore();
+      await takeCareOfYossisForm();
+      async function takeCareOfYossisForm() {
+        var pthId = decodeURIComponent((b=>b[b.length-1])(location.pathname.split("/")))
+        var spl = pthId.split("_")
+        var vol = spl[0]
+        var p = spl[1]
+        LOL.addEventListener('submit', async function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Gather form fields' values
+        const formData = {};
+        const formElements = event.target.elements;
+
+        for (let i = 0; i < formElements.length; i++) {
+          const element = formElements[i];
+
+          // Exclude buttons and other non-input elements
+          if (element.tagName === 'INPUT' || element.tagName === 'SELECT' || element.tagName === 'TEXTAREA') {
+            formData[element.name] = element.value;
+          }
+        }
+        formData.Volume =vol
+        formData.Page = p;
+        formData.pthId=pthId
+
+        var mt = formData.Main_text;
+        var ft= formData.Footnotes;
+
+        
+        // Specify the path to the document you want to update
+        const documentPath = 'books/Meluket/Maamarim/'+pthId;  // Update with your document path
+        const documentRef = doc(db, documentPath);
+
+        var nd = {
+          Main_text:mt,
+          Footnotes:ft
+        }
+
+        try {
+          await updateDoc(documentRef, nd)
+          
+          // Log form data as JSON to the console
+          console.log(JSON.stringify(formData, null, 2),window.h=formData,nd,"DID?",documentPath,vol);
+        } catch(e) {
+          console.log("HI?",e)
+        }
+      });
+      }
+
+      window.handlePaste=handlePaste;
+        function handlePaste(event) {
+          console.log("Pastin?",event.target)
+          // Prevent the default paste behavior
+          event.preventDefault();
+
+          // Get the clipboard data
+          var clipboardData = event.clipboardData || window.clipboardData;
+          var pastedHTML = clipboardData.getData('text/html');
+
+          // Insert the HTML into the textarea
+          document.getElementById('myTextarea').value = pastedHTML;
+        }
+
+        function cleanHTML() {
+          // Get the HTML from the textarea
+          const inputHTML = document.getElementById('myTextarea').value;
+
+          // Create a temporary element to parse the HTML
+          const tempElement = document.createElement('div');
+          tempElement.innerHTML = inputHTML;
+
+          // Remove inline styles
+          removeInlineStyles(tempElement);
+
+          // Remove unnecessary attributes and classes from the sup tag
+          removeSupAttributes(tempElement);
+
+          // Add space after span with "firstword" class
+          addSpaceAfterFirstwordSpan(tempElement);
+
+          // Remove span tags and their attributes
+          removeSpanTags(tempElement);
+
+          // Get the cleaned HTML
+          const cleanedHTML = tempElement.innerHTML;
+
+          // Display the cleaned HTML
+          document.getElementById('myTextarea').value = cleanedHTML;
+        }
+
+        function removeInlineStyles(element) {
+          if (element.nodeType === 1) {
+            // Remove inline styles for specified tags
+            if (['SUP', 'B', 'I', 'P'].includes(element.tagName)) {
+              element.removeAttribute('style');
+            }
+
+            // Recursively remove inline styles for child elements
+            for (const child of element.childNodes) {
+              removeInlineStyles(child);
+            }
+          }
+        }
+
+        function removeSupAttributes(element) {
+          if (element.nodeType === 1 && element.tagName === 'SUP') {
+            // Remove all attributes from the sup tag
+            const attributes = element.attributes;
+            for (let i = attributes.length - 1; i >= 0; i--) {
+              const attributeName = attributes[i].name;
+              if (attributeName !== 'data-group') {
+                element.removeAttribute(attributeName);
+              }
+            }
+          }
+
+          // Recursively remove attributes for child elements
+          for (const child of element.childNodes) {
+            removeSupAttributes(child);
+          }
+        }
+
+        function addSpaceAfterFirstwordSpan(element) {
+          if (element.tagName === 'SPAN' && element.classList.contains('firstword')) {
+            // Add space after the closing tag of the span
+            element.insertAdjacentHTML('afterend', ' ');
+          } else {
+            // Recursively add space for child elements
+            for (const child of element.childNodes) {
+              addSpaceAfterFirstwordSpan(child);
+            }
+          }
+        }
+
+        function removeSpanTags(element) {
+          if (element.tagName === 'SPAN') {
+            // Replace span tag with its content
+            const spanContent = element.innerHTML;
+            element.insertAdjacentHTML('beforebegin', spanContent);
+            element.remove();
+          } else {
+            // Recursively remove span tags for child elements
+            for (const child of element.childNodes) {
+              removeSpanTags(child);
+            }
+          }
+        }
+      
+
+      let darkModeEnabled = false;
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const darkModeButton = document.getElementById('darkModeButton');
+        if (darkModeButton) {
+          darkModeButton.addEventListener('click', toggleDarkMode);
+        }
+      });
+
+      function toggleDarkMode() {
+        console.log('Button clicked!'); // Check if this log is printed
+        darkModeEnabled = !darkModeEnabled; // Toggle the dark mode status
+
+        const elements = document.querySelectorAll('.viewer .right-box, .viewer .left-box, .viewer .right-box .paragraph-container, .paragraph-content p, .viewer .right-box .app-bar, .viewer .left-box .tabs, .viewer .left-box .content, .appbar-title-container');
+        elements.forEach(element => {
+          element.classList.toggle('dark-mode', darkModeEnabled);
+        });
+      }
+
+
+
+    </script>
+    
+  </script>
+  </body>
+  </html>
