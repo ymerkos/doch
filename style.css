@@ -50,7 +50,7 @@ a {
 
 body,html {
   height: calc(100% - calc(var(---header-height) / 2));
-  user-select:none
+  user-select:none;
 
 }
 
