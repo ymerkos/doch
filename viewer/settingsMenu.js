@@ -4,12 +4,28 @@ const expanded = document.getElementById('expanded');
 const toggleButtons = document.querySelectorAll('.right-box .toggle-button');
 let currentState = ''; // Initialize the state variable
 
+var clickedAtAll=false;
+var old;
 toggleButtons.forEach(button => {
 button.addEventListener('click', () => {
+
+    var t = document.querySelector("#work_title");
+   
+   if(!clickedAtAll) {
+    clickedAtAll = true;
+    if(t) {
+        old = t.textContent;
+    }
+   }
+    
     const newState = button.id === 'indexButton' ? 'index' : 'settings';
 
     // Set different content based on the state
     if (newState === 'index') {
+        if(t) {
+            
+            t.textContent = "Table of Contents"
+        }
     expanded.innerHTML = /*html*/`
         <!-- Content for the 'index' state -->
         <!-- Add your index content here -->
@@ -84,6 +100,9 @@ button.addEventListener('click', () => {
     </div>
     `;
     } else if (newState === 'settings') {
+        if(t) {
+            t.textContent = "Settings"
+        }
     expanded.innerHTML = /*html*/`
         <!-- Content for the 'settings' state -->
         <!-- Add your settings content here -->
@@ -114,7 +133,14 @@ button.addEventListener('click', () => {
 
     // Toggle the height
     expanded.style.height = currentState === newState ? '0' : (newState === 'settings' ? '20vh' : '70vh');
+    if(currentState === newState) {
+        if(t) {
+            t.textContent = old
+        }
+    }
     currentState = currentState === newState ? '' : newState;
+    console.log("HI!",currentState,old)
+   
 });
 });
 

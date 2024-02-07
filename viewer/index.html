@@ -203,7 +203,10 @@
                       </body>
                       </html>
                     </div>
-                    <div class="content" id="content2">Content for Tab 3</div>
+                    <div class="content" id="content2">
+
+                      <button id="transB">Translate with AI</button>
+                    </div>
                     <div class="content" id="content3">Content for Tab 4</div>
                 </div>
 
@@ -217,7 +220,7 @@
                        
                       </div>
                       <div class="appbar-title-container">
-                        <div class="default-title">לקוטי שיחות חט״ו</div>
+                        <div class="default-title" id="work_title"></div>
                         <!-- <div class="settings-expanded-title">Settings Title</div>
                         <div class="index-expanded-title">Index Title</div> -->
                     </div>
@@ -259,6 +262,53 @@
     
       initializeApp(firebaseConfig);
 
+
+      var English = null;
+      var isEnglish  = false;
+      var oldT = null
+      transB.onclick = async () => {
+        if(!isEnglish) {
+          oldT = transB.textContent;
+          transB.textContent = "Only hebrew"
+          isEnglish = true;
+          if(!English) {
+            if(window.curPath) {
+              console.log("Pathic!",curPath);
+              try {
+                var dk = await getDoc(doc(db, curPath));
+                var eng = dk.get("English")
+                if(eng) {
+                  English = eng;
+                  setEnglishToParagraphs(eng)
+                } else {
+                  console.log("LOL")
+                }
+              } catch(e) {
+                console.log(e,"No doc!")
+              }
+            }
+          } else {
+            
+
+            setEnglishToParagraphs(English)
+          }
+        } else {
+          var engs =Array.from(document.querySelectorAll(".english-div"))
+            engs.forEach(w=>w.remove());
+          isEnglish = false;
+          transB.textContent = oldT
+        }
+      };
+
+      function setEnglishToParagraphs(eng) {
+        var divs = Array.from(document.querySelectorAll(".p-div"))
+        var en = parseDoc(eng).filter(w=>w.textContent)
+        divs.forEach((d,i) => {
+          var eeng = en[i];
+          eeng.classList.add("english-div")
+          d.appendChild(eeng)
+        })
+      }
       var db = getFirestore();
       await takeCareOfYossisForm();
       async function takeCareOfYossisForm() {

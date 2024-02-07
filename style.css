@@ -508,6 +508,8 @@ color: white;
   font-weight: 100;
   line-height: 1.4;
   padding: 20px;
+  overflow-y:scroll;
+  height:80vh;
 }
 
 .ftnote {
@@ -736,6 +738,7 @@ body {
 @media only screen and (max-width: 600px) {
   .viewer .left-box {
     position: fixed;
+
     bottom: 0;
     max-height: 70vh;
     height: 100px;
@@ -754,5 +757,13 @@ body {
   .viewer .flex-container {
     top:0;
   }
+
+  .viewer .left-box .tab-container {
+    height:inherit;
+  }
+  .viewer .left-box .content {
+    
+    height: calc(100% - 60px);
+}
 
 }
