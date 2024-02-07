@@ -10,7 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@100..900&display=swap" rel="stylesheet">
     <script>
         function startDrag(e) {
+          console.log("HI!")
           if (window.matchMedia('(max-width: 500px)').matches) {
+            console.log("size?")
             let mouseY;
             if (e.touches) {
               mouseY = e.touches[0].clientY;
@@ -116,7 +118,7 @@
           <div class="flex-container">
             <div class="left-box" id="resizableBox">
                 
-                <div class="tab-container" onmousedown="startDrag(event)" ontouchstart="startDrag(event)">
+                <div class="tab-container" ondragstart="startDrag(event)" onmousedown="startDrag(event)" ontouchstart="startDrag(event)">
                     <div class="tabs">
                         <div class="tab">שיעורים</div>
                         <div class="tab">תרגומים</div>
@@ -501,15 +503,25 @@
       });
 
       function toggleDarkMode() {
+        darkModeEnabled = true
+        toggleMode()
+      }
+      function toggleWhiteMode() {
+        darkModeEnabled=false;
+        toggleMode()
+      }
+      function toggleMode() {
         console.log('Button clicked!'); // Check if this log is printed
-        darkModeEnabled = !darkModeEnabled; // Toggle the dark mode status
+        
 
         const elements = document.querySelectorAll('.viewer .right-box, .viewer .left-box, .viewer .right-box .paragraph-container, .paragraph-content p, .viewer .right-box .app-bar, .viewer .left-box .tabs, .viewer .left-box .content, .appbar-title-container');
         elements.forEach(element => {
           element.classList.toggle('dark-mode', darkModeEnabled);
         });
       }
+      window.toggleWhiteMode=toggleWhiteMode
 
+      window.toggleDarkMode=toggleDarkMode;
 
 
     </script>

@@ -40,12 +40,17 @@ a {
   src: url('/resources/fonts/HEILIG.OTF') format('opentype'); 
 }
 
+@font-face {
+  font-family: 'miriam'; /* Choose a name for your font family */
+  src: url('https://firebasestorage.googleapis.com/v0/b/awtsfaria.appspot.com/o/mriam.ttf?alt=media&token=f3074e8e-af86-498d-9b6a-4d5e46100464') format('truetype'); 
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@100..900&display=swap');
 
 
 body,html {
   height: calc(100% - calc(var(---header-height) / 2));
-  
+  user-select:none
 
 }
 
@@ -165,6 +170,9 @@ color: #CFCFCF;
   max-width:500px;
   
   width: -webkit-fill-available;
+}
+.viewer .right-box .paragraph-content .heb {
+direction:rtl;
 }
 
 .viewer .right-box .paragraph-content p {
@@ -324,6 +332,50 @@ padding: 0px 5px;
   margin-top:100px;
 }
 
+.container {
+  display: flex;
+  max-width: 600px;
+  margin: auto;
+  margin-top: 100px;
+  flex-direction: column;
+  padding: 0 10px;
+}
+
+.container .outer-text {
+  text-align: right;
+}
+
+.container .item {
+  display: flex;
+  align-items: center;
+  align-items: flex-end; /* Align items to the bottom */
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.container .item:hover {
+  background-color: rgb(241, 241, 241);
+}
+
+.container .booklet-name {
+  margin-top: 20px;
+  font-family: 'miriam';
+}
+
+.container .title {
+  font-family: 'hei';
+}
+
+.container .dotted-line {
+  flex: 1;
+  min-width: 30px;
+  border-top: 1px dotted #000;
+  margin: 0 10px;
+}
+.container .page {
+  font-family: 'hei';
+}
+
 .viewer .right-box #expanded {
   height: 0;
   overflow: hidden;
@@ -474,8 +526,11 @@ color: #CFCFCF;
   /*border-bottom: 4px solid #e0e0e0;
   padding: 0 5px;*/
   font-weight: 800;
+  text-align: center;
   font-family: "noto serif hebrew";
 }
+
+
 
 .viewer .paragraph-container h3,
 .viewer .paragraph-container pg {

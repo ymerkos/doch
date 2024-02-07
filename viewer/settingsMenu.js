@@ -103,7 +103,7 @@ button.addEventListener('click', () => {
                 <div class="setting">
                     <div class="setting-name">THEME</div>
                     <div class="settings-toggles">
-                        <button class="light"></button><button class="dark" id="darkModeButton" onclick="toggleDarkMode()"></button>
+                        <button class="light" onclick="toggleWhiteMode()"></button><button class="dark" id="darkModeButton" onclick="toggleDarkMode()"></button>
                     </div>
                 </div>
             </div>

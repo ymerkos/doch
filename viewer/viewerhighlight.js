@@ -48,7 +48,8 @@ function notificationalism(p) {
             curNotes[w.innerText] = n[w.innerText]
         }
     })
-    console.log(window.cn=curNotes);
+    window.cn=curNotes;
+    //console.log(window.cn=curNotes);
     Object.keys(curNotes).forEach(q => {
         var p = document.createElement("p");
         p.setAttribute("dir","rtl");
