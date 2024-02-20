@@ -33,7 +33,6 @@ button.addEventListener('click', () => {
         
         <div class="index-container">
           <div class="index title">
-          <p>this is a test title</p>
           </div>
             <div class="index-item">
                 <div class="index-header">

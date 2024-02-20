@@ -109,6 +109,10 @@ function setTextToDoc(sicha, isSicha = false) {
         LOLmt.value=mt;
 
     }
+    if(window.EnglishContent) {
+        if(sicha.English)
+            EnglishContent.value = sicha.English
+    }
     if(window.LOLfn) {
         LOLfn.value=sicha.Footnotes
     }
@@ -122,6 +126,10 @@ function setTextToDoc(sicha, isSicha = false) {
     if(!p) {
         alert("something went wrong")
         return;
+    }
+
+    if(!isSicha) {
+        p.classList.add("maamer");
     }
     var h2 = document.createElement("h2")
     if(tl) {
@@ -137,6 +145,7 @@ function setTextToDoc(sicha, isSicha = false) {
         volumify(vol,isSicha)
     }
     p.innerHTML = processText(mt,eng);
+    setSupsForP(p)
     callEvents()
 }
 

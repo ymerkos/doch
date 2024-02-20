@@ -118,15 +118,15 @@
           <div class="flex-container">
             <div class="left-box" id="resizableBox">
                 
-                <div class="tab-container" ondragstart="startDrag(event)" onmousedown="startDrag(event)" ontouchstart="startDrag(event)">
-                    <div class="tabs">
+                <div class="tab-container">
+                    <div class="tabs" onmousedown="startDrag(event)" ontouchstart="startDrag(event)" ondragstart="startDrag(event)" >
                         <div class="tab">שיעורים</div>
                         <div class="tab">תרגומים</div>
                         <div class="tab">קיצור</div>
                         <div class="tab">הערות</div>
                         <div class="tab-indicator"></div>
                     </div>
-                    <div class="content footnotesCnt" id="content0">Content for Tab 1</div>
+                    <div class="content footnotesCnt" id="content0"></div>
                     <div class="content" id="content1">
 
 
@@ -178,6 +178,7 @@
                           </div>
 
                           <!-- Remaining Rows -->
+                          <!--
                           <div class="form-row">
                               <textarea name="description" placeholder="Description" rows="4" class="form-item" ></textarea>
                           </div>
@@ -185,7 +186,10 @@
                           <div class="form-row">
                               <textarea name="summary" placeholder="Summary" rows="4" class="form-item" ></textarea>
                           </div>
-
+                          -->
+                          <div class="form-row">
+                            <textarea id="EnglishContent" name="English" placeholder="English" rows="6" class="form-item" ></textarea>
+                        </div>
                           <div class="form-row">
                               <textarea onpaste="handlePaste(event)" name="Main_text" id="LOLmt" placeholder="Main Text" rows="6" class="form-item" ></textarea>
                           </div>
@@ -204,8 +208,9 @@
                       </html>
                     </div>
                     <div class="content" id="content2">
-
+                      <button id="showE">Show Enlish</button>
                       <button id="transB">Translate with AI</button>
+                      <div class="translationProgress" id="translationProgress"></div>
                     </div>
                     <div class="content" id="content3">Content for Tab 4</div>
                 </div>
@@ -266,49 +271,231 @@
       var English = null;
       var isEnglish  = false;
       var oldT = null
-      transB.onclick = async () => {
+
+
+      async function getRealtimeEnglish(addIt) {
+        if(window.curPath) {
+          console.log("Pathic!",curPath);
+          try {
+            var dk = await getDoc(doc(db, curPath));
+            var eng = dk.get("English")
+            if(eng) {
+              English = formatNumbers(eng);
+              setEnglishToParagraphs(English);
+              EnglishContent.value=English;
+            } else {
+              console.log("LOL")
+            }
+          } catch(e) {
+            console.log(e,"No doc!")
+          }
+        }
+      }
+
+      function formatNumbers(text) {
+        // Regex explanation:
+        // - The first part `(?<=[^\s\d])` is a positive lookbehind assertion that matches if the preceding character is not a whitespace or digit.
+        // - The second part `\d+` matches one or more digits.
+        // This combination ensures we only replace numbers that are directly attached to text or punctuation, not standalone numbers.
+        const regex = /(?<=[^\s\d])\d+/g;
+
+        // Replace matched numbers with <sup>number</sup>
+        return text.replace(regex, (match) => `<sup>${match}</sup>`);
+      }
+/*
+      // Example usage
+      const exampleText = "text is here5 etc6 txt2 is5 here and5 123213 numbrs9";
+      const formattedText = formatNumbers(exampleText);
+
+      console.log(formattedText);
+*/
+      
+      var pc = document.querySelector(".paragraph-container");
+      showE.onclick = showEnglish;
+      async function showEnglish() {
         if(!isEnglish) {
-          oldT = transB.textContent;
-          transB.textContent = "Only hebrew"
+          if(pc) {
+            pc.classList.add("english-active")
+          }
+          oldT = showE.textContent;
+          showE.textContent = "Only hebrew"
           isEnglish = true;
           if(!English) {
-            if(window.curPath) {
-              console.log("Pathic!",curPath);
-              try {
-                var dk = await getDoc(doc(db, curPath));
-                var eng = dk.get("English")
-                if(eng) {
-                  English = eng;
-                  setEnglishToParagraphs(eng)
-                } else {
-                  console.log("LOL")
-                }
-              } catch(e) {
-                console.log(e,"No doc!")
-              }
-            }
+            await getRealtimeEnglish();
           } else {
             
 
             setEnglishToParagraphs(English)
           }
         } else {
+          if(pc) {
+            pc.classList.remove("english-active")
+          }
           var engs =Array.from(document.querySelectorAll(".english-div"))
             engs.forEach(w=>w.remove());
           isEnglish = false;
-          transB.textContent = oldT
+          showE.textContent = oldT
         }
+      }
+
+
+      
+      transB.onclick = async () => {
+        if(!isAllowed) {
+          return alert("You're not allowed!")
+        }
+
+        var english = "";
+
+        var total = null;
+        var docRef = getDocRef();
+        await traverseMainHebrew(async (p, i, ar) => {
+          total = ar.length;
+
+          var txt = p.textContent;
+
+          var percent = i/total;
+          var percentText = Math.floor(percent * 100)
+          console.log("Translatin..",i,total, i / total, txt);
+          translationProgress.textContent="Translating paragraph #"+(i+1)+ 
+          " out of "
+          + total + 
+          " AKA " + (percentText) + "% complete."
+          var tran = await translateText(txt);
+          console.log("translated! ",tran);
+          translationProgress.textContent = "Translated it! With: "+ tran;
+          var tag = document.createElement("p");
+          tag.innerHTML = tran;
+          english += tag.outerHTML;
+
+          await updateDoc(docRef, {
+            English: english
+          });
+
+          translationProgress.textContent = "Wrote to firestore!";
+          console.log("Wrote to firestore: ", english);
+          await getRealtimeEnglish()
+        });
       };
+
+      async function traverseMainHebrew(callback) {
+        var pHeb = Array.from(document.querySelectorAll("p.heb"));
+        for(var i = 0; i < pHeb.length; i++) {
+          await callback(pHeb[i], i, pHeb)
+        }
+      }
+
+      async function translateText(txt) {
+        //B"H
+        try {
+          var resp = await fetch("https://translatify-2q5fj4mnha-uc.a.run.app/", {
+              method: "POST",
+              headers: {
+                  "content-type":"application/json"
+              },
+              body: JSON.stringify({
+                  toichen: `
+                    ${txt}
+                  `
+              })
+                  
+          })
+
+          var json =  await resp.json()
+          try {
+            var txt = json
+              .translated
+              .candidates[0]
+              .content
+              .parts[0]
+              .text;
+
+            return txt;
+          } catch(e) {
+            console.log("NOPE!?", json)
+            return null;
+          }
+          return txt;
+        } catch(e) {
+          console.log("DIDNT translate: ",txt)
+          return null
+        }
+      }
+
+      function getDocID() {
+        return decodeURIComponent((b=>b[b.length-1])(location.pathname.split("/")))
+      }
+
+      function getDocRef() {
+        var pthId = getDocID();
+        return  doc(db, 'books/Meluket/Maamarim/'+pthId);
+      }
+
 
       function setEnglishToParagraphs(eng) {
         var divs = Array.from(document.querySelectorAll(".p-div"))
-        var en = parseDoc(eng).filter(w=>w.textContent)
+          .filter(w=>w.children[0].tagName == "P");
+        var en = parseDoc(eng).filter(w=>w.textContent);
+        var englishDivs = Array.from(document.querySelectorAll("english-div"));
+        englishDivs.forEach(w => {
+          w.parentNode.removeChild(w);
+        });
         divs.forEach((d,i) => {
           var eeng = en[i];
-          eeng.classList.add("english-div")
+          if(!eeng) return console.log("Not found!",i,d)
+          eeng.classList.add("english-div");
+          setSupsForP(eeng);
           d.appendChild(eeng)
         })
       }
+
+      function setSupsForP(p) {
+
+        var sups = Array.from(p.getElementsByTagName("sup"));
+        var min = null;
+        var max = null;
+
+        sups.forEach((s, i, ar) => {
+          var nm = s.textContent;
+         // console.log("Trying to set events for: ",s,i)
+
+          /*try {
+            nm = parseInt(s.textContent);
+            if(isNaN(nm)) {
+              throw "lol" + nm
+            }
+          } catch(e) {
+            console.log("Issue",i,s,nm,s.textContent,e)
+          }*/
+
+          if(min === null) {
+           // min = parseInt(ar[0].textContent)
+          }
+          s.onclick = e => {
+           // console.log("Tring to click",e)
+            var nt = document.querySelector("#content0");
+            if(!nt) return console.log("Nothing");
+            var ch = activeNotes[nm]//nt.children[nm - 1];
+            console.log("OT?",ch)
+            if(ch) {
+              Array.from(nt.children)
+              .forEach(w => {
+                w.classList.remove("highlighted")
+              });
+
+              ch.classList.add("highlighted");
+              ch.scrollIntoView()
+              setTimeout(() => {
+                ch.classList.remove("highlighted")
+              }, 3 * 1000 /*unhighlight after 3 seconds*/)
+            } else {
+              console.log("NO!",s,activeNotes,nm)
+            }
+          };
+        })
+      }
+
+      window.setSupsForP = setSupsForP;
       var db = getFirestore();
       await takeCareOfYossisForm();
       async function takeCareOfYossisForm() {
@@ -346,6 +533,10 @@
         var nd = {
           Main_text:mt,
           Footnotes:ft
+        }
+
+        if(EnglishContent.value) {
+          nd.English = EnglishContent.value;
         }
 
         try {

@@ -2,8 +2,11 @@
 
 let paragraphContainer = document.querySelector('.paragraph-content');
 let paragraphs = Array.from(paragraphContainer.querySelectorAll('.p-div'));
-console.log(paragraphs)
+
 var lastPar = null;
+
+var curParagraph = null;
+var lastParagraph = null;
 function highlightParagraph() {
     
   //  console.log(2,paragraphs,paragraphContainer)
@@ -21,8 +24,10 @@ function highlightParagraph() {
     if (topParagraph) {
         paragraphs.forEach(p => p.classList.remove('active'));
         topParagraph.classList.add('active');
-        
-        notificationalism(topParagraph)
+        curParagraph = topParagraph;
+        if(lastParagraph != curParagraph)
+            notificationalism(topParagraph);
+        lastParagraph = curParagraph;
         lastPar =topParagraph
     }
 }
@@ -43,11 +48,14 @@ function notificationalism(p) {
         return;
     }
     var curNotes = {};
+    
     s.forEach(w => {
         if(n[w.innerText]) {
             curNotes[w.innerText] = n[w.innerText]
         }
     })
+    var an = {};
+    window.activeNotes = an;
     window.cn=curNotes;
     //console.log(window.cn=curNotes);
     Object.keys(curNotes).forEach(q => {
@@ -55,7 +63,8 @@ function notificationalism(p) {
         p.setAttribute("dir","rtl");
         p.className="ftnote"
         p.innerHTML = curNotes[q];
-        nt.innerHTML += p.outerHTML
+        an[q] = p;
+        nt.appendChild(p)
     })
 }
 
