@@ -18,6 +18,68 @@ async function loadJSON() {
     return json;
 }
 
+async function processAndSaveDocuments() {
+  const maamarimRef = collection(db, '/books/Meluket/Maamarim');
+  const snapshot = await getDocs(maamarimRef);
+
+  var did = false;
+   var thingsDid = 0;
+ var prom = snapshot.docs.map((docSnapshot) => {
+    //if(thingsDid > 5) return;
+    //  if(did) return console.log("already did");
+      const data = docSnapshot.data();
+      const mainTxtHTML = new DOMParser().parseFromString(data.Main_text, 'text/html');
+      const englishHTML = new DOMParser().parseFromString(data.English, 'text/html');
+
+      var mainTxtH2 = Array.from(mainTxtHTML.querySelectorAll("h2"))
+      const mainTxtParagraphs = Array.from(mainTxtHTML.querySelectorAll('p'));
+      const englishParagraphs = englishHTML.querySelectorAll('p');
+      console.log("Doing",docSnapshot.id)
+      const Maamar = [];
+      mainTxtH2.forEach((w, i) => {
+          const maamarItem = {
+              heb: w.innerHTML,
+              type: 'header' 
+          };
+          Maamar.push(maamarItem)
+      })
+      mainTxtParagraphs.forEach((element, index) => {
+          var subs = Array.from(element.querySelectorAll("sup"))
+          subs.forEach(w=>{
+              var d = w.getAttribute("data-group")
+              if(d && d != "Footnotes") {
+                  w.parentNode.removeChild(w)
+              } else if(d && d === "Footnotes") {
+                  w.removeAttribute("data-group")
+              }
+          })
+          const maamarItem = {
+              heb: element.innerHTML,
+              type:  'normal'
+          };
+
+          // If it's not a header, set the English equivalent.
+          if (maamarItem.type === 'normal' && englishParagraphs[index]) {
+              maamarItem.eng = englishParagraphs[index].innerHTML;
+          }
+
+          Maamar.push(maamarItem);
+          
+      });
+
+      
+      console.log("Wrote",Maamar,docSnapshot.id)
+      did = true;
+      thingsDid++;
+      // Update the document with new Maamar field
+      return updateDoc(doc(db, '/books/Meluket/Maamarim', docSnapshot.id), { Maamar });
+
+  });
+
+  await Promise.all(prom)
+}
+
+window.processAndSaveDocuments = processAndSaveDocuments;
 function calculateGematria(hebrewString, convertNumbers = false) {
   const gematriaMap = {
       'א': 1,

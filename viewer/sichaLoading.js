@@ -51,7 +51,7 @@ async function getMaamar() {
 
         if (sichaDoc.exists()) {
             var data = {
-                Main_text:sichaDoc.get("Main_text"),
+                Maamar:sichaDoc.get("Maamar"),
                 Volume:sichaDoc.get("Volume"),
                 Footnotes:sichaDoc.get("Footnotes"),
                 Title:sichaDoc.get("Title")
@@ -103,25 +103,11 @@ function setTextToDoc(sicha, isSicha = false) {
     }
     window.sicha = sicha;
     footnotify(sicha)
+    var maamar= sicha.Maamar;
     var mt = sicha.Main_text;
     var tl = sicha.Title;
-    if(window.LOLmt) {
-        LOLmt.value=mt;
 
-    }
-    if(window.EnglishContent) {
-        if(sicha.English)
-            EnglishContent.value = sicha.English
-    }
-    if(window.LOLfn) {
-        LOLfn.value=sicha.Footnotes
-    }
     
-    var eng = sicha.English;
-    if(mt === undefined) {
-        alert("no main text")
-        return;
-    }
     var p = document.querySelector(".paragraph-container");
     if(!p) {
         alert("something went wrong")
@@ -131,22 +117,80 @@ function setTextToDoc(sicha, isSicha = false) {
     if(!isSicha) {
         p.classList.add("maamer");
     }
-    var h2 = document.createElement("h2")
-    if(tl) {
-        h2.innerHTML = tl;
-        mt = h2.outerHTML + mt;
-    }
 
 
-    var vol = sicha.Volume;
-    if(vol) {
+    if(!maamar && mt) {
+        if(window.LOLmt) {
+            LOLmt.value=mt;
+
+        }
+        if(window.EnglishContent) {
+            if(sicha.English)
+                EnglishContent.value = sicha.English
+        }
+        if(window.LOLfn) {
+            LOLfn.value=sicha.Footnotes
+        }
         
+        var eng = sicha.English;
         
-        volumify(vol,isSicha)
+        var h2 = document.createElement("h2")
+        if(tl) {
+            h2.innerHTML = tl;
+            mt = h2.outerHTML + mt;
+        }
+
+
+        var vol = sicha.Volume;
+        if(vol) {
+            
+            
+            volumify(vol,isSicha)
+        }
+        p.innerHTML = processText(mt,eng);
+        setSupsForP(p)
+        callEvents()
+    } else if(maamar) {
+        if(!Array.isArray(maamar)) {
+            console.log(maamar,"problem")
+            return alert("Data is messed up")
+        }
+        p.innerHTML = ""
+        maamar.forEach((w, i) => {
+            if(w.type == "header") {
+                var h2 = document.createElement("h2");
+                p.appendChild(h2);
+                h2.dataset.hIndex = 0;
+                h2.innerHTML = w.heb
+                
+
+            } else if(w.type == "normal") {
+                var par = document.createElement("div")
+                par.className = "p-div";
+                par.dataset.pIndex = i;
+                if(w.heb) {
+                    
+                    var paragHeb = document.createElement("p");
+                    paragHeb.innerHTML = w.heb;
+                    paragHeb.className = "heb"
+                    par.appendChild(paragHeb)
+                }
+
+                if(w.eng) {
+                    var engPar = document.createElement("p");
+                    engPar.innerHTML = formatNumbers(w.eng);
+                    par.appendChild(engPar)
+                    engPar.className = "english-p"
+                    engPar.classList.add("hidden")
+                }
+
+                p.appendChild(par)
+            }
+        });
+
+        setSupsForP(p)
+        callEvents();
     }
-    p.innerHTML = processText(mt,eng);
-    setSupsForP(p)
-    callEvents()
 }
 
 function volumify(vol, isSicha) {
@@ -178,10 +222,7 @@ function processText(MainText, EnglishText="") {
     et = parseDoc(EnglishText)
    }
    var resultHTML = "";
-   /*resultHTML += d.slice(0,1).map(w=>w.outerHTML).join("")
-   d = d.filter(w=>{
-     return w.tagName == "P"
-   })*/
+
     d.forEach((w,i) => {
         var d = document.createElement("div");
         d.className="p-div";

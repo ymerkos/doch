@@ -8,8 +8,9 @@ import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChang
 from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
-
-
+var isEditing = location.search == "?edit";
+window.isEditing = isEditing;
+if(isEditing) {
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
@@ -23,11 +24,13 @@ var loginBtn = document.querySelector(".loginBtn");
 
 var isAllowed = false;
 onAuthStateChanged(auth, async (user) => {
-    console.log("hi!")
+    console.log("hi!");
+
     if (user) {
       // User is signed in
       isAllowed = await isAuthorized(user)
       window.isAllowed = isAllowed;
+      window.activeUser = user;
       console.log('User is signed in:', user, isAllowed);
       loginBtn.innerText = "Log out";
       loginBtn.onclick = signOutBtn;
@@ -39,6 +42,16 @@ onAuthStateChanged(auth, async (user) => {
       loginBtn.onclick = signInGoogle;
       console.log('User is signed out');
     }
+
+    // Create a custom event with some detail (data)
+    var changedAuth = new CustomEvent("awtsmoosAuth", {
+      detail: {
+        isAllowed,
+        user
+      } // You can pass any data you want in the detail property
+    });
+    window.dispatchEvent(changedAuth);
+
   });
 
   
@@ -83,3 +96,6 @@ async function isAuthorized (user) {
         resolve(false); // No user signed in
     }
   };
+} else {
+  window.isAllowed = false;
+}

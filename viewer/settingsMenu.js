@@ -7,6 +7,7 @@ let currentState = ''; // Initialize the state variable
 var clickedAtAll=false;
 var old;
 toggleButtons.forEach(button => {
+
 button.addEventListener('click', () => {
 
     var t = document.querySelector("#work_title");
@@ -141,6 +142,9 @@ button.addEventListener('click', () => {
     console.log("HI!",currentState,old)
    
 });
+expanded.onblur = () => {
+    expanded.style.height = 0;
+}
 });
 
 

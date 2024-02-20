@@ -55,7 +55,7 @@ a {
 
 body,html {
   height: calc(100% - calc(var(---header-height) / 2));
-  user-select:none;
+
 
 }
 
@@ -200,6 +200,7 @@ color: #CFCFCF;
 .viewer .right-box .paragraph-content .p-div h2 {
 text-align: center;
 width: -webkit-fill-available;
+direction:rtl;
 }
 
 
@@ -579,6 +580,7 @@ color: #CFCFCF;
   padding: 0 5px;*/
   font-weight: 800;
   text-align: center;
+  direction:rtl;
   font-family: "noto serif hebrew";
 }
 
@@ -792,8 +794,15 @@ body {
 }
 
 
+.editing {
+  user-select:all;
 
+
+}
 @media only screen and (max-width: 600px) {
+  body,html {
+    user-select:none;
+  }
   .viewer .left-box {
     position: fixed;
 
@@ -836,4 +845,30 @@ body {
 /*footnote highlighter*/
 .highlighted {
   background: cyan;
+}
+
+
+/*for hdden stuff in case u wrer wondeirng*/
+.hidden {
+  display:none !important;
+}
+
+
+/**toast stuff*/
+
+#toast {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.5s ease-in-out;
+}
+
+.hide {
+  opacity: 0;
+  pointer-events: none;
 }

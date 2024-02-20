@@ -112,7 +112,7 @@
             </div>
             <div class="right">
               <div class="menu-btn">א</div>
-              <div class="menu-btn loginBtn">Log in</div>
+              <div class="hidden menu-btn loginBtn">Log in</div>
             </div>
           </header>
           <div class="flex-container">
@@ -128,88 +128,94 @@
                     </div>
                     <div class="content footnotesCnt" id="content0"></div>
                     <div class="content" id="content1">
+                      <div class="editSecrets hidden">
 
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <style>
+                                /* Basic styling for the form */
+                                .form-row {
+                                    margin-bottom: 10px;
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                }
 
-                      <!DOCTYPE html>
-                      <html lang="en">
-                      <head>
-                          <meta charset="UTF-8">
-                          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                          <style>
-                              /* Basic styling for the form */
-                              .form-row {
-                                  margin-bottom: 10px;
-                                  display: flex;
-                                  flex-wrap: wrap;
-                              }
+                                /* Style the individual items within each row */
+                                .form-item {
+                                    flex: 1;
+                        padding: 15px;
+                                    margin-right: 10px;
+                                    min-width: 0;
+                                }
 
-                              /* Style the individual items within each row */
-                              .form-item {
-                                  flex: 1;
-                      padding: 15px;
-                                  margin-right: 10px;
-                                  min-width: 0;
-                              }
+                                .horizontal-row .form-item:nth-child(3) {
+                                    flex: 3;
+                                }
 
-                              .horizontal-row .form-item:nth-child(3) {
-                                  flex: 3;
-                              }
+                                input[type="submit"] {
+                                    width: 100%;
+                                }
+                            </style>
+                            <title>Your Simple Form</title>
+                        </head>
+                        <body>
 
-                              input[type="submit"] {
-                                  width: 100%;
-                              }
-                          </style>
-                          <title>Your Simple Form</title>
-                      </head>
-                      <body>
+                        
+                        <form id="LOL" action="/submit-form" method="post">
+                            <!-- First Row -->
+                            <div class="form-row horizontal-row">
+                              <!-- <input type="number" name="volume" placeholder="Volume" class="form-item" >
+                                <input type="number" name="page_number" placeholder="Page Number" class="form-item" >-->
+                                <input type="text" name="parsha" placeholder="Parsha/Special Days" class="form-item" style="flex: 3;" >
+                            </div>
 
-                      <form id="LOL" action="/submit-form" method="post">
-                          <!-- First Row -->
-                          <div class="form-row horizontal-row">
-                             <!-- <input type="number" name="volume" placeholder="Volume" class="form-item" >
-                              <input type="number" name="page_number" placeholder="Page Number" class="form-item" >-->
-                              <input type="text" name="parsha" placeholder="Parsha/Special Days" class="form-item" style="flex: 3;" >
+                            <!-- Second Row -->
+                            <div class="form-row horizontal-row">
+                                <input type="number" name="sicha_num" placeholder="Sicha Num" class="form-item" >
+                                <input type="text" name="Title" placeholder="Title" class="form-item" style="flex: 3;" >
+                            </div>
+
+                            <!-- Remaining Rows -->
+                            <!--
+                            <div class="form-row">
+                                <textarea name="description" placeholder="Description" rows="4" class="form-item" ></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <textarea name="summary" placeholder="Summary" rows="4" class="form-item" ></textarea>
+                            </div>
+                            -->
+                            <div class="form-row">
+                              <textarea id="EnglishContent" name="English" placeholder="English" rows="6" class="form-item" ></textarea>
                           </div>
+                            <div class="form-row">
+                                <textarea onpaste="handlePaste(event)" name="Main_text" id="LOLmt" placeholder="Main Text" rows="6" class="form-item" ></textarea>
+                            </div>
 
-                          <!-- Second Row -->
-                          <div class="form-row horizontal-row">
-                              <input type="number" name="sicha_num" placeholder="Sicha Num" class="form-item" >
-                              <input type="text" name="Title" placeholder="Title" class="form-item" style="flex: 3;" >
-                          </div>
+                            <div class="form-row">
+                                <textarea onpaste="handleFPaste(event)" name="Footnotes" id="LOLfn" placeholder="Footnotes" rows="4" class="form-item" ></textarea>
+                            </div>
 
-                          <!-- Remaining Rows -->
-                          <!--
-                          <div class="form-row">
-                              <textarea name="description" placeholder="Description" rows="4" class="form-item" ></textarea>
-                          </div>
+                            <!-- Submit Button -->
+                            <div class="form-row">
+                                <input type="submit" value="Submit" class="form-item">
+                            </div>
+                        </form>
 
-                          <div class="form-row">
-                              <textarea name="summary" placeholder="Summary" rows="4" class="form-item" ></textarea>
-                          </div>
-                          -->
-                          <div class="form-row">
-                            <textarea id="EnglishContent" name="English" placeholder="English" rows="6" class="form-item" ></textarea>
-                        </div>
-                          <div class="form-row">
-                              <textarea onpaste="handlePaste(event)" name="Main_text" id="LOLmt" placeholder="Main Text" rows="6" class="form-item" ></textarea>
-                          </div>
+                        </body>
+                        </html>
 
-                          <div class="form-row">
-                              <textarea onpaste="handleFPaste(event)" name="Footnotes" id="LOLfn" placeholder="Footnotes" rows="4" class="form-item" ></textarea>
-                          </div>
-
-                          <!-- Submit Button -->
-                          <div class="form-row">
-                              <input type="submit" value="Submit" class="form-item">
-                          </div>
-                      </form>
-
-                      </body>
-                      </html>
+                      </div>
                     </div>
                     <div class="content" id="content2">
                       <button id="showE">Show Enlish</button>
-                      <button id="transB">Translate with AI</button>
+                      <div class="editSecrets hidden">
+                        <button id="transB">Translate with AI</button>
+                        <button id="transBA">Translate active paragraph</button>
+                      </div>
                       <div class="translationProgress" id="translationProgress"></div>
                     </div>
                     <div class="content" id="content3">Content for Tab 4</div>
@@ -247,6 +253,10 @@
             </div>
         </div>
     </div>
+
+    <div id="toast" class="hide">
+      Toast Notification
+    </div>
     <script src="/viewer/viewerhighlight.js"></script>
     <script src="/viewer/sichaLoading.js" type="module"></script>
     
@@ -254,13 +264,142 @@
     <script src="/viewer/settingsMenu.js"></script>
     <script type="module">
       
+      if(isEditing) {
+        var lg = document.querySelector(".loginBtn")
+        if(lg) {
+          lg.classList.remove("hidden")
+        }
+      }
+
+
+      // Add an event listener for the custom event on the window object
+      window.addEventListener("awtsmoosAuth", function(e) {
+        
+        var ed = Array.from(document.querySelectorAll(".editSecrets"))
+        console.log("auth changed!", e.detail,ed); // Access the passed data through e.detail
+        var isa = e.detail.isAllowed;
+        if(isa) {
+          showToast("You are authorized and logged in")
+          console.log("I Am allowed. yay",ed)
+          ed.forEach(w=>w.classList.remove("hidden"));
+          setupClickEvents()
+        } else {
+          
+          console.log("I Am NOT AT ALL allowed. no",ed)
+          ed.forEach(w=>w.classList.remove("add"))
+        }
+      });
+
+      function setEvent(w, prop) {
+        var editingPar = false;
+          w.contentEditable = true;
+          var parIdx = null
+          w.onfocus = () => {
+
+            if(!editingPar) {
+              editingPar = true;
+              /*var sup = Array.from(w.querySelectorAll("sup"))
+              sup.forEach(w=>{
+                var txt = document.createTextNode(w.textContent);
+                w.replaceWith(txt)
+              });*/
+
+              if(prop == "heb")
+                w.textContent = w.innerHTML;
+              var parent = w.parentNode;
+              parIdx = parent.dataset.pIndex;
+              if(parIdx === undefined) {
+                parIdx = w.dataset.hIndex;
+              }
+
+              showToast(
+                "Started editing the paragraph ID: "
+              
+                + parIdx
+              
+              )
+              console.log(
+                "Started editing english paragraph:",w,
+                "paragraph:",parIdx
+              )
+              w.classList.add("editing")
+            }
+          };
+
+          w.onblur =async () => {
+            if(editingPar) {
+              if(parIdx === null) {
+                return console.log("Issue with it")
+              }
+              var ref = getDocRef();
+              
+              var doc = await getDoc(ref);
+              var Ma = doc.get("Maamar");
+              
+              console.log("Tryin to update",parIdx,ref,doc,Ma)
+              var par = Ma[parIdx];
+              if(!par) {
+                showToast("No paragraph found")
+                return console.log("No paragraph found")
+              }
+
+              
+              Ma[parIdx][prop] = w.textContent;
+              try {
+                await updateDoc(ref, {
+                  Maamar: Ma
+                });
+
+                
+                if(prop == "heb")
+                  w.innerHTML = w.textContent;
+                console.log(
+                  "Updated paragraph",parIdx,"with",par,prop,
+                  "and data",
+                  Ma,par
+                
+                )
+
+                showToast("Successfully edited")
+              } catch(e) {
+                console.log("Erorr",e)
+                showToast("NOT sucessfuly, check console")
+              }
+             // w.contenteditable = false;
+              editingPar = false;
+              console.log("Stopped editing english par:",w)
+
+
+            }
+          }
+      }
+
+      function setupClickEvents() {
+        Array.from(document.querySelectorAll(".english-p"))
+        .forEach(w=> {
+          setEvent(w,"eng")
+        });
+
+        Array.from(document.querySelectorAll(".heb"))
+        .forEach(w=> {
+          setEvent(w,"heb")
+        })
+
+        Array.from(document.querySelectorAll(".paragraph-container h2"))
+        .forEach(w=> {
+          setEvent(w,"heb")
+        })
+        //paragraph-container maamer
+      }
       import firebaseConfig from "/config.js"
       // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
       import {
         getFirestore,
         getDoc,
+        getDocs,
         doc,
+        collection,
         updateDoc
     } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
           
@@ -274,6 +413,11 @@
 
 
       async function getRealtimeEnglish(addIt) {
+        var enP = Array.from(document.querySelectorAll(".english-p"))
+        enP.forEach(w => {
+          w.classList.remove("hidden")
+        })
+        /*
         if(window.curPath) {
           console.log("Pathic!",curPath);
           try {
@@ -289,27 +433,34 @@
           } catch(e) {
             console.log(e,"No doc!")
           }
-        }
+        }*/
       }
 
+      window.formatNumbers = formatNumbers;
       function formatNumbers(text) {
-        // Regex explanation:
-        // - The first part `(?<=[^\s\d])` is a positive lookbehind assertion that matches if the preceding character is not a whitespace or digit.
-        // - The second part `\d+` matches one or more digits.
-        // This combination ensures we only replace numbers that are directly attached to text or punctuation, not standalone numbers.
-        const regex = /(?<=[^\s\d])\d+/g;
+    // Regex explanation:
+    // - `(?<=\b[\w.,;:"'‘’“”]*)(\d+)`: 
+    //   - `(?<=\b[\w.,;:"'‘’“”]*)`: A positive lookbehind that checks for word boundaries followed by any combination of word characters or specified punctuation marks, including both straight and curly quotes. It ensures that the digits come after these characters without capturing them.
+    //   - `(\d+)`: Captures one or more digits.
+    // - The lookbehind ensures that numbers are formatted as footnotes when they logically follow words, punctuation, or quotes, without including letters in the match.
+    // - The regex does not explicitly exclude numbers inside parentheses from matching; it focuses on ensuring that only the numbers are captured for formatting.
 
-        // Replace matched numbers with <sup>number</sup>
-        return text.replace(regex, (match) => `<sup>${match}</sup>`);
+    const regex = /(?<=\b[\w.,;:"'‘’“”]*)(\d+)/g;
+
+
+          // Replace matched numbers with <sup>number</sup>, correctly formatting them as footnotes
+          return text.replace(regex, (match) => `<sup>${match}</sup>`);
       }
-/*
-      // Example usage
-      const exampleText = "text is here5 etc6 txt2 is5 here and5 123213 numbrs9";
-      const formattedText = formatNumbers(exampleText);
-
-      console.log(formattedText);
-*/
       
+
+      /*
+        
+// Example usage
+const exampleText = "This is text5 and (1920) should not change but word88 and word99* should become footnotes, as should end-of-sentence99. or mid:sentence77: but not (123) or a number like 4).";
+const formattedText = formatNumbers(exampleText);
+
+console.log(formattedText);
+      */
       var pc = document.querySelector(".paragraph-container");
       showE.onclick = showEnglish;
       async function showEnglish() {
@@ -317,6 +468,9 @@
           if(pc) {
             pc.classList.add("english-active")
           }
+
+
+
           oldT = showE.textContent;
           showE.textContent = "Only hebrew"
           isEnglish = true;
@@ -331,8 +485,9 @@
           if(pc) {
             pc.classList.remove("english-active")
           }
-          var engs =Array.from(document.querySelectorAll(".english-div"))
-            engs.forEach(w=>w.remove());
+
+          var engs =Array.from(document.querySelectorAll(".english-p"))
+            engs.forEach(w=>w.classList.add("hidden"));
           isEnglish = false;
           showE.textContent = oldT
         }
@@ -340,48 +495,171 @@
 
 
       
+      async function translateParagraph(p, i, ar, docRef=null) {
+        
+        if(!docRef) docRef = getDocRef();
+
+        var tag = document.createElement("p")
+        tag.innerHTML = p.heb;
+        var txt = tag.textContent;
+
+        
+        var tran = await translateText(txt);
+        console.log("translated! ",tran);
+        translationProgress.textContent = "Translated it! With: "+ tran;
+        
+        ar[i].eng = tran;
+        await updateDoc(docRef, {
+          Maamar: ar
+        });
+
+        translationProgress.textContent = "Wrote to firestore!";
+        console.log("Wrote to firestore: ", ar, i);
+        await getRealtimeEnglish()
+      }
+
+
+      async function getAllDocumentIds(collectionPath) {
+        const collectionRef = collection(db, collectionPath);
+        const querySnapshot = await getDocs(collectionRef);
+        const documentIds = querySnapshot.docs.map(doc => doc.id);
+        return documentIds;
+      }
+
+      window.getAllDocumentIds = getAllDocumentIds;
+      window.translateEntireVolume = translateEntireVolume;
+      async function translateEntireVolume(volumeNumber) {
+        /*
+        var dr = await doc(db,"books","Meluket","TOC_VOL",volumeNumber);
+        var ds = await getDoc(dr);
+
+        if(ds.exists()) {
+            var b = await ds.data();
+            var bl = b.booklets;
+            console.log(b,bl, "getting volume")
+
+            bl.forEach(w=> {
+                w.contents.forEach(w => {
+
+                })
+            })
+        }*/
+        var docs = await getAllDocumentIds("books/Meluket/Maamarim")
+        var withNum = docs.filter(w=>w.includes(volumeNumber));
+        console.log("Doing vol:",volumeNumber+"_",withNum, docs)
+        for(var i = 0; i < withNum.length; i++) {
+          
+          var docID = withNum[i];
+          try {
+            var docRef = getDocRef(docID);
+            var doc = await getDoc(docRef);
+            var m = doc.get("Maamar");
+
+            console.log(
+              "Got the document reference:",
+              docRef,
+              "And the document:",
+              doc,
+              "And the Maamar array:",
+              m,
+              "for doc with ID:",
+              docID
+            )
+            for(var y = 0; y < m.length; y++) {
+              
+              console.log(
+                "Translating paragraph ",
+                y,
+                "from doc",
+                docID,
+                "with maamarim",
+                m,
+                "current paragprah:",
+                m[y]
+              
+              );
+
+              try {
+
+              
+                var cur = m[y];
+                await translateParagraph(cur, y, m, docRef);
+              } catch(e) {
+                console.log("Issue with",y,e)
+              }
+              console.log(
+                "Translated succesffuly the paragraph:",
+                y
+              );
+
+
+            }
+            console.log("Successfully did entire doc with ID:",docID)
+          } catch(e) {
+            console.log("Error for this doc:", docID,e)
+          }
+        }
+      }
+      transBA.onclick  = async () => {
+        if(!isAllowed) 
+          return alert("not authoriezd");
+
+        var ref = getDocRef();
+        var doc = await getDoc(ref);
+        var maamar = doc.get("Maamar");
+        var curPar = document.querySelector(".p-div.active")
+        var idx = parseInt(curPar.dataset.pIndex)
+        translationProgress.textContent = "Translating paragraph with idx "
+        + idx;
+        console.log("Translating paragrap:",idx,
+          "from ",
+          maamar
+        )
+        var el = maamar[idx];
+        if(!el) {
+          return console.log("Paragpah not found")
+        }
+        await translateParagraph(el, idx, maamar)
+      };
+      
       transB.onclick = async () => {
         if(!isAllowed) {
           return alert("You're not allowed!")
         }
 
-        var english = "";
-
+        
         var total = null;
-        var docRef = getDocRef();
-        await traverseMainHebrew(async (p, i, ar) => {
+        
+
+        
+
+        await traverseMaamar(async (p, i, ar) => {
+          
           total = ar.length;
-
-          var txt = p.textContent;
-
           var percent = i/total;
           var percentText = Math.floor(percent * 100)
-          console.log("Translatin..",i,total, i / total, txt);
+          console.log("Translatin..",i,total, i / total, txt, p, ar);
           translationProgress.textContent="Translating paragraph #"+(i+1)+ 
           " out of "
           + total + 
           " AKA " + (percentText) + "% complete."
-          var tran = await translateText(txt);
-          console.log("translated! ",tran);
-          translationProgress.textContent = "Translated it! With: "+ tran;
-          var tag = document.createElement("p");
-          tag.innerHTML = tran;
-          english += tag.outerHTML;
 
-          await updateDoc(docRef, {
-            English: english
-          });
+          
 
-          translationProgress.textContent = "Wrote to firestore!";
-          console.log("Wrote to firestore: ", english);
-          await getRealtimeEnglish()
+          
+
+          await translateParagraph(p, i, ar);
+          
         });
       };
 
-      async function traverseMainHebrew(callback) {
-        var pHeb = Array.from(document.querySelectorAll("p.heb"));
-        for(var i = 0; i < pHeb.length; i++) {
-          await callback(pHeb[i], i, pHeb)
+      async function traverseMaamar(callback) {
+        var dr = getDocRef();
+        var snap = await getDoc(dr);
+        var m = Array.from(snap.get("Maamar"));
+        
+        for(var i = 0; i < m.length; i++) {
+          await callback(m[i], i, m)
         }
       }
 
@@ -412,7 +690,7 @@
 
             return txt;
           } catch(e) {
-            console.log("NOPE!?", json)
+            console.log("NOPE!?", json, e)
             return null;
           }
           return txt;
@@ -426,27 +704,32 @@
         return decodeURIComponent((b=>b[b.length-1])(location.pathname.split("/")))
       }
 
-      function getDocRef() {
-        var pthId = getDocID();
+      function getDocRef(pthId = null) {
+        if(!pthId) pthId = getDocID();
         return  doc(db, 'books/Meluket/Maamarim/'+pthId);
       }
 
-
       function setEnglishToParagraphs(eng) {
+        var enP = Array.from(document.querySelectorAll(".english-p"))
+        enP.forEach(w => {
+          enP.classList.remove("hidden")
+        })
+
+        /*
         var divs = Array.from(document.querySelectorAll(".p-div"))
           .filter(w=>w.children[0].tagName == "P");
         var en = parseDoc(eng).filter(w=>w.textContent);
-        var englishDivs = Array.from(document.querySelectorAll("english-div"));
+        var englishDivs = Array.from(document.querySelectorAll(".english-p"));
         englishDivs.forEach(w => {
           w.parentNode.removeChild(w);
         });
         divs.forEach((d,i) => {
           var eeng = en[i];
           if(!eeng) return console.log("Not found!",i,d)
-          eeng.classList.add("english-div");
+          eeng.classList.add("english-p");
           setSupsForP(eeng);
           d.appendChild(eeng)
-        })
+        })*/
       }
 
       function setSupsForP(p) {
@@ -765,6 +1048,25 @@
       window.toggleDarkMode=toggleDarkMode;
 
 
+
+      var timeout = null;
+      function showToast(txt) {
+        var toast = document.getElementById('toast');
+        toast.textContent = txt;
+        toast.classList.remove('hide');
+        if(timeout === null) {
+          timeout = setTimeout(function() {
+            toast.classList.add('hide');
+          }, 3000); // Hide toast after 3 seconds
+        } else {
+          clearTimeout(timeout);
+          timeout = setTimeout(function() {
+            toast.classList.add('hide');
+          }, 3000); // Hide toast after 3 seconds
+        }
+      }
+
+      window.showToast = showToast;
     </script>
     
   </script>
