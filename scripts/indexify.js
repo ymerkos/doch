@@ -70,32 +70,75 @@ if(ds.exists()) {
 }
 
 
-function setContent(g, parent, reverse) {
-    const item = document.createElement('div');
-    item.classList.add('item');
+function setContent(g, parent, isSicha) {
+    if(!isSicha) {
+        const item = document.createElement('div');
+        item.classList.add('item');
 
-    const title = document.createElement('div');
-    title.classList.add('title');
-    title.textContent = g.title;
-    item.appendChild(title);
+        const title = document.createElement('div');
+        title.classList.add('title');
+        title.textContent = g.title;
+        item.appendChild(title);
 
-    const dottedLine = document.createElement('div');
-    dottedLine.classList.add('dotted-line');
-    item.appendChild(dottedLine);
+        const dottedLine = document.createElement('div');
+        dottedLine.classList.add('dotted-line');
+        item.appendChild(dottedLine);
 
-    const page = document.createElement('div');
-    page.classList.add('page');
-    page.textContent = g.page;
-    item.appendChild(page);
+        const page = document.createElement('div');
+        page.classList.add('page');
+        page.textContent = g.page;
+        item.appendChild(page);
 
-    parent.appendChild(item);
+        parent.appendChild(item);
 
-    var id = reverse ? g.page + "_" + VOLUME :
-        VOLUME+"_"+g.page;
-    // console.log("HI!",id,VOLUME,g.page)
-    item.onclick=() => {
-        location.href=url+id;
-    };
+        var id =
+            VOLUME+"_"+g.page;
+        // console.log("HI!",id,VOLUME,g.page)
+        item.onclick=() => {
+            location.href=url+id;
+        };
+    } else {
+        const divIndexItem = document.createElement('div');
+        divIndexItem.classList.add('index-item');
+        divIndexItem.onclick = function() {
+            location.href = '${href(w)}';
+        };
+
+        const divIndexHeader = document.createElement('div');
+        divIndexHeader.classList.add('index-header');
+        divIndexItem.appendChild(divIndexHeader);
+
+        const divIndexTitle = document.createElement('div');
+        divIndexTitle.classList.add('index-title');
+        divIndexTitle.textContent = g.title || g.Title || w;
+        divIndexHeader.appendChild(divIndexTitle);
+
+        const divIndexNumber = document.createElement('div');
+        divIndexNumber.classList.add('index-number');
+        divIndexNumber.textContent = g.page || "";
+        divIndexHeader.appendChild(divIndexNumber);
+
+        const divIndexLine = document.createElement('div');
+        divIndexLine.classList.add('index-line');
+        divIndexItem.appendChild(divIndexLine);
+
+        const divIndexContent = document.createElement('div');
+        divIndexContent.classList.add('index-content');
+        divIndexContent.textContent = g.summary || "";
+        if(g.summary)
+            divIndexItem.appendChild(divIndexContent);
+
+        // Append the created elements to the parent element
+        parent.appendChild(divIndexItem);
+
+        var id = g.page + "_" + VOLUME 
+        // console.log("HI!",id,VOLUME,g.page)
+        divIndexItem.onclick=() => {
+            location.href=url+id;
+        };
+    }
+
+    
 }
 
 function setMeluketBooklet(b, c) {

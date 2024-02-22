@@ -6,7 +6,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase
 import {
     getFirestore,
     getDoc,
-    doc
+    doc,
+    enableIndexedDbPersistence
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 var db = null;
 var sichaId = null;
@@ -16,6 +17,25 @@ var maamarL = 'סה"מ מלוקט'
 initializeApp(firebaseConfig);
 
 db = getFirestore();
+
+enableIndexedDbPersistence(db)
+  .then(r => {
+    console.log("offline persistence",r)
+  })
+  .catch((err) => {
+    console.log("Problem with offline persistence: ", err)
+    if (err.code === 'failed-precondition') {
+      // Multiple tabs open, persistence can only be enabled
+      // in one tab at a a time.
+      // ...
+    } else if (err.code === 'unimplemented') {
+      // The current browser does not support all of the
+      // features required to enable persistence
+      // ...
+    }
+  });
+
+
 
 var sichaId = getElementAfter("sicha");
 if(!sichaId) {

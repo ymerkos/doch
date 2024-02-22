@@ -10,7 +10,7 @@ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
 var isEditing = location.search == "?edit";
 window.isEditing = isEditing;
-if(isEditing) {
+
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
@@ -23,6 +23,40 @@ const googleProvider = new GoogleAuthProvider();
 var loginBtn = document.querySelector(".loginBtn");
 
 var isAllowed = false;
+await checkIfLoggedin();
+async function checkIfLoggedin() {
+  var user = auth.currentUser;
+  console.log("hi!");
+
+    if (user) {
+      // User is signed in
+      isAllowed = await isAuthorized(user)
+      window.isAllowed = isAllowed;
+      window.activeUser = user;
+      console.log('User is signed in:', user, isAllowed);
+      loginBtn.innerText = "Log out";
+      loginBtn.onclick = signOutBtn;
+
+    } else {
+      // User is signed out
+      window.isAllowed = false;
+      loginBtn.innerText = "Log in";
+      loginBtn.onclick = signInGoogle;
+      console.log('User is signed out');
+    }
+
+    var logged = {
+      isAllowed,
+      user
+    }
+    // Create a custom event with some detail (data)
+    var changedAuth = new CustomEvent("awtsmoosAuth", {
+      detail: logged // You can pass any data you want in the detail property
+    });
+    return logged;
+}
+window.checkIfLoggedin = checkIfLoggedin;
+if(isEditing) {
 onAuthStateChanged(auth, async (user) => {
     console.log("hi!");
 
@@ -54,6 +88,10 @@ onAuthStateChanged(auth, async (user) => {
 
   });
 
+} else {
+  window.isAllowed = false;
+}
+
   
   loginBtn.onclick = signInGoogle;
 
@@ -66,20 +104,23 @@ function signOutBtn() {
     });
 }
 
-function signInGoogle() {
+window.signOutBtn = signOutBtn;
+async function signInGoogle() {
 
     // Login
-    
-    signInWithPopup(auth, googleProvider)
-    .then((result) => {
-      const user = result.user;
-      console.log('Google Sign-In successful:', user);
-    })
-    .catch((error) => {
+    try {
+        var result = await signInWithPopup(auth, googleProvider)
+        const user = result.user;
+        console.log('Google Sign-In successful:', user);
+        return result;
+    } catch(e) {
       console.error('Google Sign-In error:', error.message);
-    });
+      return null;
+    }
     
 }
+
+window.signInGoogle = signInGoogle;
 
 async function isAuthorized (user) {
     if (user) {
@@ -96,6 +137,3 @@ async function isAuthorized (user) {
         resolve(false); // No user signed in
     }
   };
-} else {
-  window.isAllowed = false;
-}

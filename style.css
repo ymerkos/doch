@@ -37,17 +37,17 @@ a {
 /* Define a custom font */
 @font-face {
   font-family: 'hei'; /* Choose a name for your font family */
-  src: url('/resources/fonts/HEILIG.OTF') format('opentype'); 
+  src: url('/static/fonts/HEILIG.OTF') format('opentype'); 
 }
 
 @font-face {
   font-family: 'miriam'; /* Choose a name for your font family */
-  src: url('https://firebasestorage.googleapis.com/v0/b/awtsfaria.appspot.com/o/mriam.ttf?alt=media&token=f3074e8e-af86-498d-9b6a-4d5e46100464') format('truetype'); 
+  src: url('/static/fonts/mriam.ttf') format('truetype'); 
 }
 
 @font-face {
   font-family: 'fb'; /* Choose a name for your font family */
-  src: url('https://firebasestorage.googleapis.com/v0/b/awtsfaria.appspot.com/o/pft_frank.ttf?alt=media&token=6c8c3c3c-c7b9-4f83-a95d-bf74391de018') format('truetype'); 
+  src: url('/static/fonts/pft_frank.ttf') format('truetype'); 
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@100..900&display=swap');
@@ -878,4 +878,44 @@ body {
 .hide {
   opacity: 0;
   pointer-events: none;
+}
+
+
+
+/**right click menu**/
+
+#right-click-menu {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 5px 0;
+}
+
+#right-click-menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#right-click-menu ul li {
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+#right-click-menu ul li:hover {
+  background: #f0f0f0;
+}
+
+#right-click-menu ul li i {
+  margin-right: 5px;
+}
+
+#errorReportD {
+  position:absolute;
+  bottom:50px;
+  left:15px;
+  background:cyan;
+  padding:5px;
 }

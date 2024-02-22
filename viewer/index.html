@@ -3,6 +3,8 @@
 <html>
   <head>
     <meta charset="utf-8">
+    
+    <script src="/scripts/installEved.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
     <link rel="stylesheet" href="/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -257,6 +259,13 @@
                       <div class="loader"></div>
                     </div>
                 </div>
+                
+              <div id="errorReportD" class="hidden">
+                <h4>Text</h4>
+                <button id="errorReport">Report</button>
+                <button id="errorCancel">Cancel</button>
+              </div>
+              
             </div>
         </div>
     </div>
@@ -264,6 +273,15 @@
     <div id="toast" class="hide">
       Toast Notification
     </div>
+
+    <div id="right-click-menu">
+      <ul>
+        <li id="copy">&#128203; Copy Text</li>
+        <li id="print">&#128438; Print</li>
+        <li id="reportErrorBtn">&#9888; Report Error</li>
+      </ul>
+    </div>
+
     <script src="/viewer/viewerhighlight.js"></script>
     <script src="/viewer/sichaLoading.js" type="module"></script>
     
@@ -271,12 +289,143 @@
     <script src="/viewer/settingsMenu.js" type="module"></script>
     <script type="module">
       
+      async function continueIfLoggedIn() {
+        var loggedIn = await checkIfLoggedin();
+        console.log(loggedIn, "testing")
+        var usr;
+        if(!loggedIn.user || !loggedIn.user.auth.currentUser) {
+          console.log("sing in google")
+          usr = await signInGoogle();
+          console.log("Checking",usr)
+          console.log(usr)
+          if(!usr || !usr.auth.currentUser) {
+            return await continueIfLoggedIn();
+          }
+        }
+        
+
+        return true;
+      }
+      var curParIdx = null;
+      var initialHTML = null;
+      
+      var errorClicked = false;
+      reportErrorBtn.onclick = async () => {
+        var signed = await continueIfLoggedIn()
+        console.log("signed in",signed)
+        if(signed) {
+          
+          if(curParIdx) {
+            errorReportD.classList.remove("hidden");
+            console.log("Editing",curParIdx)
+            var el  =curParIdx.el;
+            if(el) {
+              initialHTML = el.innerHTML;
+              makeElementEditable(el)
+            }
+          }
+
+        }
+      };
+
+      errorReport.onclick = async () => {
+        if(curParIdx) {
+          var el  =curParIdx.el;
+            if(el) {
+              var html = saveEditableElement(el)
+              showToast("Successfully reported edits!");
+              errorReportD.classList.add("hidden")
+              curParIdx = null;
+              errorClicked = false;
+              if(initialHTML) {
+                el.innerHTML = initialHTML;
+                initialHTML = null;
+              }
+            }
+        }
+      }
+
+
+      errorCancel.onclick = () => {
+        if(curParIdx) {
+          var el  =curParIdx.el;
+            if(el) {
+              saveEditableElement(el)
+              if(initialHTML) {
+                el.innerHTML = initialHTML;
+                initialHTML = null;
+              }
+              errorReportD.classList.add("hidden");
+              curParIdx = null;
+              errorClicked = false;
+            }
+        }
+      }
+
+
+      function saveEditableElement(el) {
+        var html = el.textContent;
+        el.contentEditable = false;
+        el.innerHTML = html;
+        return html;
+      }
+
+      function makeElementEditable(el) {
+        var html = el.innerHTML;
+        el.contentEditable = true;
+        el.textContent = html;
+        return html;
+      }
+
+      document.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+        
+        var rightClickMenu = document.getElementById('right-click-menu');
+        var idx = findParentWithDatasetProperty(e.target, "pIndex")
+        //e.target.dataset.pIndex;
+        //console.log("Index!",idx,e.target,e.target.dataset)
+        if(idx) {
+          
+          curParIdx = {
+            idx: idx.value,
+            el: e.target
+          };
+          errorClicked = true;
+          rightClickMenu.style.display = 'block';
+          rightClickMenu.style.left = e.pageX + 'px';
+          rightClickMenu.style.top = e.pageY + 'px';
+          return;
+        }
+        rightClickMenu.style.display = "none"
+        
+      });
+
+      document.addEventListener('click', function (e) {
+        var rightClickMenu = document.getElementById('right-click-menu');
+        rightClickMenu.style.display = 'none';
+        if(!errorClicked)
+          curParIdx  = null;
+      });
+
       if(isEditing) {
         var lg = document.querySelector(".loginBtn")
         if(lg) {
           lg.classList.remove("hidden")
         }
       }
+
+      function findParentWithDatasetProperty(element, propertyName) {
+        let parent = element.parentElement;
+
+        while (parent) {
+            if (parent.dataset.hasOwnProperty(propertyName)) {
+                return { element: parent, value: parent.dataset[propertyName] };
+            }
+            parent = parent.parentElement;
+        }
+
+        return null;
+    }
 
 
       // Add an event listener for the custom event on the window object
@@ -381,12 +530,24 @@
           }
       }
 
+      document.querySelectorAll(".paragraph-container, .paragraph-content")
+      .forEach(parent => {
+        // Add blur event listener to the parent
+        parent.addEventListener('click', function(event) {  
+        /*  if (event.target !== child) {
+            // Trigger blur event if the click is not on the child element
+            child.blur();
+          }*/
+        });
+      })
+      
       function setupClickEvents() {
         Array.from(document.querySelectorAll(".english-p"))
         .forEach(w=> {
           setEvent(w,"eng")
         });
 
+        
         Array.from(document.querySelectorAll(".heb"))
         .forEach(w=> {
           setEvent(w,"heb")
@@ -396,6 +557,7 @@
         .forEach(w=> {
           setEvent(w,"heb")
         })
+        
         //paragraph-container maamer
       }
       import firebaseConfig from "/config.js"

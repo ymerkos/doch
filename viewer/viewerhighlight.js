@@ -7,30 +7,39 @@ var lastPar = null;
 
 var curParagraph = null;
 var lastParagraph = null;
+
 function highlightParagraph() {
-    
-  //  console.log(2,paragraphs,paragraphContainer)
     let topParagraph = null;
-    let minOffset = Number.MAX_SAFE_INTEGER;
-    var parOffset = 150
-    paragraphs.forEach(paragraph => {
-        const offset = Math.abs((paragraph.offsetTop  - parOffset) - paragraphContainer.scrollTop)
-        if (offset < minOffset) {
-            minOffset = offset;
+
+    // Get container dimensions
+    const containerTop = paragraphContainer.scrollTop + (paragraphContainer.offsetHeight / 4); // Adjusted container top boundary
+    const containerBottom = containerTop + paragraphContainer.offsetHeight - (paragraphContainer.offsetHeight / 4); // Adjusted container bottom boundary
+
+    // Find the first visible paragraph
+    for (let i = 0; i < paragraphs.length; i++) {
+        const paragraph = paragraphs[i];
+        const paragraphTop = paragraph.offsetTop;
+        const paragraphBottom = paragraphTop + paragraph.offsetHeight;
+
+        // Check if paragraph is within the adjusted viewport boundaries
+        if (paragraphTop <= containerBottom && paragraphBottom >= containerTop) {
             topParagraph = paragraph;
+            break;
         }
-    });
+    }
 
     if (topParagraph) {
         paragraphs.forEach(p => p.classList.remove('active'));
         topParagraph.classList.add('active');
         curParagraph = topParagraph;
-        if(lastParagraph != curParagraph)
+        if (lastParagraph !== curParagraph)
             notificationalism(topParagraph);
         lastParagraph = curParagraph;
-        lastPar =topParagraph
+        lastPar = topParagraph;
     }
 }
+
+
 
 function notificationalism(p) {
     var n = window.notes;
