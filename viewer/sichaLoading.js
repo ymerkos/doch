@@ -53,10 +53,15 @@ async function getMaamar() {
             var data = {
                 Maamar:sichaDoc.get("Maamar"),
                 Volume:sichaDoc.get("Volume"),
+                Kitzur: sichaDoc.get("Kitzur"),
                 Footnotes:sichaDoc.get("Footnotes"),
                 Title:sichaDoc.get("Title")
             }
-            console.log("maamar found: ", data);
+            
+
+            window.curVolume  = data.Volume;
+            window.isMaamar = true;
+            console.log("maamar found: ", data,curVolume);
             setTextToDoc(data, false); // Returns the document data
         } else {
             console.log("No such document!");
@@ -85,7 +90,11 @@ async function getSicha() {
                 Footnotes:sichaDoc.get("Footnotes"),
                 Title:sichaDoc.get("Title")
             }
-            console.log("Sicha found: ", data);
+            
+
+            window.curVolume  = data.Volume;
+            
+            console.log("Sicha found: ", data,window.curVolume);
             setTextToDoc(data, true); // Returns the document data
         } else {
             console.log("No such document!");
@@ -119,6 +128,12 @@ function setTextToDoc(sicha, isSicha = false) {
     }
 
 
+    
+    if(window.Kitzur) {
+        console.log("Kitzur",sicha,sicha.Kitzur)
+        if(sicha.Kitzur)
+        Kitzur.value = sicha.Kitzur
+    }
     if(!maamar && mt) {
         if(window.LOLmt) {
             LOLmt.value=mt;
@@ -143,7 +158,6 @@ function setTextToDoc(sicha, isSicha = false) {
 
         var vol = sicha.Volume;
         if(vol) {
-            
             
             volumify(vol,isSicha)
         }
@@ -187,6 +201,13 @@ function setTextToDoc(sicha, isSicha = false) {
                 p.appendChild(par)
             }
         });
+
+        var vol = sicha.Volume;
+        if(vol) {
+            
+            
+            volumify(vol,isSicha)
+        }
 
         setSupsForP(p)
         callEvents();

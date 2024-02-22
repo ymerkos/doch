@@ -28,7 +28,7 @@ const loadKeysInDocument = async (documentPath) => {
         if (documentSnapshot.exists()) {
         const data = documentSnapshot.data();
 
-        console.log(' the document:', data);
+       // console.log(' the document:', data);
         return data;
         } else {
         console.log('Document does not exist.');
@@ -46,7 +46,7 @@ async function getKeys(path) {
 
 async function getAllDocuments(nm,field="Title") {
     const pathSegments = nm.split('/').filter(Boolean);
-    console.log(pathSegments);
+   // console.log(pathSegments);
     var titles = [];
     try {
         
@@ -57,7 +57,7 @@ async function getAllDocuments(nm,field="Title") {
         querySnapshot.forEach((doc) => {
         const title = doc.get('Title');
         titles.push(title);
-        console.log('Title:', title);
+       // console.log('Title:', title);
       });
       
     } catch (error) {
@@ -67,12 +67,12 @@ async function getAllDocuments(nm,field="Title") {
   }
 window.getAllDocuments=getAllDocuments;
 
-console.log("Getkeys?",getKeys,getAllDocuments)
+//console.log("Getkeys?",getKeys,getAllDocuments)
 function setThings(data, href) {
     var k = Object.keys(data);
     data.length = k.length;
     data = Array.from(data);
-    console.log(data);
+   // console.log(data);
     var c = document.querySelector(".index-container");
 
     if (!c) {
@@ -97,7 +97,7 @@ function setThings(data, href) {
         )
         .join("");
 
-    console.log("mapped", c, mapped);
+  //  console.log("mapped", c, mapped);
     c.innerHTML = mapped;
 }
 //old script

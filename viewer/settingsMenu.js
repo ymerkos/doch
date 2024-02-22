@@ -1,14 +1,35 @@
 //B"H
 
+import indexer from "/scripts/indexify.js";
 const expanded = document.getElementById('expanded');
 const toggleButtons = document.querySelectorAll('.right-box .toggle-button');
 let currentState = ''; // Initialize the state variable
 
 var clickedAtAll=false;
 var old;
+
+var indexHTML = null;
+async function getIndexHTML(holder) {
+    if(!holder) holder = document.createElement("div");
+    await indexer({
+        htmlEl: holder,
+        volumeNumber: window.curVolume,
+        url: window.isMaamar ? "/viewer/meluket/" :`/viewer/sicha/`,
+        
+        databasePath: [
+            "books",
+            window.isMaamar ? "Meluket" : 
+            "Likkutei Sichos",
+            "TOC_VOL"
+        ]
+    })
+    console.log(window.gg=holder,holder.innerHTML)
+    return holder.innerHTML;
+}
+
 toggleButtons.forEach(button => {
 
-button.addEventListener('click', () => {
+button.addEventListener('click', async () => {
 
     var t = document.querySelector("#work_title");
    
@@ -27,78 +48,24 @@ button.addEventListener('click', () => {
             
             t.textContent = "Table of Contents"
         }
-    expanded.innerHTML = /*html*/`
-        <!-- Content for the 'index' state -->
-        <!-- Add your index content here -->
-        <div class="index-body">
-        
-        <div class="index-container">
-          <div class="index title">
-          </div>
-            <div class="index-item">
-                <div class="index-header">
-                    <div class="index-title">משפטים ב</div>
-                    <div class="index-number">148</div>
-                </div>
-                <div class="index-line"></div>
-                <div class="index-content">
-                    משמן של היתידות מוכח שהיו יכולים לתקוע אותם בארץ, אך רש"י אומר "איני יודע" האם תקעו אותם בפועל. "ואומר אני ששמן מוכיח עליהם", שמזה שהתורה קוראת אותם בשם יתידות משמע שהיו תקועים – דזהו ענין היתד לתקעו. ב' אופנים בהשראת השכינה בקרקע המדבר.
-                </div>
-            </div>
-            <div class="index-item">
-                <div class="index-header">
-                    <div class="index-title">משפטים ב</div>
-                    <div class="index-number">148</div>
-                </div>
-                <div class="index-line"></div>
-                <div class="index-content">
-                    משמן של היתידות מוכח שהיו יכולים לתקוע אותם בארץ, אך רש"י אומר "איני יודע" האם תקעו אותם בפועל. "ואומר אני ששמן מוכיח עליהם", שמזה שהתורה קוראת אותם בשם יתידות משמע שהיו תקועים – דזהו ענין היתד לתקעו. ב' אופנים בהשראת השכינה בקרקע המדבר.
-                </div>
-            </div>
-            <div class="index-item">
-                <div class="index-header">
-                    <div class="index-title">משפטים ב</div>
-                    <div class="index-number">148</div>
-                </div>
-                <div class="index-line"></div>
-                <div class="index-content">
-                    משמן של היתידות מוכח שהיו יכולים לתקוע אותם בארץ, אך רש"י אומר "איני יודע" האם תקעו אותם בפועל. "ואומר אני ששמן מוכיח עליהם", שמזה שהתורה קוראת אותם בשם יתידות משמע שהיו תקועים – דזהו ענין היתד לתקעו. ב' אופנים בהשראת השכינה בקרקע המדבר.
-                </div>
-            </div>
-            <div class="index-item">
-                <div class="index-header">
-                    <div class="index-title">משפטים ב</div>
-                    <div class="index-number">148</div>
-                </div>
-                <div class="index-line"></div>
-                <div class="index-content">
-                    משמן של היתידות מוכח שהיו יכולים לתקוע אותם בארץ, אך רש"י אומר "איני יודע" האם תקעו אותם בפועל. "ואומר אני ששמן מוכיח עליהם", שמזה שהתורה קוראת אותם בשם יתידות משמע שהיו תקועים – דזהו ענין היתד לתקעו. ב' אופנים בהשראת השכינה בקרקע המדבר.
-                </div>
-            </div>
-            <div class="index-item">
-                <div class="index-header">
-                    <div class="index-title">משפטים ב</div>
-                    <div class="index-number">148</div>
-                </div>
-                <div class="index-line"></div>
-                <div class="index-content">
-                    משמן של היתידות מוכח שהיו יכולים לתקוע אותם בארץ, אך רש"י אומר "איני יודע" האם תקעו אותם בפועל. "ואומר אני ששמן מוכיח עליהם", שמזה שהתורה קוראת אותם בשם יתידות משמע שהיו תקועים – דזהו ענין היתד לתקעו. ב' אופנים בהשראת השכינה בקרקע המדבר.
-                </div>
-            </div>
-            <div class="index-item">
-                <div class="index-header">
-                    <div class="index-title">משפטים ב</div>
-                    <div class="index-number">148</div>
-                </div>
-                <div class="index-line"></div>
-                <div class="index-content">
-                    משמן של היתידות מוכח שהיו יכולים לתקוע אותם בארץ, אך רש"י אומר "איני יודע" האם תקעו אותם בפועל. "ואומר אני ששמן מוכיח עליהם", שמזה שהתורה קוראת אותם בשם יתידות משמע שהיו תקועים – דזהו ענין היתד לתקעו. ב' אופנים בהשראת השכינה בקרקע המדבר.
-                </div>
-            </div>
-        </div>
-        </div>
-    </div>
-    `;
+ 
+
+    
+    expanded.innerHTML = ""
+
+    var idxb = document.createElement("div");
+    expanded.appendChild(idxb)
+    idxb.className = "index-body";
+
+    var idxc = document.createElement("div");
+    idxc.className="index-container container";
+    idxb.appendChild(idxc);
+    
+    await getIndexHTML(idxc);
+    
+
+
+//        expanded.innerHTML = indexD.innerHTML;
     } else if (newState === 'settings') {
         if(t) {
             t.textContent = "Settings"

@@ -169,25 +169,27 @@
                             <div class="form-row horizontal-row">
                               <!-- <input type="number" name="volume" placeholder="Volume" class="form-item" >
                                 <input type="number" name="page_number" placeholder="Page Number" class="form-item" >-->
-                                <input type="text" name="parsha" placeholder="Parsha/Special Days" class="form-item" style="flex: 3;" >
+                               <!-- <input type="text" name="parsha" placeholder="Parsha/Special Days" class="form-item" style="flex: 3;" >-->
                             </div>
 
                             <!-- Second Row -->
-                            <div class="form-row horizontal-row">
+                           <!-- <div class="form-row horizontal-row">
                                 <input type="number" name="sicha_num" placeholder="Sicha Num" class="form-item" >
                                 <input type="text" name="Title" placeholder="Title" class="form-item" style="flex: 3;" >
-                            </div>
+                            </div>-->
 
                             <!-- Remaining Rows -->
                             <!--
                             <div class="form-row">
                                 <textarea name="description" placeholder="Description" rows="4" class="form-item" ></textarea>
                             </div>
-
-                            <div class="form-row">
-                                <textarea name="summary" placeholder="Summary" rows="4" class="form-item" ></textarea>
-                            </div>
                             -->
+                            <div class="form-row">
+                                <textarea name="Kitzur" id="Kitzur" placeholder="Kitzur" rows="4" class="form-item" ></textarea>
+                            </div>
+                            
+
+                            <!--
                             <div class="form-row">
                               <textarea id="EnglishContent" name="English" placeholder="English" rows="6" class="form-item" ></textarea>
                           </div>
@@ -198,6 +200,7 @@
                             <div class="form-row">
                                 <textarea onpaste="handleFPaste(event)" name="Footnotes" id="LOLfn" placeholder="Footnotes" rows="4" class="form-item" ></textarea>
                             </div>
+                            -->
 
                             <!-- Submit Button -->
                             <div class="form-row">
@@ -215,6 +218,10 @@
                       <div class="editSecrets hidden">
                         <button id="transB">Translate with AI</button>
                         <button id="transBA">Translate active paragraph</button>
+                        <br>
+                        <input type="checkbox" id="isOld"><label for="isOld">
+                          Use "Older" version?
+                        </label>
                       </div>
                       <div class="translationProgress" id="translationProgress"></div>
                     </div>
@@ -261,7 +268,7 @@
     <script src="/viewer/sichaLoading.js" type="module"></script>
     
     <script src="/scripts/login.js" type="module"></script>
-    <script src="/viewer/settingsMenu.js"></script>
+    <script src="/viewer/settingsMenu.js" type="module"></script>
     <script type="module">
       
       if(isEditing) {
@@ -276,7 +283,7 @@
       window.addEventListener("awtsmoosAuth", function(e) {
         
         var ed = Array.from(document.querySelectorAll(".editSecrets"))
-        console.log("auth changed!", e.detail,ed); // Access the passed data through e.detail
+        //console.log("auth changed!", e.detail,ed); // Access the passed data through e.detail
         var isa = e.detail.isAllowed;
         if(isa) {
           showToast("You are authorized and logged in")
@@ -438,19 +445,99 @@
 
       window.formatNumbers = formatNumbers;
       function formatNumbers(text) {
-    // Regex explanation:
-    // - `(?<=\b[\w.,;:"'‘’“”]*)(\d+)`: 
-    //   - `(?<=\b[\w.,;:"'‘’“”]*)`: A positive lookbehind that checks for word boundaries followed by any combination of word characters or specified punctuation marks, including both straight and curly quotes. It ensures that the digits come after these characters without capturing them.
-    //   - `(\d+)`: Captures one or more digits.
-    // - The lookbehind ensures that numbers are formatted as footnotes when they logically follow words, punctuation, or quotes, without including letters in the match.
-    // - The regex does not explicitly exclude numbers inside parentheses from matching; it focuses on ensuring that only the numbers are captured for formatting.
+        /*
+          (?:\b[\w.,;:"'‘’“”]|(?<=\()): This part captures either a word character or a punctuation character preceded
+          
+          by a word boundary (\b) or an 
+          opening parenthesis ((?<=\()).
+           The ?: at the beginning makes 
+           it a non-capturing group, as we're 
+           only using it for matching purposes, 
+           not for capturing.
 
-    const regex = /(?<=\b[\w.,;:"'‘’“”]*)(\d+)/g;
+          (\d+): This part captures one or more digits.
+
+          (?![^()]*\)): 
+          The negative lookahead assertion 
+          ensures that the captured number is
+          not followed by a closing parenthesis
+            without an opening parenthesis preceding it.
+        */
+       // const regex = /(?:[a-zA-Z.,:;'"`?]|(?<=[a-zA-Z.,:;'"`?]\())\b(\d+)\b(?![^\s"'\])])/g;
 
 
-          // Replace matched numbers with <sup>number</sup>, correctly formatting them as footnotes
-          return text.replace(regex, (match) => `<sup>${match}</sup>`);
+
+
+
+         const replacedText = text//surroundNumbersWithSup(text)
+         //text.replace(regex, '<sup>$1</sup>');
+
+         return replacedText
       }
+      
+      const punctuation = ' \t\n\r\v\f.,\'";?!()[]{}:';
+      function surroundNumbersWithSup(text) {
+        
+        const words = [];
+        let currentWord = '';
+        
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            const isPunctuation = punctuation.includes(char);
+            
+            if (isPunctuation) {
+                // If it's a punctuation character, process the current word
+                if (currentWord !== '') {
+                    words.push(processWord(currentWord));
+                    currentWord = '';
+                }
+                // Append the punctuation character as a separate word
+                words.push(char);
+            } else {
+                // Otherwise, add the character to the current word
+                currentWord += char;
+            }
+        }
+        
+        // Process the last word if it exists
+        if (currentWord !== '') {
+            words.push(processWord(currentWord));
+        }
+        
+        return words.join('');
+    }
+
+    function processWord(word) {
+        let cleanedWord = '';
+        let numStart = -1;
+        let numEnd = -1;
+        
+        for (let i = 0; i < word.length; i++) {
+            const char = word[i];
+            
+            if (!isNaN(char) && (i === 0 || punctuation.includes(word[i - 1]))) {
+                if (numStart === -1) {
+                    numStart = i;
+                }
+                numEnd = i;
+            } else {
+                if (numStart !== -1) {
+                    // Found a number, surround it with <sup> tags
+                    cleanedWord += `<sup>${word.slice(numStart, numEnd + 1)}</sup>`;
+                    numStart = -1;
+                    numEnd = -1;
+                }
+                cleanedWord += char;
+            }
+        }
+        
+        // If there's a number at the end of the word
+        if (numStart !== -1) {
+            cleanedWord += `<sup>${word.slice(numStart, numEnd + 1)}</sup>`;
+        }
+        
+        return cleanedWord;
+    }
       
 
       /*
@@ -637,8 +724,10 @@ console.log(formattedText);
           
           total = ar.length;
           var percent = i/total;
-          var percentText = Math.floor(percent * 100)
-          console.log("Translatin..",i,total, i / total, txt, p, ar);
+          var percentText = Math.floor(percent * 100);
+
+          
+          console.log("Translatin..",i,total, i / total, p, ar);
           translationProgress.textContent="Translating paragraph #"+(i+1)+ 
           " out of "
           + total + 
@@ -674,7 +763,8 @@ console.log(formattedText);
               body: JSON.stringify({
                   toichen: `
                     ${txt}
-                  `
+                  `,
+                  old: isOld.checked
               })
                   
           })
@@ -814,20 +904,24 @@ console.log(formattedText);
         const documentRef = doc(db, documentPath);
 
         var nd = {
-          Main_text:mt,
-          Footnotes:ft
+          /*Main_text:mt,
+          Footnotes:ft*/
+          Kitzur: formData.Kitzur
         }
 
+        /*
         if(EnglishContent.value) {
           nd.English = EnglishContent.value;
-        }
+        }*/
+
 
         try {
           await updateDoc(documentRef, nd)
-          
+          showToast("Updated document")
           // Log form data as JSON to the console
           console.log(JSON.stringify(formData, null, 2),window.h=formData,nd,"DID?",documentPath,vol);
         } catch(e) {
+          showToast("Problem updating. check console")
           console.log("HI?",e)
         }
       });
