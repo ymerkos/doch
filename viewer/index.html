@@ -262,6 +262,9 @@
                 
               <div id="errorReportD" class="hidden">
                 <h4>Text</h4>
+                <button id="mBold">Bold</button>
+                
+                <button id="mSup">Sup</button>
                 <button id="errorReport">Report</button>
                 <button id="errorCancel">Cancel</button>
               </div>
@@ -282,13 +285,152 @@
       </ul>
     </div>
 
+    <script src="/scripts/login.js" type="module"></script>
     <script src="/viewer/viewerhighlight.js"></script>
     <script src="/viewer/sichaLoading.js" type="module"></script>
     
-    <script src="/scripts/login.js" type="module"></script>
     <script src="/viewer/settingsMenu.js" type="module"></script>
     <script type="module">
       
+
+      function submitEdit({
+        paragraph_num,
+        lang,
+        edited_text
+      }) {
+        return new Promise((r,j) => {
+            //B"H
+                // Define the URL of your Cloud Function
+                const cloudFunctionURL = 'https://submiteditsuggestion-2q5fj4mnha-uc.a.run.app';
+
+
+        var [
+          type,
+          id
+        ] = location.pathname.split("/").slice(-2);
+        type = type == "meluket" ? "maamar" : "sicha";
+
+        // Sample data to be sent in the request body
+        const requestData = {
+            edited_text,
+            paragraph_num,
+            id,
+            lang,
+            type
+        };
+
+        // Options for the fetch request
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                
+                // Add authentication token if needed
+                'Authorization': user.accessToken
+            },
+            body: JSON.stringify(requestData)
+        };
+
+        // Send the fetch request to the Cloud Function
+        fetch(cloudFunctionURL, requestOptions)
+            .then(response => {
+                
+                return response.json();
+            })
+            .then(data => {
+                console.log('Edit suggestion submitted successfully:', data);
+                r(data)
+            })
+            .catch(error => {
+                console.error('Error submitting edit suggestion:', error);
+                j(error)
+            });
+        })
+       
+      }
+
+      mBold.onclick = toggleBold;
+      mSup.onclick = toggleSuperscript;
+
+      addEventListener("keypress", e => {
+        // Check if Ctrl key is pressed along with B or M key
+        if (e.ctrlKey && (e.key === 'b' || e.key === 'B')) {
+            // Prevent the default browser behavior
+            e.preventDefault();
+            // Toggle bold
+            toggleBold();
+        } else if (e.ctrlKey && (e.key === 'm' || e.key === 'M')) {
+            // Prevent the default browser behavior
+            e.preventDefault();
+            // Toggle superscript
+            toggleSuperscript();
+        }
+    });
+      function toggleSuperscript() {
+        // Get the selected text
+        let selection = window.getSelection();
+        let selectedText = selection.toString();
+
+        // Check if there is a selected text
+        if (selectedText) {
+            // Create a range based on the selection
+            let range = selection.getRangeAt(0);
+
+            // Check if the selected text is already in superscript
+            let isSuperscript = range.commonAncestorContainer.parentNode.nodeName === 'SUP';
+
+            // If the text is already in superscript, remove the <sup> tags
+            if (isSuperscript) {
+                // Get the parent element (which should be <sup>)
+                let superscriptElement = range.commonAncestorContainer.parentNode;
+
+                // Replace the <sup> element with its children (i.e., the text nodes)
+                while (superscriptElement.firstChild) {
+                    superscriptElement.parentNode.insertBefore(superscriptElement.firstChild, superscriptElement);
+                }
+                superscriptElement.parentNode.removeChild(superscriptElement);
+            } else {
+                // If the text is not in superscript, wrap it with <sup> tags
+                let superscriptElement = document.createElement('sup');
+                superscriptElement.textContent = selectedText;
+                range.deleteContents();
+                range.insertNode(superscriptElement);
+            }
+        }
+    }
+      function toggleBold() {
+        // Get the selected text
+        let selection = window.getSelection();
+        let selectedText = selection.toString();
+
+        // Check if there is a selected text
+        if (selectedText) {
+            // Create a range based on the selection
+            let range = selection.getRangeAt(0);
+
+            // Check if the selected text is already bold
+            let isBold = range.commonAncestorContainer.parentNode.nodeName === 'B';
+
+            // If the text is already bold, remove the <b> tags
+            if (isBold) {
+                // Get the parent element (which should be <b>)
+                let boldElement = range.commonAncestorContainer.parentNode;
+
+                // Replace the <b> element with its children (i.e., the text nodes)
+                while (boldElement.firstChild) {
+                    boldElement.parentNode.insertBefore(boldElement.firstChild, boldElement);
+                }
+                boldElement.parentNode.removeChild(boldElement);
+            } else {
+                // If the text is not bold, wrap it with <b> tags
+                let boldElement = document.createElement('b');
+                boldElement.textContent = selectedText;
+                range.deleteContents();
+                range.insertNode(boldElement);
+            }
+        }
+    }
+
       async function continueIfLoggedIn() {
         var loggedIn = await checkIfLoggedin();
         console.log(loggedIn, "testing")
@@ -332,13 +474,37 @@
         if(curParIdx) {
           var el  =curParIdx.el;
             if(el) {
-              var html = saveEditableElement(el)
-              showToast("Successfully reported edits!");
-              errorReportD.classList.add("hidden")
-              curParIdx = null;
-              errorClicked = false;
+              
               if(initialHTML) {
+                var oldR = errorReport.textContent;
+                errorReport.textContent = "Submitting.."
+                
+                showToast("Submitting");
+                try {
+                  
+                  var html = saveEditableElement(el)
+                  await submitEdit({
+                    paragraph_num:curParIdx.idx,
+                    lang: curParIdx.lang,
+                    edited_text: html
+                  });
+                  
+                  errorReport.textContent = "Submitted! Refreshing.."
+                  await getIt()
+                  
+                  showToast("Successfully reported edits!");
+                  
+                  initialHTML = null;
+                  errorReportD.classList.add("hidden")
+                  curParIdx = null;
+                  errorClicked = false;
+                  return
+                } catch(e) {
+                  console.log("Sbmit error",e)
+                  showToast("Problem submitting");
+                }
                 el.innerHTML = initialHTML;
+                
                 initialHTML = null;
               }
             }
@@ -364,16 +530,16 @@
 
 
       function saveEditableElement(el) {
-        var html = el.textContent;
+        var html = el.innerHTML;
         el.contentEditable = false;
-        el.innerHTML = html;
+       // el.innerHTML = html;
         return html;
       }
 
       function makeElementEditable(el) {
         var html = el.innerHTML;
         el.contentEditable = true;
-        el.textContent = html;
+      //  el.textContent = html;
         return html;
       }
 
@@ -384,11 +550,15 @@
         var idx = findParentWithDatasetProperty(e.target, "pIndex")
         //e.target.dataset.pIndex;
         //console.log("Index!",idx,e.target,e.target.dataset)
+
+
         if(idx) {
-          
+          var lang = e.target.classList.contains("heb") ? "heb" : "eng"
+          console.log(e.target,lang)
           curParIdx = {
             idx: idx.value,
-            el: e.target
+            el: e.target,
+            lang
           };
           errorClicked = true;
           rightClickMenu.style.display = 'block';

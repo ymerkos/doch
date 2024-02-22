@@ -53,6 +53,19 @@ a {
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@100..900&display=swap');
 
 
+.custom {
+  background:rgb(255 236 201)
+}
+
+
+.edited-notifier {
+  position: absolute;
+  top: -36px;
+  display: block;
+  padding: 10px;
+  background: cyan !important;
+}
+
 body,html {
   height: calc(100% - calc(var(---header-height) / 2));
 
@@ -176,7 +189,7 @@ background-color: #3D3D3D;
 color: #CFCFCF;
 }
 
-.viewer .right-box .paragraph-content .active{
+.viewer .right-box .paragraph-content .active :not(.custom){
   background-color:rgba(201, 201, 201, 0.084) !important;
 
 }
@@ -184,6 +197,7 @@ color: #CFCFCF;
 .viewer .right-box .paragraph-content .p-div {
   display:flex;
   max-width:500px;
+  position:relative;
   
   width: -webkit-fill-available;
 }

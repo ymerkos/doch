@@ -7,7 +7,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase
 import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged} 
 from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
+import { getFirestore, doc, getDoc, getDocs } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
 var isEditing = location.search == "?edit";
 window.isEditing = isEditing;
 
@@ -24,8 +24,11 @@ var loginBtn = document.querySelector(".loginBtn");
 
 var isAllowed = false;
 await checkIfLoggedin();
+
+window.checkIfLoggedin = checkIfLoggedin;
 async function checkIfLoggedin() {
   var user = auth.currentUser;
+  window.user = user;
   console.log("hi!");
 
     if (user) {

@@ -3,9 +3,19 @@
 import firebaseConfig from "../config.js"
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+
+
+import { getAuth, GoogleAuthProvider} 
+from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
 import {
     getFirestore,
     getDoc,
+    where,
+    query,
+    getDocs,
+
+    collection,
     doc,
     enableIndexedDbPersistence
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
@@ -14,8 +24,9 @@ var sichaId = null;
 
 var sichaL = "לקוטי שיחות"
 var maamarL = 'סה"מ מלוקט'
-initializeApp(firebaseConfig);
+var app = initializeApp(firebaseConfig);
 
+const auth = getAuth(app);
 db = getFirestore();
 
 enableIndexedDbPersistence(db)
@@ -36,26 +47,29 @@ enableIndexedDbPersistence(db)
   });
 
 
-
-var sichaId = getElementAfter("sicha");
-if(!sichaId) {
-    console.log("No sicha with that ID found");
-}
-
-if(sichaId)
-    getSicha();
-
-var maamId = getElementAfter("meluket")
-if(maamId) {
-    console.log("found mamar getting")
-    getMaamar()
-}
-
-async function getMaamar() {
-    if (!maamId) {
-        console.log("No Sicha ID provided");
-        return;
+async function getIt() {
+    
+    var sichaId = getElementAfter("sicha");
+    if(!sichaId) {
+        console.log("No sicha with that ID found");
     }
+
+    if(sichaId)
+        getSicha(sichaId);
+
+    var maamId = getElementAfter("meluket")
+    if(maamId) {
+        console.log("found mamar getting")
+        getMaamar(maamId)
+    }
+}
+
+await getIt();
+window.getIt = getIt;
+window.getMaamar = getMaamar;
+window.getSicha = getSicha;
+async function getMaamar(maamId) {
+   
     try {
         maamId = decodeURIComponent(maamId)
     } catch(e) {
@@ -81,6 +95,8 @@ async function getMaamar() {
 
             window.curVolume  = data.Volume;
             window.isMaamar = true;
+            var userParagraphs = await getUserParagraphs("maamar")
+            window.userParagraphs = userParagraphs;
             console.log("maamar found: ", data,curVolume);
             setTextToDoc(data, false); // Returns the document data
         } else {
@@ -90,7 +106,7 @@ async function getMaamar() {
         console.error("Error getting document: ", error);
     }
 }
-async function getSicha() {
+async function getSicha(sichaId) {
     if (!sichaId) {
         console.log("No Sicha ID provided");
         return;
@@ -113,7 +129,8 @@ async function getSicha() {
             
 
             window.curVolume  = data.Volume;
-            
+            var userParagraphs = await getUserParagraphs("sicha")
+            window.userParagraphs = userParagraphs;
             console.log("Sicha found: ", data,window.curVolume);
             setTextToDoc(data, true); // Returns the document data
         } else {
@@ -123,6 +140,50 @@ async function getSicha() {
         console.error("Error getting document: ", error);
     }
 }
+window.collection = collection;
+window.db=db;
+
+
+
+async function getUserParagraphs(type) {
+    console.log(auth)
+    if(auth.currentUser) {
+        var user = auth.currentUser
+        var uid = user.uid;
+        try {
+            // Construct the query with multiple filters
+            const q = query(
+                collection(db, 'edit_suggestions'), 
+                where('uid', '==', uid), 
+                where('type', '==', type)
+            );
+
+            console.log("Doing query", q, type, uid);
+
+            // Execute the query
+            const querySnapshot = await getDocs(q);
+
+            // Process the query results
+            var results = [];
+            querySnapshot.forEach(doc => {
+                
+                const entry = {};
+                // Store document data in the data object using document ID as key
+                entry.data = doc.data();
+                entry.id = doc.id;
+                results.push(entry)
+            });
+
+            // Return the data object containing paragraph data
+            return results;
+        } catch(error) {
+            console.error("Problem fetching:", error);
+            return null;
+        }
+    }
+    return null;
+}
+
 
 function setTextToDoc(sicha, isSicha = false) {
    
@@ -189,7 +250,8 @@ function setTextToDoc(sicha, isSicha = false) {
             console.log(maamar,"problem")
             return alert("Data is messed up")
         }
-        p.innerHTML = ""
+        p.innerHTML = "";
+        var userPars = userParagraphs || [];
         maamar.forEach((w, i) => {
             if(w.type == "header") {
                 var h2 = document.createElement("h2");
@@ -202,19 +264,38 @@ function setTextToDoc(sicha, isSicha = false) {
                 var par = document.createElement("div")
                 par.className = "p-div";
                 par.dataset.pIndex = i;
+                var num = findUserParagraph(userPars, {
+                    paragraph_num: i
+                });
+               
+
                 if(w.heb) {
                     
                     var paragHeb = document.createElement("p");
                     paragHeb.innerHTML = w.heb;
+                    
                     paragHeb.className = "heb"
+                    if(num) {
+                        if(num.data.lang == "heb") {
+                            paragHeb.classList.add("custom")
+                            paragHeb.innerHTML = num.data.edited_text;
+                        }
+                    }
                     par.appendChild(paragHeb)
                 }
 
                 if(w.eng) {
                     var engPar = document.createElement("p");
                     engPar.innerHTML = formatNumbers(w.eng);
-                    par.appendChild(engPar)
+                    
                     engPar.className = "english-p"
+                    if(num) {
+                        if(num.data.lang == "eng") {
+                            engPar.classList.add("custom")
+                            engPar.innerHTML = formatNumbers(num.data.edited_text);
+                        }
+                    }
+                    par.appendChild(engPar)
                     engPar.classList.add("hidden")
                 }
 
@@ -232,6 +313,12 @@ function setTextToDoc(sicha, isSicha = false) {
         setSupsForP(p)
         callEvents();
     }
+}
+
+function findUserParagraph(up, {
+    paragraph_num
+}) {
+    return up.find(w=> w.data.paragraph_num == paragraph_num)
 }
 
 function volumify(vol, isSicha) {
