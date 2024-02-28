@@ -108,7 +108,8 @@
     <div class="viewer page">
         <header class="header">
             <div class="left">
-              <div class="logo">Dach | דא״ח</div>
+              
+          <div class="logo"><a href="/">Dach | דא״ח</a></div>
               <!--<div class="menu-item">Community</div>
               <div class="menu-item">Texts</div>-->
             </div>
@@ -1428,15 +1429,25 @@ console.log(formattedText);
         if (darkModeButton) {
           darkModeButton.addEventListener('click', toggleDarkMode);
         }
+        if(localStorage.darkModeEnabled) {
+          setTimeout(() => {
+            
+          ///  toggleDarkMode();
+          }, 500)
+        }
       });
+
+
 
       function toggleDarkMode() {
         darkModeEnabled = true
         toggleMode()
+        localStorage.darkModeEnabled = true;
       }
       function toggleWhiteMode() {
         darkModeEnabled=false;
         toggleMode()
+        localStorage.darkModeEnabled = false;
       }
       function toggleMode() {
         console.log('Button clicked!'); // Check if this log is printed
