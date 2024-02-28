@@ -171,6 +171,7 @@ background-color: #3D3D3D;
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-bottom:365px;
 }
 
 .viewer .right-box sup:hover {
@@ -654,11 +655,15 @@ color: #CFCFCF;
   gap: 15px;
 }
 
-.header  .menu-btn {
+.menu-btn:hover {
+  cursor:pointer
+}
+ .menu-btn {
+  user-select:none;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 12px;
+  padding: 1px 12px;
   position: relative;
   background-color: #ffffff;
   border-radius: 6px;
@@ -821,6 +826,16 @@ body {
 
 }
 @media only screen and (max-width: 600px) {
+  .about-title {
+    color: gray;
+      font-family: sans-serif;
+      font-size: 8vw !important ;
+     
+      margin-top: 2px;
+      font-weight: bold ;
+      text-align: center;
+     
+    }
   body,html {
     user-select:none;
   }
@@ -932,4 +947,53 @@ body {
   left:15px;
   background:cyan;
   padding:5px;
+}
+
+
+
+.about-subtitle {
+  margin-top: 50px;
+color: black;
+  font-family: sans-serif;
+font-size: 15px;
+  font-weight: 600;
+  color: black;
+}
+
+.about-title {
+color: gray;
+  font-family: sans-serif;
+  font-size: 4vw;
+ 
+  margin-top: 2px;
+  font-weight: bold ;
+  text-align: center;
+ 
+}
+
+ 
+.home-content {
+display: flex;
+flex-direction: column;
+align-items: center;
+
+}
+
+.about-image {
+max-width: 53vw;
+  margin: 49px 0;
+}
+
+.about-image img {
+max-width: 100%;
+user-select:none;
+margin: 0 auto; /* Center the image horizontally */
+}
+
+
+
+.BH {
+  position:fixed;
+  right:15px;
+  top:15px;
 }

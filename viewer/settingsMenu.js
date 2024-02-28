@@ -1,10 +1,11 @@
 //B"H
 
 import indexer from "/scripts/indexify.js";
+var desktopHeight = 50;
 const expanded = document.getElementById('expanded');
 const toggleButtons = document.querySelectorAll('.right-box .toggle-button');
 let currentState = ''; // Initialize the state variable
-
+var newState
 var clickedAtAll=false;
 var old;
 
@@ -40,7 +41,7 @@ button.addEventListener('click', async () => {
     }
    }
     
-    const newState = button.id === 'indexButton' ? 'index' : 'settings';
+    newState = button.id === 'indexButton' ? 'index' : 'settings';
 
     // Set different content based on the state
     if (newState === 'index') {
@@ -63,7 +64,7 @@ button.addEventListener('click', async () => {
     
     await getIndexHTML(idxc);
     
-
+        idxc.dataset.menu = true;
 
 //        expanded.innerHTML = indexD.innerHTML;
     } else if (newState === 'settings') {
@@ -73,7 +74,7 @@ button.addEventListener('click', async () => {
     expanded.innerHTML = /*html*/`
         <!-- Content for the 'settings' state -->
         <!-- Add your settings content here -->
-        <div class="settings-parent">
+        <div class="settings-parent" data-menu="true">
         <div class="settings">
             <div class="settings-section font-size">
                 <div class="setting">
@@ -99,7 +100,7 @@ button.addEventListener('click', async () => {
     }
 
     // Toggle the height
-    expanded.style.height = currentState === newState ? '0' : (newState === 'settings' ? '20vh' : '70vh');
+    expanded.style.height = currentState === newState ? '0' : (newState === 'settings' ? '20vh' : `${desktopHeight}vh`);
     if(currentState === newState) {
         if(t) {
             t.textContent = old
@@ -115,6 +116,23 @@ expanded.onblur = () => {
 });
 
 
+addEventListener("click", e=> {
+
+    if (!e.target.closest('[data-menu="true"]')) {
+        var t = document.querySelector("#work_title");
+        // If not, execute the rest of your code here
+        // For example:
+        expanded.style.height = 0;
+        if(currentState === newState) {
+            if(t) {
+                t.textContent = old
+            }
+        }
+        console.log("Clicked outside the menu element or its children");
+    }
+});
+
+
 var tabs = Array.from(document.getElementsByClassName("tab"));
 var indicator = document.querySelector(".tab-indicator");
 var contents = document.getElementsByClassName("content");
@@ -127,7 +145,7 @@ for (var i = tabs.length - 1; i >= 0; i--) {
 window.addEventListener("resize", updateIndicator);
 
 // Initialize first tab as active
-switchTab(3);
+switchTab(0);
 
 // Function to switch tabs
 function switchTab(tabIndex) {

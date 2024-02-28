@@ -109,11 +109,11 @@
         <header class="header">
             <div class="left">
               <div class="logo">Dach | דא״ח</div>
-              <div class="menu-item">Community</div>
-              <div class="menu-item">Texts</div>
+              <!--<div class="menu-item">Community</div>
+              <div class="menu-item">Texts</div>-->
             </div>
             <div class="right">
-              <div class="menu-btn">א</div>
+              
               <div class="hidden menu-btn loginBtn">Log in</div>
             </div>
           </header>
@@ -122,14 +122,15 @@
                 
                 <div class="tab-container">
                     <div class="tabs" onmousedown="startDrag(event)" ontouchstart="startDrag(event)" ondragstart="startDrag(event)" >
+                      <!--
                         <div class="tab">שיעורים</div>
                         <div class="tab">תרגומים</div>
-                        <div class="tab">קיצור</div>
+                        <div class="tab">קיצור</div>-->
                         <div class="tab">הערות</div>
                         <div class="tab-indicator"></div>
                     </div>
                     <div class="content footnotesCnt" id="content0"></div>
-                    <div class="content" id="content1">
+                    <!--<div class="content" id="content1">
                       <div class="editSecrets hidden">
 
                         <!DOCTYPE html>
@@ -167,44 +168,16 @@
 
                         
                         <form id="LOL" action="/submit-form" method="post">
-                            <!-- First Row -->
+                           
                             <div class="form-row horizontal-row">
-                              <!-- <input type="number" name="volume" placeholder="Volume" class="form-item" >
-                                <input type="number" name="page_number" placeholder="Page Number" class="form-item" >-->
-                               <!-- <input type="text" name="parsha" placeholder="Parsha/Special Days" class="form-item" style="flex: 3;" >-->
+                          
                             </div>
 
-                            <!-- Second Row -->
-                           <!-- <div class="form-row horizontal-row">
-                                <input type="number" name="sicha_num" placeholder="Sicha Num" class="form-item" >
-                                <input type="text" name="Title" placeholder="Title" class="form-item" style="flex: 3;" >
-                            </div>-->
-
-                            <!-- Remaining Rows -->
-                            <!--
-                            <div class="form-row">
-                                <textarea name="description" placeholder="Description" rows="4" class="form-item" ></textarea>
-                            </div>
-                            -->
                             <div class="form-row">
                                 <textarea name="Kitzur" id="Kitzur" placeholder="Kitzur" rows="4" class="form-item" ></textarea>
                             </div>
                             
 
-                            <!--
-                            <div class="form-row">
-                              <textarea id="EnglishContent" name="English" placeholder="English" rows="6" class="form-item" ></textarea>
-                          </div>
-                            <div class="form-row">
-                                <textarea onpaste="handlePaste(event)" name="Main_text" id="LOLmt" placeholder="Main Text" rows="6" class="form-item" ></textarea>
-                            </div>
-
-                            <div class="form-row">
-                                <textarea onpaste="handleFPaste(event)" name="Footnotes" id="LOLfn" placeholder="Footnotes" rows="4" class="form-item" ></textarea>
-                            </div>
-                            -->
-
-                            <!-- Submit Button -->
                             <div class="form-row">
                                 <input type="submit" value="Submit" class="form-item">
                             </div>
@@ -227,7 +200,7 @@
                       </div>
                       <div class="translationProgress" id="translationProgress"></div>
                     </div>
-                    <div class="content" id="content3">Content for Tab 4</div>
+                    <div class="content" id="content3">Content for Tab 4</div>-->
                 </div>
 
             </div>
@@ -245,7 +218,9 @@
                         <div class="index-expanded-title">Index Title</div> -->
                     </div>
                     
-                      <div id="app-barButtons">
+                      <div id="app-barButtons" data-menu="true">
+                        
+                        <div class="menu-btn" id="showE">A</div>
                         <div id="indexButton" class="list toggle-button btn"></div>
                         <div id="settingsButton" class="settingsIcon toggle-button btn">
                         </div>
@@ -488,7 +463,7 @@
                     lang: curParIdx.lang,
                     edited_text: html
                   });
-                  
+
                   errorReport.textContent = "Submitted! Refreshing.."
                   await getIt()
                   
@@ -891,7 +866,7 @@ console.log(formattedText);
 
 
           oldT = showE.textContent;
-          showE.textContent = "Only hebrew"
+          showE.textContent = "א"
           isEnglish = true;
           if(!English) {
             await getRealtimeEnglish();
@@ -1019,6 +994,7 @@ console.log(formattedText);
           }
         }
       }
+      if(window.transBA)
       transBA.onclick  = async () => {
         if(!isAllowed) 
           return alert("not authoriezd");
@@ -1041,6 +1017,7 @@ console.log(formattedText);
         await translateParagraph(el, idx, maamar)
       };
       
+      if(window.transB)
       transB.onclick = async () => {
         if(!isAllowed) {
           return alert("You're not allowed!")
@@ -1207,7 +1184,8 @@ console.log(formattedText);
         var pthId = decodeURIComponent((b=>b[b.length-1])(location.pathname.split("/")))
         var spl = pthId.split("_")
         var vol = spl[0]
-        var p = spl[1]
+        var p = spl[1];
+        if(window.LOL)
         LOL.addEventListener('submit', async function(event) {
         event.preventDefault(); // Prevent the default form submission
 
