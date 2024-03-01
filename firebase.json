@@ -8,8 +8,55 @@
     ],
     "rewrites": [
       {
+        "source": "/meluket/view/**",
+        "destination": "/viewer/index.html"
+      },
+
+      {
+        "source": "/likkutei-sichos/view/**",
+        "destination": "/viewer/index.html"
+      },
+      {
+        "source": "/meluket/**",
+        "destination": "/templates/maamarIndex.html"
+      },
+      
+      {
+        "source": "/likkutei-sichos/**",
+        "destination": "/templates/index.html"
+      },
+      {
+        "source": "/viewer/**",
+        "destination": "/viewer/index.html"
+      }
+    ],
+    "headers": [
+      {
         "source": "**",
-        "destination": "/index.html"
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "/static/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=604800"
+          }
+        ]
+      },
+      {
+        "source": "/__/firebase/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000"
+          }
+        ]
       }
     ]
   }

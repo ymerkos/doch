@@ -116,7 +116,7 @@ async function signInGoogle() {
         const user = result.user;
         console.log('Google Sign-In successful:', user);
         return result;
-    } catch(e) {
+    } catch(error) {
       console.error('Google Sign-In error:', error.message);
       return null;
     }

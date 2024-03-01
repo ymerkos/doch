@@ -49,7 +49,7 @@ enableIndexedDbPersistence(db)
 
 async function getIt() {
     
-    var sichaId = getElementAfter("sicha");
+    var sichaId = getLastPath("sicha", true);
     if(!sichaId) {
         console.log("No sicha with that ID found");
     }
@@ -57,7 +57,7 @@ async function getIt() {
     if(sichaId)
         getSicha(sichaId);
 
-    var maamId = getElementAfter("meluket")
+    var maamId = getLastPath("meluket", true)
     if(maamId) {
         console.log("found mamar getting")
         getMaamar(maamId)
@@ -95,7 +95,7 @@ async function getMaamar(maamId) {
 
             window.curVolume  = data.Volume;
             window.isMaamar = true;
-            var userParagraphs = await getUserParagraphs("maamar")
+            var userParagraphs = await getUserParagraphs("maamar", maamId)
             window.userParagraphs = userParagraphs;
             console.log("maamar found: ", data,curVolume);
             setTextToDoc(data, false); // Returns the document data
@@ -129,7 +129,7 @@ async function getSicha(sichaId) {
             
 
             window.curVolume  = data.Volume;
-            var userParagraphs = await getUserParagraphs("sicha")
+            var userParagraphs = await getUserParagraphs("sicha",sichaId)
             window.userParagraphs = userParagraphs;
             console.log("Sicha found: ", data,window.curVolume);
             setTextToDoc(data, true); // Returns the document data
@@ -145,17 +145,20 @@ window.db=db;
 
 
 
-async function getUserParagraphs(type) {
+async function getUserParagraphs(type, docId) {
     console.log(auth)
     if(auth.currentUser) {
         var user = auth.currentUser
         var uid = user.uid;
         try {
+            var modifiedId = encodeURIComponent(docId)
+            console.log(docId,modifiedId)
             // Construct the query with multiple filters
             const q = query(
                 collection(db, 'edit_suggestions'), 
                 where('uid', '==', uid), 
-                where('type', '==', type)
+                where('type', '==', type),
+                where("docId", "==", modifiedId)
             );
 
             console.log("Doing query", q, type, uid);
@@ -372,6 +375,41 @@ function processText(MainText, EnglishText="") {
         
     });
     return resultHTML
+}
+
+/**
+ * gets the last path paramter
+ * so like /1/2/3 gets 3
+ * even if it has # or ? it only 
+ * gets the path so 
+ * /1/2/3?asdaf#auid 
+ * it still only returns 3
+ */
+/**
+ * Gets the last path parameter from the URL.
+ * @param {string} searchString - The string to check for in the path parameters.
+ * @param {boolean} checkString - Whether to check for the searchString in the path parameters.
+ * @returns {string} The last path parameter.
+ */
+function getLastPath(searchString, checkString) {
+    // Get the path from the URL
+    const path = window.location.pathname;
+    
+    // Split the path by '/'
+    const pathSegments = path.split('/');
+    
+    // Get the last segment (parameter)
+    let lastSegment = pathSegments[pathSegments.length - 1];
+    
+    // Remove any query parameters or hash fragments
+    const cleanedLastSegment = lastSegment.split(/[?#]/)[0];
+    
+    // Check if searchString should be checked and exists in the path
+    if (checkString && path.includes(searchString)) {
+        return cleanedLastSegment;
+    }
+    
+    return cleanedLastSegment;
 }
 
 function getElementAfter(target) {

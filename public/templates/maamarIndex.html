@@ -7,7 +7,7 @@
   <script src="/scripts/installEved.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
   <link rel="stylesheet" href="/style.css">
-  <title>Your Page Title</title>
+  <title>Dach | דא״ח</title>
   <style>
     body {
       
@@ -18,13 +18,8 @@
 <body>
     <header class="header">
         <div class="left">
-          <div class="logo">Dach | דא״ח</div>
-          <div class="menu-item">Community</div>
-          <div class="menu-item">Texts</div>
-        </div>
-        <div class="right">
-          <div class="menu-btn">א</div>
-          <div class="menu-btn loginBtn">Log in</div>
+          <div class="logo"><a href="/">Dach | דא״ח</a></div>
+         
         </div>
       </header>
   <div class="container">
@@ -40,7 +35,7 @@
   var ls = p[p.length-1];
    await indexer({
     containerSelector: ".container",
-    url: "/viewer/meluket/",
+    url: "/meluket/view/"+ls+"/",
     volumeNumber:ls,
     databasePath: ["books","Meluket","TOC_VOL"]
    })

@@ -217,9 +217,10 @@
             <div class="right-box">
                 <div class="app-bar">
                     <div class="app-barContent">
-                        <div id="app-barButtons-hidden">
-                        <div id="indexButton" class="list toggle-button btn"></div>
-                        <div id="settingsButton" class="settingsIcon toggle-button btn"></div>
+                        <div id="app-barButtons">
+                        <!--<div id="indexButton" class="list toggle-button btn"></div>-->
+                        <div class="menu-btn" id="showE">A</div>
+                        <div id="settingsButton" class="settingsIcon invisible toggle-button btn"></div>
                        
                       </div>
                       <div class="appbar-title-container">
@@ -230,7 +231,7 @@
                     
                       <div id="app-barButtons" data-menu="true">
                         
-                        <div class="menu-btn" id="showE">A</div>
+                        
                         <div id="indexButton" class="list toggle-button btn"></div>
                         <div id="settingsButton" class="settingsIcon toggle-button btn">
                         </div>
@@ -290,9 +291,9 @@
 
 
         var [
-          type,
-          id
-        ] = location.pathname.split("/").slice(-2);
+          type
+        ] = location.pathname.split("/").slice(-4);
+        var [id] = location.pathname.split("/").slice(-1)
         type = type == "meluket" ? "maamar" : "sicha";
 
         // Sample data to be sent in the request body

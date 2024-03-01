@@ -8,6 +8,9 @@ a {
   color: inherit; /* Use the default text color */
 }
 
+.invisible {
+  visibility: hidden;
+}
 .loader {
   width: 30px;
   position: absolute;
