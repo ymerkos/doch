@@ -8,7 +8,7 @@ import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChang
 from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 import { getFirestore, doc, getDoc, getDocs } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
-var isEditing = location.search == "?edit";
+var isEditing = location.search == "?edit" || location.pathname == "/admin/";
 window.isEditing = isEditing;
 
 const app = initializeApp(firebaseConfig);
@@ -29,7 +29,7 @@ window.checkIfLoggedin = checkIfLoggedin;
 async function checkIfLoggedin() {
   var user = auth.currentUser;
   window.user = user;
-  console.log("hi!");
+
 
     if (user) {
       // User is signed in

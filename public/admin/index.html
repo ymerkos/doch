@@ -1,0 +1,257 @@
+<!--B"H-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dach | דא״ח</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@100..900&display=swap" rel="stylesheet">
+    
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8G4BNTZDFN"></script>
+
+</head>
+  <body>
+        <div class="viewer page">
+        <header class="header">
+            <div class="left">
+              
+          <div class="logo"><a href="/">Dach | דא״ח</a></div>
+              <!--<div class="menu-item">Community</div>
+              <div class="menu-item">Texts</div>-->
+            </div>
+            <div class="right">
+              
+              <div class="menu-btn loginBtn">Log in</div>
+            </div>
+          </header>
+          <div class="admin-container">
+
+          </div>
+          </div>
+          <script src="/scripts/login.js" type="module"></script>
+          <script type="module">
+            import firebaseConfig from "/config.js"
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+
+            import {
+                getFirestore,
+                getDoc,
+                where,
+                query,
+                getDocs,
+
+                collection,
+                doc,
+                enableIndexedDbPersistence
+            } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+
+
+            var app = initializeApp(firebaseConfig);
+
+            var db = getFirestore();
+
+            addEventListener("awtsmoosAuth", async e=> {
+                console.log("Admin logged in!",e);
+
+                var pe = await getPendingEdits()
+                console.log("Pending edits:",pe)
+                var ac = document.querySelector(".admin-container")
+                if(ac) {
+                    var s = updateHTMLList(pe,ac);
+                    //pe.filter(q=>!q.data.approved)
+                }
+                
+                
+            })
+
+
+            function updateHTMLList(pe/*pending edits*/, par) {
+                var sections = pe.map(q => {
+                    var sec = document.createElement("div");
+                    sec.className = "submission-div"
+
+                    sec.onclick = async () => {
+                        var d = await makeDialogue(q.data, par);
+                        
+                    }
+
+                    var type = q.data.type == "maamar" ? 
+                    "Sefer Hamaamarim Meluket" : q.data.type == "sicha"
+                     ? "Likkutei Sichos" : null;
+                    var nm/*name*/ = document.createElement("div")
+                    nm.className = "name";
+                    sec.appendChild(nm)
+                    var pid/*parsedId*/ = decodeURIComponent(q.data.docId);
+                    var volume = null;
+                    var page = null;
+                    if(q.data.type == "maamar") {
+                        var vol = pid.split("_")[1]
+                        volume = vol;
+                        page = pid.split("_")[0]
+                    }
+
+                    var info = document.createElement("div")
+                    info.className="info";
+                    sec.appendChild(info)
+                    makeInfo(q.data, info)
+                    
+                    
+
+                    nm.innerText = type + " " + "Vol. " 
+                    + volume + ", page: " + page;
+                    par.appendChild(sec)
+                    return sec;
+                })
+                return sections;
+            }
+
+            function makeInfo(sub, par) {
+                infoField(
+                    "Submitted time: ", 
+                    sub.submissionTime.toDate().toLocaleTimeString(), par
+                )
+                infoField(
+                    "Paragraph: ", 
+                    sub.paragraph_num, par
+                )
+            }
+
+            function infoField(k, value, par) {
+                var i = document.createElement("div")
+                i.className = "field"
+                var key = document.createElement("div")
+                key.className="key"
+                key.textContent = k;
+
+                var val = document.createElement("div")
+                val.className="value"
+                val.textContent = value;
+
+                i.appendChild(key)
+                i.appendChild(val)
+                par.appendChild(i)
+            }
+
+            async function makeDialogue(sub, par) {
+                var id = decodeURIComponent(sub.docId);
+                var maamar = await getBookDocument(id);
+                console.log("Got",maamar,id)
+                var parst = parseInt(sub.paragraph_num)
+                var maamarPar = maamar[parst]
+
+                var lang = sub.lang;
+                var maamarParLang = maamarPar[lang];
+                
+                var bdy = document.createElement("div")
+                bdy.className = "body"
+
+                var cancelBtn = document.createElement("div")
+                cancelBtn.className = "btn cancel"
+                bdy.appendChild(cancelBtn)
+                cancelBtn.innerHTML = "X";
+                cancelBtn.onclick = () => {
+                    bdy.parentElement.removeChild(bdy)
+                }
+                var hdr = document.createElement("div")
+                hdr.className = "title"
+                bdy.appendChild(hdr);
+
+                var sugHolder = document.createElement("div")
+                sugHolder.className = "suggestion-holder"
+                bdy.appendChild(sugHolder)
+
+                var orig = document.createElement("div")
+                orig.className = "original sub"
+
+                sugHolder.appendChild(orig);
+                var hdr = document.createElement("div")
+
+                orig.appendChild(hdr)
+                hdr.className = "title"
+                hdr.textContent = "Original"
+
+                var txa = document.createElement("div")
+                txa.className = "textarea"
+                txa.textContent = maamarParLang;
+                orig.appendChild(txa)
+
+                var sug = document.createElement("div")
+                sug.className = "suggested sub"
+                sugHolder.appendChild(sug)
+               
+
+                var hdrS = document.createElement("div")
+                sug.appendChild(hdrS)
+                hdrS.className = "title"
+                hdrS.textContent = "Suggested"
+
+                var txaS = document.createElement("div")
+                txaS.className = "textarea"
+
+                txaS.innerHTML = sub.edited_text;
+
+
+                sug.appendChild(txaS)
+
+                var footerInfo = document.createElement("div")
+                footerInfo.className = "info"
+                makeInfo(sub, footerInfo)
+                bdy.appendChild(footerInfo);
+
+                var ar = Array.from(document.querySelectorAll(".body"))
+                ar.forEach(w => {
+                    w.parentNode.removeChild(w)
+                })
+                par.appendChild(bdy)
+            }
+
+            async function getPendingEdits() {
+                const q = query(
+                    collection(db, 'edit_suggestions')//, 
+                    //where('approved', '!=', true), 
+                   
+                );
+
+                    // Execute the query
+                const querySnapshot = await getDocs(q);
+
+                // Process the query results
+                var results = [];
+                querySnapshot.forEach(doc => {
+                    
+                    const entry = {};
+                    // Store document data in the data object using document ID as key
+                    entry.data = doc.data();
+                    entry.id = doc.id;
+                    results.push(entry)
+                });
+                return results;
+
+            }
+
+
+
+            async function getBookDocument(id) {
+                const docRef = doc(db, 'books', 'Meluket', 'Maamarim', id);
+
+                try {
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        var ar = docSnap.get("Maamar")
+                        return ar;
+                  //      console.log('Document data:', docSnap.data());
+                    } else {
+                        console.log('No such document!');
+                    }
+                } catch (error) {
+                    console.error('Error getting document:', error);
+                }
+            }
+          </script>
+    </body>
