@@ -1619,13 +1619,24 @@ console.log(formattedText);
         // Use the Clipboard API to copy the HTML content to the clipboard
         // Encode the HTML content
         var encodedHTML = new Blob([htmlContent], { type: 'text/html' });
-
+        var plain = htmlToText(htmlContent)
         // Create a ClipboardItem object
-        var item = new ClipboardItem({ 'text/html': encodedHTML });
-
+        console.log("plain", plain)
+        var item = new ClipboardItem({
+          'text/html': encodedHTML,
+          "text/plain": new Blob([plain], { type: 'text/plain' })
+        });
+        console.log("Item",item)
         // Copy the ClipboardItem to the clipboard
         return navigator.clipboard.write([item])
           
+      }
+
+
+      function htmlToText(html) {
+        var div = document.createElement("div")
+        div.innerHTML = html;
+        return div.textContent
       }
     </script>
     
