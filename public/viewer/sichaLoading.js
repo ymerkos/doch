@@ -97,6 +97,7 @@ async function getMaamar(maamId) {
             window.isMaamar = true;
             var userParagraphs = await getUserParagraphs("maamar", maamId)
             window.userParagraphs = userParagraphs;
+            window.currentData = data;
             console.log("maamar found: ", data,curVolume);
             setTextToDoc(data, false); // Returns the document data
         } else {

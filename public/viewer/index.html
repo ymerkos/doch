@@ -85,32 +85,6 @@
       }
 
 
-      /*
-    function startDrag(e) {
-      // Check if the media query is active
-      if (window.matchMedia('(max-width: 600px)').matches) {
-        let mouseY = e.clientY;
-        const leftBox = document.querySelector('.viewer .left-box');
-
-        function handleDrag(e) {
-          const newHeight = leftBox.clientHeight + mouseY - e.clientY;
-          if (newHeight > 100) { // Set a minimum height for the left box
-            leftBox.style.height = newHeight + 'px';
-          }
-          mouseY = e.clientY;
-        }
-
-        function stopDrag() {
-          document.removeEventListener('mousemove', handleDrag);
-          document.removeEventListener('mouseup', stopDrag);
-        }
-
-
-        document.addEventListener('mousemove', handleDrag);
-        document.addEventListener('mouseup', stopDrag);
-      }
-    }*/
-    
     </script>
   </head>
   <body>
@@ -135,7 +109,7 @@
                       
                         <div class="tab hidden" id="tab0">שיעורים</div>
                         <div class="tab hidden" id="tab1">תרגומים</div>
-                        <div class="tab hidden">קיצור</div>
+                        <div class="tab hidden" id="tab2">קיצור</div>
                         <div class="tab">הערות</div>
                         <div class="tab-indicator"></div>
                     </div>
@@ -200,7 +174,7 @@
                     </div>
                   
                     <div class="content hidden" id="content2">
-                      <button id="showE">Show Enlish</button>
+             
                       <div class="editSecrets hidden">
                         <button id="transB">Translate with AI</button>
                         <button id="transBA">Translate active paragraph</button>
@@ -285,54 +259,95 @@
         lang,
         edited_text
       }) {
+        if(!isEditing) {
         return new Promise((r,j) => {
             //B"H
-                // Define the URL of your Cloud Function
-                const cloudFunctionURL = 'https://submiteditsuggestion-2q5fj4mnha-uc.a.run.app';
+          // Define the URL of your Cloud Function
+          const cloudFunctionURL = 'https://submiteditsuggestion-2q5fj4mnha-uc.a.run.app';
 
 
-        var [
-          type
-        ] = location.pathname.split("/").slice(-4);
-        var [id] = location.pathname.split("/").slice(-1)
-        type = type == "meluket" ? "maamar" : "sicha";
+              var [
+                type
+              ] = location.pathname.split("/").slice(-4);
+              var [id] = location.pathname.split("/").slice(-1)
+              type = type == "meluket" ? "maamar" : "sicha";
 
-        // Sample data to be sent in the request body
-        const requestData = {
-            edited_text,
-            paragraph_num,
-            id,
-            lang,
-            type
-        };
+              // Sample data to be sent in the request body
+              const requestData = {
+                  edited_text,
+                  paragraph_num,
+                  id,
+                  lang,
+                  type
+              };
 
-        // Options for the fetch request
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                
-                // Add authentication token if needed
-                'Authorization': user.accessToken
-            },
-            body: JSON.stringify(requestData)
-        };
+              // Options for the fetch request
+              const requestOptions = {
+                          method: 'POST',
+                          headers: {
+                              'Content-Type': 'application/json',
+                              
+                              // Add authentication token if needed
+                              'Authorization': user.accessToken
+                          },
+                    body: JSON.stringify(requestData)
+                };
 
-        // Send the fetch request to the Cloud Function
-        fetch(cloudFunctionURL, requestOptions)
-            .then(response => {
-                
-                return response.json();
+            // Send the fetch request to the Cloud Function
+            fetch(cloudFunctionURL, requestOptions)
+                .then(response => {
+                    
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Edit suggestion submitted successfully:', data);
+                    r(data)
+                })
+                .catch(error => {
+                    console.error('Error submitting edit suggestion:', error);
+                    j(error)
+                });
             })
-            .then(data => {
-                console.log('Edit suggestion submitted successfully:', data);
-                r(data)
-            })
-            .catch(error => {
-                console.error('Error submitting edit suggestion:', error);
-                j(error)
+
+          } else {
+            console.log("Trying to submit edit!!")
+            var d = window.currentData;
+            if(!d) {
+              return showToast("For some reason, database data isn't loaded, so its' not working")
+            }
+
+            var m = Array.from(d.Maamar);
+            if(!m) {
+              return showToast("Not on a maamar")
+            }
+
+            var part = m[paragraph_num];
+            if(!part) {
+              return showToast("Paragraph not found")
+            }
+
+            var type = part[lang];
+            if(!type) {
+              return showToast("That language: "+lang+" not working now.")
+            }
+
+            part[lang] = edited_text
+
+
+            var ref = getDocRef();
+              
+            updateDoc(ref, {
+              Maamar: m
+            }).then(didIt => {
+              console.log("updated!",didIt)
+              showToast("Edited the paragraph number "+paragraph_num+ " successfully")
+              r(didIt)
+            }).catch(e => {
+              console.log(e);
+              j(e)
+              return showToast("Couldn't update.")
             });
-        })
+          }
        
       }
 
@@ -470,19 +485,24 @@
                 try {
                   
                   var html = saveEditableElement(el)
+
                   await submitEdit({
                     paragraph_num:curParIdx.idx,
                     lang: curParIdx.lang,
                     edited_text: html
                   });
+                  
 
-                  errorReport.textContent = "Submitted! Refreshing.."
+                  //errorReport.textContent = "Submitted! Refreshing.."
+                  errorReport.textContent = "Edited. Refreshing.."
                   await getIt()
                   
                   showToast("Successfully reported edits!");
                   
                   initialHTML = null;
                   errorReportD.classList.add("hidden")
+
+                  errorReport.textContent = "Edit"
                   curParIdx = null;
                   errorClicked = false;
                   return
@@ -565,12 +585,19 @@
       });
 
       if(isEditing) {
+        reportErrorBtn.textContent = "Edit"
+        errorReport.textContent = "Edit"
         var lg = document.querySelector(".loginBtn")
         if(lg) {
           lg.classList.remove("hidden")
         }
         content1.classList.remove("hidden")
-        content2.classList.remove("hidden")
+        content2.classList.remove("hidden");
+
+        tab0.classList.remove("hidden")
+        tab1.classList.remove("hidden")
+
+        tab2.classList.remove("hidden")
       }
 
       function findParentWithDatasetProperty(element, propertyName) {
@@ -939,23 +966,27 @@ console.log(formattedText);
       */
       var pc = document.querySelector(".paragraph-container");
       showE.onclick = showEnglish;
+      console.log("Show e",showE)
       async function showEnglish() {
+        console.log("Setting english")
         if(!isEnglish) {
           if(pc) {
             pc.classList.add("english-active")
           }
 
-
+          console.log("Not currently english")
 
           oldT = showE.textContent;
           showE.textContent = "א"
           isEnglish = true;
           if(!English) {
+            console.log("Getting english")
             await getRealtimeEnglish();
           } else {
             
 
             setEnglishToParagraphs(English)
+            console.log("setting english",English)
           }
         } else {
           if(pc) {
@@ -1563,6 +1594,39 @@ console.log(formattedText);
       }
 
       window.showToast = showToast;
+
+
+
+      copy.onclick = async () => {
+        var cur = curParIdx;
+        if(!cur) {
+          return showToast("Didn't copy");
+        }
+        try {
+
+          var el= cur.el;
+          var html = el.innerHTML;
+          await copyHTMLToClipboard(html);
+          showToast("Copied paragraph!")
+        } catch (e) {
+          console.log("Issue copying: ",e)
+          showToast("Didn't copy")
+        }
+        
+        //htmlContent
+      }
+      async function copyHTMLToClipboard(htmlContent) {
+        // Use the Clipboard API to copy the HTML content to the clipboard
+        // Encode the HTML content
+        var encodedHTML = new Blob([htmlContent], { type: 'text/html' });
+
+        // Create a ClipboardItem object
+        var item = new ClipboardItem({ 'text/html': encodedHTML });
+
+        // Copy the ClipboardItem to the clipboard
+        return navigator.clipboard.write([item])
+          
+      }
     </script>
     
   </script>

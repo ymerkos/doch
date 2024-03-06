@@ -145,7 +145,7 @@ for (var i = tabs.length - 1; i >= 0; i--) {
 window.addEventListener("resize", updateIndicator);
 
 // Initialize first tab as active
-switchTab(0);
+switchTab(3);
 
 // Function to switch tabs
 function switchTab(tabIndex) {
