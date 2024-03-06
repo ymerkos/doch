@@ -2,13 +2,21 @@
  * B"H
  * ) */
 //addYearsAndMonthsToMaamarim
-g=await getMaamarDocRefs()
-k = [];
-g.forEach(f=>k.push(f))
-bb=k[0].data();
-var d = getYearAndMonthInfo(bb.Maamar[0].heb)
-console.log(d)
-
+for(var i = 0; i < g.docs.length; i++) {
+    bb=g.docs[i].data();
+    var m = bb.Maamar
+    if(!m) continue;
+    var ttl = m[0];
+    if(!ttl) continue
+    var h = ttl.heb;
+    if(!h) continue
+    var d = getYearAndMonthInfo(h)
+    console.log("Doing",g.docs[i],d)
+    await updateDoc(g.docs[i].ref, {
+        Year: d.year || null,
+        Month: d.month || null
+    })
+}
 
 
 async function getMaamarDocRefs() {
