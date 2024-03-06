@@ -281,7 +281,7 @@ direction:rtl;
 }
 
 .viewer .header {
-  border-bottom:4px solid #97B386 ;
+  border-bottom:4px solid #091601;
   box-shadow: none;
 }
 
@@ -511,11 +511,25 @@ padding: 0px 5px;
   font-size: small;
   color: #696969;
   font-weight: normal;
+
 }
 .viewer .right-box .settings button.increase-size {
   font-size: large;
   color: #696969;
   font-weight: bold;
+ 
+
+  
+}
+
+.viewer .right-box .settings button.decrease-size img {
+  width: 150%;
+    margin-top: -40%;
+}
+
+.viewer .right-box .settings button.increase-size img {
+  width: 200%;
+  margin-top: -70%;
 }
 
 .viewer .right-box .settings button {

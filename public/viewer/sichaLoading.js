@@ -75,7 +75,7 @@ async function getMaamar(maamId) {
     } catch(e) {
         console.log(e)
     }
-    console.log("Got id",maamId)
+    
     const sichaPath = `books/Meluket/Maamarim/${maamId}`;
     window.curPath=sichaPath;
     const sichaRef = doc(db, sichaPath);

@@ -80,8 +80,12 @@ button.addEventListener('click', async () => {
                 <div class="setting">
                     <div class="setting-name">TEXT SIZE</div>
                     <div class="settings-toggles">
-                        <button class="decrease-size" onclick="decreaseFont()">&#x1F5DA;</button>
-                        <button class="increase-size" onclick="increaseFont()">&#128474;</button>
+                        <button class="decrease-size" onclick="decreaseFont()">
+                        <img src="/resources/svg/increase_font_size_symbol.svg">
+                        </button>
+                        <button class="increase-size" onclick="increaseFont()">
+                        <img src="/resources/svg/increase_font_size_symbol.svg">
+                        </button>
                     </div>
                 </div>
             </div>

@@ -57,7 +57,18 @@
             "value": "public, max-age=31536000"
           }
         ]
+      },
+    
+      {
+        "source": "**/*.svg",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "image/svg+xml"
+          }
+        ]
       }
+      
     ]
   }
 }

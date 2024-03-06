@@ -58,12 +58,12 @@
       }
       function increaseFont() {
         adjustFontSize("#content0", "increase")
-        adjustFontSize(".paragraph-container", "increase")
+        adjustFontSize(".paragraph-container p", "increase")
       }
 
       function decreaseFont() {
         adjustFontSize("#content0", "decrease")
-        adjustFontSize(".paragraph-container", "decrease")
+        adjustFontSize(".paragraph-container p", "decrease")
       }
 
       function adjustFontSize(sl, action) {
@@ -637,11 +637,20 @@
         }
     }
 
-    window.changeHashWithoutEvent = newHash => {
+    window.changeHashElement = (key, value) => {
      // console.log("Removing!!")
      // window.removeEventListener("hashchange", hashChange)
      // removeAllEventListeners(window, "hashchange")
-      location.hash = newHash;
+      var curHash = new URLSearchParams(location.hash.substring(1))
+      if(value) 
+        curHash.set(key, value)
+      else {
+        try {
+          curHash.delete(key)
+        } catch(e) {}
+      }
+      console.log("Setting")
+      location.hash = "#" + curHash;
       //addEventListener("hashchange", hashChange)
     }
     addEventListener("awtsmoosWroteAll", e=> {
@@ -652,15 +661,20 @@
        * */
       location.hash = location.hash;
       var hash = getHashVars();
-          console.log("Awtsmoos hash!", hash)
-          var pr = hash.get("par");
-          if(pr) {
-            var par = getParagraphById(pr)
-            if(par) {
-              console.log("scrolling",par,pr)
-              par.scrollIntoView()
-            }
-          }
+      console.log("Awtsmoos hash!", hash)
+      var pr = hash.get("par");
+      if(pr) {
+        var par = getParagraphById(pr)
+        if(par) {
+          console.log("scrolling",par,pr)
+          par.scrollIntoView()
+        }
+      }
+
+      var eng = hash.get("eng");
+      if(eng) {
+        showE.click();
+      }
     })
 
 
@@ -840,56 +854,52 @@
         enP.forEach(w => {
           w.classList.remove("hidden")
         })
-        /*
-        if(window.curPath) {
-          console.log("Pathic!",curPath);
-          try {
-            var dk = await getDoc(doc(db, curPath));
-            var eng = dk.get("English")
-            if(eng) {
-              English = formatNumbers(eng);
-              setEnglishToParagraphs(English);
-              EnglishContent.value=English;
-            } else {
-              console.log("LOL")
+ 
+      }
+
+      window.formatNumbers = numberizeAwtsmoos;
+      function numberizeAwtsmoos(str) {
+        var nm = str.match(/\D+|\d+/g)
+        var result = []
+        nm.forEach((a, i, ar) => {
+            if(/\d+/.test(a)) {
+                /**
+                    is number.
+
+
+                    NOW: All numbers that have WHITESPACE
+                    after them AND NON whitespace before them,
+                    should be sup-ed
+                **/
+                if(i == 0) {
+                    result.push(a)
+                    return;
+                }
+                var before = ar[i-1]
+                if(before[before.length-1] == " ") {
+                    result.push(a)
+                    return;
+                }
+
+                if(i == ar.length - 1) {
+                    result.push(`<sup>${a}</sup>`)
+                    return;
+                }
+
+                
+                var after = ar[i+1]
+                if(after[0] == " ") {
+                    result.push(`<sup>${a}</sup>`)
+                    return;
+                }
+                
             }
-          } catch(e) {
-            console.log(e,"No doc!")
-          }
-        }*/
-      }
+            result.push(a)
+            
+        })
+        return result.join("")
+    }
 
-      window.formatNumbers = formatNumbers;
-      function formatNumbers(text) {
-        /*
-          (?:\b[\w.,;:"'‘’“”]|(?<=\()): This part captures either a word character or a punctuation character preceded
-          
-          by a word boundary (\b) or an 
-          opening parenthesis ((?<=\()).
-           The ?: at the beginning makes 
-           it a non-capturing group, as we're 
-           only using it for matching purposes, 
-           not for capturing.
-
-          (\d+): This part captures one or more digits.
-
-          (?![^()]*\)): 
-          The negative lookahead assertion 
-          ensures that the captured number is
-          not followed by a closing parenthesis
-            without an opening parenthesis preceding it.
-        */
-       // const regex = /(?:[a-zA-Z.,:;'"`?]|(?<=[a-zA-Z.,:;'"`?]\())\b(\d+)\b(?![^\s"'\])])/g;
-
-
-
-
-
-         const replacedText = text//surroundNumbersWithSup(text)
-         //text.replace(regex, '<sup>$1</sup>');
-
-         return replacedText
-      }
       
       const punctuation = ' \t\n\r\v\f.,\'";?!()[]{}:';
       function surroundNumbersWithSup(text) {
@@ -966,7 +976,7 @@ console.log(formattedText);
       */
       var pc = document.querySelector(".paragraph-container");
       showE.onclick = showEnglish;
-      console.log("Show e",showE)
+  
       async function showEnglish() {
         console.log("Setting english")
         if(!isEnglish) {
@@ -988,6 +998,7 @@ console.log(formattedText);
             setEnglishToParagraphs(English)
             console.log("setting english",English)
           }
+          changeHashElement("eng", "emes")
         } else {
           if(pc) {
             pc.classList.remove("english-active")
@@ -997,6 +1008,7 @@ console.log(formattedText);
             engs.forEach(w=>w.classList.add("hidden"));
           isEnglish = false;
           showE.textContent = oldT
+          changeHashElement("eng", null)
         }
       }
 
@@ -1036,21 +1048,7 @@ console.log(formattedText);
       window.getAllDocumentIds = getAllDocumentIds;
       window.translateEntireVolume = translateEntireVolume;
       async function translateEntireVolume(volumeNumber) {
-        /*
-        var dr = await doc(db,"books","Meluket","TOC_VOL",volumeNumber);
-        var ds = await getDoc(dr);
 
-        if(ds.exists()) {
-            var b = await ds.data();
-            var bl = b.booklets;
-            console.log(b,bl, "getting volume")
-
-            bl.forEach(w=> {
-                w.contents.forEach(w => {
-
-                })
-            })
-        }*/
         var docs = await getAllDocumentIds("books/Meluket/Maamarim")
         var withNum = docs.filter(w=>w.includes(volumeNumber));
         console.log("Doing vol:",volumeNumber+"_",withNum, docs)
@@ -1252,22 +1250,8 @@ console.log(formattedText);
 
         sups.forEach((s, i, ar) => {
           var nm = s.textContent;
-         // console.log("Trying to set events for: ",s,i)
-
-          /*try {
-            nm = parseInt(s.textContent);
-            if(isNaN(nm)) {
-              throw "lol" + nm
-            }
-          } catch(e) {
-            console.log("Issue",i,s,nm,s.textContent,e)
-          }*/
-
-          if(min === null) {
-           // min = parseInt(ar[0].textContent)
-          }
+     
           s.onclick = e => {
-           // console.log("Tring to click",e)
             var nt = document.querySelector("#content0");
             if(!nt) return console.log("Nothing");
             var ch = activeNotes[nm]//nt.children[nm - 1];
@@ -1292,246 +1276,7 @@ console.log(formattedText);
 
       window.setSupsForP = setSupsForP;
       var db = getFirestore();
-      await takeCareOfYossisForm();
-      async function takeCareOfYossisForm() {
-        var pthId = decodeURIComponent((b=>b[b.length-1])(location.pathname.split("/")))
-        var spl = pthId.split("_")
-        var vol = spl[0]
-        var p = spl[1];
-        if(window.LOL)
-        LOL.addEventListener('submit', async function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        // Gather form fields' values
-        const formData = {};
-        const formElements = event.target.elements;
-
-        for (let i = 0; i < formElements.length; i++) {
-          const element = formElements[i];
-
-          // Exclude buttons and other non-input elements
-          if (element.tagName === 'INPUT' || element.tagName === 'SELECT' || element.tagName === 'TEXTAREA') {
-            formData[element.name] = element.value;
-          }
-        }
-        formData.Volume =vol
-        formData.Page = p;
-        formData.pthId=pthId
-
-        var mt = formData.Main_text;
-        var ft= formData.Footnotes;
-
-        
-        // Specify the path to the document you want to update
-        const documentPath = 'books/Meluket/Maamarim/'+pthId;  // Update with your document path
-        const documentRef = doc(db, documentPath);
-
-        var nd = {
-          /*Main_text:mt,
-          Footnotes:ft*/
-          Kitzur: formData.Kitzur
-        }
-
-        /*
-        if(EnglishContent.value) {
-          nd.English = EnglishContent.value;
-        }*/
-
-
-        try {
-          await updateDoc(documentRef, nd)
-          showToast("Updated document")
-          // Log form data as JSON to the console
-          console.log(JSON.stringify(formData, null, 2),window.h=formData,nd,"DID?",documentPath,vol);
-        } catch(e) {
-          showToast("Problem updating. check console")
-          console.log("HI?",e)
-        }
-      });
-      }
-
-      window.handleFPaste=handleFPaste
-      function handleFPaste(event) {
-        event.preventDefault();
-
-        // Get the clipboard data
-        var clipboardData = event.clipboardData || window.clipboardData;
-        var pastedHTML = clipboardData.getData('text/html');
-
-        // Insert the HTML into the textarea
-        document.getElementById('LOLfn').value = pastedHTML;
-        cleanFHTML()
-      }
-
-      function cleanFHTML() {
-          // Get the HTML from the textarea
-          const inputHTML = removeSegments(document.getElementById('LOLfn').value);
-          // Create a temporary element to parse the HTML
-          var dp = new DOMParser()
-          var doc = dp.parseFromString(inputHTML,"text/html")
-          var fn = Array.from(doc.querySelectorAll(".footnote"))
-          var notes = []
-          fn.forEach((w,i)=> {
-          
-            var a = w.querySelector("a");
-            var bd = w.querySelector(".footnote__body");
-            if(!bd || !a) {
-             // return alert("Issue!");
-              return console.log("ISSUE",w)
-            }
-            var nm = a.innerHTML.split(".").join("")
-            //try o decremate
-            var num = parseInt(nm);
-            if(!isNaN(num)) {
-              num -= 1
-            } else num = null;
-            nm = num?num+")":nm;
-            var cnt = "";
-            Array.from(bd.children).forEach(g=> {
-              var nodesHTML = "";
-              g.childNodes.forEach(c=> {
-              
-                var tn = c.tagName;
-                var isTxt = !tn;
-                var el = tn?document.createElement(tn):document.createTextNode(c.textContent);
-                
-                var p = isTxt?"textContent":"innerHTML"
-                el[p]=c[p]
-                
-                console.log("Hi!",{c},c.textContent,el.outerHTML)
-                nodesHTML+=el.outerHTML || el.textContent
-              })
-              cnt += nodesHTML+ "<br>"
-            })
-
-            notes.push(nm +" "+cnt)
-          });
-          var rs = notes.map(w=>`<p>${w}</p>`).join("")
-          document.getElementById("LOLfn").value=rs;
-          console.log(fn,window.k=doc,rs)
-      }
-
-
-      window.handlePaste=handlePaste;
-        function handlePaste(event) {
-          console.log("Pastin?",event.target)
-          // Prevent the default paste behavior
-          event.preventDefault();
-
-          // Get the clipboard data
-          var clipboardData = event.clipboardData || window.clipboardData;
-          var pastedHTML = clipboardData.getData('text/html');
-
-          // Insert the HTML into the textarea
-          document.getElementById('LOLmt').value = pastedHTML;
-          cleanHTML()
-        }
-
-        function removeSegments(txt) {
-          return txt.split("<!--StartFragment-->").join("")
-          .split("<!--EndFragment-->").join("").trim()
-        }
-
-        function cleanHTML() {
-          // Get the HTML from the textarea
-          const inputHTML = removeSegments(document.getElementById('LOLmt').value);
-
-          // Create a temporary element to parse the HTML
-          const tempElement = document.createElement('div');
-          tempElement.innerHTML = inputHTML;
-
-          // Remove inline styles
-          removeInlineStyles(tempElement);
-
-          // Remove unnecessary attributes and classes from the sup tag
-          removeSupAttributes(tempElement);
-
-          // Add space after span with "firstword" class
-          addSpaceAfterFirstwordSpan(tempElement);
-
-          // Remove span tags and their attributes
-          removeSpanTags(tempElement);
-
-          // Get the cleaned HTML
-          const cleanedHTML = tempElement.innerHTML;
-
-          // Display the cleaned HTML
-          document.getElementById('LOLmt').value = cleanedHTML;
-        }
-
-        function removeInlineStyles(element) {
-          
-          if (element.nodeType === 1) {
-            if(element.classList.contains("title")) {
-                var h2 = document.createElement("h2")
-                h2.innerHTML = element.innerHTML;
-                element.replaceWith(h2)
-                element = h2;
-              }
-            // Remove inline styles for specified tags
-            if (['SUP', "BR",'B', 'I', 'P'].includes(element.tagName)) {
-              element.removeAttribute('style');
-              
-              element.removeAttribute("class")
-            }
-
-            // Recursively remove inline styles for child elements
-            for (const child of element.childNodes) {
-              removeInlineStyles(child);
-            }
-          }
-        }
-
-        function removeSupAttributes(element) {
-          if (element.nodeType === 1 && element.tagName === 'SUP') {
-            // Remove all attributes from the sup tag
-            const attributes = element.attributes;
-            for (let i = attributes.length - 1; i >= 0; i--) {
-              const attributeName = attributes[i].name;
-              if (attributeName !== 'data-group') {
-                element.removeAttribute(attributeName);
-              }
-            }
-            var nm = parseInt(element.textContent)
-            if(!isNaN(nm)) {
-              nm--
-            } else nm = null;
-            if(nm) {
-              element.textContent=nm;
-            }
-          }
-
-          // Recursively remove attributes for child elements
-          for (const child of element.childNodes) {
-            removeSupAttributes(child);
-          }
-        }
-
-        function addSpaceAfterFirstwordSpan(element) {
-          if (element.tagName === 'SPAN' && element.classList.contains('firstword')) {
-            // Add space after the closing tag of the span
-            element.insertAdjacentHTML('afterend', ' ');
-          } else {
-            // Recursively add space for child elements
-            for (const child of element.childNodes) {
-              addSpaceAfterFirstwordSpan(child);
-            }
-          }
-        }
-
-        function removeSpanTags(element) {
-          if (element.tagName === 'SPAN') {
-            // Replace span tag with its content
-            const spanContent = element.innerHTML;
-            element.insertAdjacentHTML('beforebegin', spanContent);
-            element.remove();
-          } else {
-            // Recursively remove span tags for child elements
-            for (const child of element.childNodes) {
-              removeSpanTags(child);
-            }
-          }
-        }
+      
       
 
       let darkModeEnabled = false;

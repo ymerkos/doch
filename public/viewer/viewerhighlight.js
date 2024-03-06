@@ -46,10 +46,7 @@ function highlightParagraph() {
 }
 
 function setHash(pId) {
-    var h = new URLSearchParams({
-        par: pId
-    })
-    changeHashWithoutEvent("#" + h)
+    changeHashElement("par", pId)
 }
 
 function notificationalism(p, index) {
