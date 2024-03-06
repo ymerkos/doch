@@ -123,12 +123,23 @@ transform: scale(1.1);
   height: 100%
 }
 
+.viewer.print {
+  height:auto !important;
+}
+
+
 .viewer .flex-container {
   display: flex;
   position:fixed;
   top:calc(var(---header-height));
   width: 100%;
   height:100%
+}
+
+.viewer.print .flex-container {
+  position: unset !important;
+  width: unset;
+  height: unset
 }
 
 .viewer .left-box, .right-box {
@@ -173,6 +184,11 @@ background-color: #3D3D3D;
   margin-top: 45px;
 
   
+}
+
+.viewer.print .right-box .paragraph-content {
+  overflow-y: unset !important;
+  height: unset !important;
 }
 
 .viewer .right-box .paragraph-container  {
@@ -579,6 +595,33 @@ color: white;
   padding: 20px;
   overflow-y:scroll;
   height:80vh;
+}
+
+.footnotes-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 365px;
+}
+
+.footnotes-container p {
+  max-width: 450px;
+  width: -webkit-fill-available;
+}
+
+.footnotes {
+  font-family: "hei";
+  text-align:"justify";
+  font-weight: 100;
+  line-height: 1.4;
+  padding: 20px;
+  direction: rtl;
+}
+
+.viewer.print .left-box .content {
+  display:unset;
+  height:unset;
+  overflow-y:unset;
 }
 
 .viewer .left-box .content::-webkit-scrollbar {
