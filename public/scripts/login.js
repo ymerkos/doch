@@ -69,14 +69,17 @@ onAuthStateChanged(auth, async (user) => {
       window.isAllowed = isAllowed;
       window.activeUser = user;
       console.log('User is signed in:', user, isAllowed);
-      loginBtn.innerText = "Log out";
-      loginBtn.onclick = signOutBtn;
-
+      if(window.loginBtn) {
+        loginBtn.innerText = "Log out";
+        loginBtn.onclick = signOutBtn;
+      }
     } else {
       // User is signed out
       window.isAllowed = false;
-      loginBtn.innerText = "Log in";
-      loginBtn.onclick = signInGoogle;
+      if(window.loginBtn) {
+        loginBtn.innerText = "Log in";
+        loginBtn.onclick = signInGoogle;
+      }
       console.log('User is signed out');
     }
 

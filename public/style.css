@@ -1084,3 +1084,9 @@ margin: 0 auto; /* Center the image horizontally */
   display:inline-block;
 
 }
+
+.admin-container .body .btn.approve {
+  color:black;
+  background:rgb(109, 255, 109);
+
+}

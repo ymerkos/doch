@@ -1,0 +1,39 @@
+<!--B"H-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Print Button Example</title>
+<style>
+    /* Define the print layout */
+    @media print {
+        .printable-content {
+            /* Define the styling for the printable content */
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="printable-content">
+    <!-- The content you want to print -->
+    <h1>Printable Content</h1>
+    <p>This is the content you want to print.</p>
+</div>
+
+<button onclick="printContent()">Print</button>
+
+<script>
+function printContent() {
+    var content = document.querySelector('.printable-content').innerHTML;
+    var printWindow = window.open('', '_blank');
+    printWindow.document.open();
+    printWindow.document.write('<html><head><title>Print</title></head><body>' + content + '</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
+</script>
+
+</body>
+</html>

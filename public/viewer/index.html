@@ -132,15 +132,15 @@
                 
                 <div class="tab-container">
                     <div class="tabs" onmousedown="startDrag(event)" ontouchstart="startDrag(event)" ondragstart="startDrag(event)" >
-                      <!--
-                        <div class="tab">שיעורים</div>
-                        <div class="tab">תרגומים</div>
-                        <div class="tab">קיצור</div>-->
+                      
+                        <div class="tab hidden" id="tab0">שיעורים</div>
+                        <div class="tab hidden" id="tab1">תרגומים</div>
+                        <div class="tab hidden">קיצור</div>
                         <div class="tab">הערות</div>
                         <div class="tab-indicator"></div>
                     </div>
                     <div class="content footnotesCnt" id="content0"></div>
-                    <!--<div class="content" id="content1">
+                    <div class="content hidden" id="content1">
                       <div class="editSecrets hidden">
 
                         <!DOCTYPE html>
@@ -198,7 +198,8 @@
 
                       </div>
                     </div>
-                    <div class="content" id="content2">
+                  
+                    <div class="content hidden" id="content2">
                       <button id="showE">Show Enlish</button>
                       <div class="editSecrets hidden">
                         <button id="transB">Translate with AI</button>
@@ -210,7 +211,7 @@
                       </div>
                       <div class="translationProgress" id="translationProgress"></div>
                     </div>
-                    <div class="content" id="content3">Content for Tab 4</div>-->
+                    <div class="content hidden" id="content3">Content for Tab 4</div>
                 </div>
 
             </div>
@@ -568,6 +569,8 @@
         if(lg) {
           lg.classList.remove("hidden")
         }
+        content1.classList.remove("hidden")
+        content2.classList.remove("hidden")
       }
 
       function findParentWithDatasetProperty(element, propertyName) {
@@ -583,6 +586,72 @@
         return null;
     }
 
+
+    var pc/*paragprah container*/ = null;
+
+    function hashChange() {
+      console.log('Hash changed', location.hash);
+     
+    }
+
+
+    addEventListener('hashchange', hashChange);
+
+    console.log("laoding",window.getEventListeners)
+
+    function removeAllEventListeners(element, eventType) {
+      console.log("Removing",eventType,"from",element,window.getEventListeners)
+       // const listeners = window.getEventListeners(element)[eventType];
+       var listeners = [] 
+       if (listeners) {
+            listeners.forEach(listener => {
+                element.removeEventListener(eventType, listener.listener);
+            });
+        }
+    }
+
+    window.changeHashWithoutEvent = newHash => {
+     // console.log("Removing!!")
+     // window.removeEventListener("hashchange", hashChange)
+     // removeAllEventListeners(window, "hashchange")
+      location.hash = newHash;
+      //addEventListener("hashchange", hashChange)
+    }
+    addEventListener("awtsmoosWroteAll", e=> {
+      console.log("Awtsmoos wrote!")
+      /**
+       * for example, read hash for paragraph number and other things
+       * 
+       * */
+      location.hash = location.hash;
+      var hash = getHashVars();
+          console.log("Awtsmoos hash!", hash)
+          var pr = hash.get("par");
+          if(pr) {
+            var par = getParagraphById(pr)
+            if(par) {
+              console.log("scrolling",par,pr)
+              par.scrollIntoView()
+            }
+          }
+    })
+
+
+    function getParagraphById(id) {
+      if(!pc) {
+        pc = document.querySelector(".paragraph-container");
+        if(!pc) return console.log("No container")
+      }
+      
+      try {
+        return Array.from(pc.children)
+          .find(w=>w.dataset.pIndex == id)
+      } catch(e) {return null}
+    }
+    function getHashVars() {
+      var h = new URLSearchParams(location.hash.substring(1))
+      return h;
+    }
 
       // Add an event listener for the custom event on the window object
       window.addEventListener("awtsmoosAuth", function(e) {
@@ -735,6 +804,8 @@
       var English = null;
       var isEnglish  = false;
       var oldT = null
+
+
 
 
       async function getRealtimeEnglish(addIt) {

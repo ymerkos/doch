@@ -177,8 +177,9 @@ async function getUserParagraphs(type, docId) {
                 results.push(entry)
             });
 
+
             // Return the data object containing paragraph data
-            return results;
+            return results.filter(w => !w.data.approvedAt && !w.data.deniedAt);
         } catch(error) {
             console.error("Problem fetching:", error);
             return null;
@@ -315,6 +316,8 @@ function setTextToDoc(sicha, isSicha = false) {
 
         setSupsForP(p)
         callEvents();
+
+        
     }
 }
 
@@ -446,7 +449,6 @@ function footnotify(sicha) {
         }
     })
     window.notes = notes;
-    console.log(notes)
 
 }
 

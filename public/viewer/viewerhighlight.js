@@ -10,7 +10,7 @@ var lastParagraph = null;
 
 function highlightParagraph() {
     let topParagraph = null;
-
+    var index = null;
     // Get container dimensions
     const containerTop = paragraphContainer.scrollTop + (paragraphContainer.offsetHeight / 4); // Adjusted container top boundary
     const containerBottom = containerTop + paragraphContainer.offsetHeight - (paragraphContainer.offsetHeight / 4); // Adjusted container bottom boundary
@@ -24,24 +24,35 @@ function highlightParagraph() {
         // Check if paragraph is within the adjusted viewport boundaries
         if (paragraphTop <= containerBottom && paragraphBottom >= containerTop) {
             topParagraph = paragraph;
+            index = i;
             break;
         }
     }
 
     if (topParagraph) {
+        if(!topParagraph.classList.contains("active")) {
+            
+        }
         paragraphs.forEach(p => p.classList.remove('active'));
+        
         topParagraph.classList.add('active');
         curParagraph = topParagraph;
+
         if (lastParagraph !== curParagraph)
-            notificationalism(topParagraph);
+            notificationalism(topParagraph, index);
         lastParagraph = curParagraph;
         lastPar = topParagraph;
     }
 }
 
+function setHash(pId) {
+    var h = new URLSearchParams({
+        par: pId
+    })
+    changeHashWithoutEvent("#" + h)
+}
 
-
-function notificationalism(p) {
+function notificationalism(p, index) {
     var n = window.notes;
     if(!n) return;
     
@@ -53,7 +64,6 @@ function notificationalism(p) {
         p.getElementsByTagName("sup")
     );
     if(!s.length) {
-        console.log("Nothing!",p,n)
         return;
     }
     var curNotes = {};
@@ -75,9 +85,13 @@ function notificationalism(p) {
         an[q] = p;
         nt.appendChild(p)
     })
+
+    setHash(p.dataset.pIndex)
+
 }
 
 function callEvents() {
+    var initialHash = location.hash;
     paragraphContainer = document.querySelector('.paragraph-content');
     paragraphs = Array.from(paragraphContainer.querySelectorAll('.p-div'));
     paragraphContainer.addEventListener('scroll',
@@ -94,6 +108,14 @@ function callEvents() {
 
     // Start observing the container
     resizeObserver.observe(paragraphContainer);
+    location.hash = initialHash
+    // Create a custom event with some detail (data)
+    var awtsmoosWroteAll = new CustomEvent("awtsmoosWroteAll", {
+        detail: {
+        wroteAll: true
+        } // You can pass any data you want in the detail property
+    });
+    window.dispatchEvent(awtsmoosWroteAll);
 }
 callEvents();
 window.callEvents=callEvents
