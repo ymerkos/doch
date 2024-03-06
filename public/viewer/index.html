@@ -1644,6 +1644,22 @@ console.log(formattedText);
        * print stuff
        * 
        * */
+
+       function print() {
+
+       }
+
+       function printDiv(html) {
+        
+          var iframe = document.createElement('iframe');
+          document.body.appendChild(iframe);
+          var doc = iframe.contentWindow.document;
+          doc.write('<html><head><title>Print</title></head><body>' + html + '</body></html>');
+          doc.close();
+          iframe.contentWindow.focus();
+          iframe.contentWindow.print();
+          document.body.removeChild(iframe);
+      }
     </script>
     
   </script>
