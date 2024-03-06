@@ -319,8 +319,11 @@
 
 
 
+            function getRef(id) {
+                return doc(db, 'books', 'Meluket', 'Maamarim', id);
+            }
             async function getBookDocument(id) {
-                const docRef = doc(db, 'books', 'Meluket', 'Maamarim', id);
+                const docRef = getRef(id)
 
                 try {
                     const docSnap = await getDoc(docRef);
@@ -423,8 +426,10 @@
                     )
 
                     var key = sub.data.type == "maamar" ? "Maamar" : "Sicha"
+                    console.log("Maybe updating?!?!?", key,newContent, ref)
+                    var docRef = getRef(decodeURIComponent(sub.data.docId))
                     await updateDoc(
-                        ref, {
+                        docRef, {
                             [key]: newContent
                         }
                     )
