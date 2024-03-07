@@ -58,6 +58,11 @@ a {
   src: url('/static/fonts/pft_frank.ttf') format('truetype'); 
 }
 
+@font-face {
+  font-family: 'roboto'; /* Choose a name for your font family */
+  src: url('https://firebasestorage.googleapis.com/v0/b/awtsfaria.appspot.com/o/RobotoCondensed.ttf?alt=media&token=3a4b0dec-19b2-46b5-9d41-59bca558785a') format('truetype'); 
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@100..900&display=swap');
 
 
@@ -802,10 +807,10 @@ color: #CFCFCF;
 
  .hero-btn {
   display: flex;
-  color: white;
+  color: #929292;
   flex-direction: column;
   align-items: center;
-  background: #004e5f;
+  border: 1.5px solid #c5c5c5;
   justify-content: center;
   margin: 5px;
   padding: 15px 35px;
@@ -895,9 +900,8 @@ body {
 @media only screen and (max-width: 600px) {
   .about-title {
     color: gray;
-      font-family: sans-serif;
+      font-family: 'roboto';
       font-size: 8vw !important ;
-     
       margin-top: 2px;
       font-weight: bold ;
       text-align: center;
@@ -1021,24 +1025,57 @@ body {
 .about-subtitle {
   
 color: black;
-  font-family: sans-serif;
-font-size: 15px;
-  font-weight: 600;
+  font-family: 'roboto';
+  font-size: 15px;
+  margin-top: 70px;
+  font-weight: 500;
   color: black;
 }
 
 .about-title {
 color: gray;
-  font-family: sans-serif;
-  font-size: 4vw;
- 
-  margin-top: 2px;
-  font-weight: bold ;
+  font-family: 'roboto';
+  font-size: 3.5vw;
+  margin: 30px 0;
+  font-weight: 500 ;
   text-align: center;
  
 }
 
- 
+.mission-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 45px;
+  padding: 70px 40px;
+  background-color: #f9f9f9;
+}
+
+.mission-container .mission-heading {
+  font-family: serif;
+  font-weight: 400;
+  color: #000000;
+  font-size: 36.1px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 30px;
+  white-space: nowrap;
+}
+
+.mission-container .mission-statement {
+  max-width: 1063px;
+  font-family: serif;
+  font-weight: 400;
+  color: #000000;
+  font-size: 16.6px;
+  max-width: 700px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 30px;
+} 
+
 .home-content {
   margin-top:26px;
 display: flex;
@@ -1048,14 +1085,15 @@ align-items: center;
 }
 
 .about-image {
-max-width: 53vw;
-  margin: 49px 0;
+  margin: 49px 20px;
 }
 
 .about-image img {
-max-width: 100%;
-user-select:none;
-margin: 0 auto; /* Center the image horizontally */
+  max-width: 600px;
+  min-width: 0;
+  width:100%;
+  OBJECT-FIT: cover;
+  object-position: center;
 }
 
 
@@ -1069,6 +1107,7 @@ margin: 0 auto; /* Center the image horizontally */
 .home-btns {
   display:flex;
   flex-direction:row;
+  margin-top: 30px;
 }
 
 
