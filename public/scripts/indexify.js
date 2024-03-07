@@ -19,7 +19,14 @@ import {
 initializeApp(firebaseConfig);
 
 var db = getFirestore();
-
+import yearIndex from "/meluket/yearOfDocs.js";
+var src = new URLSearchParams(location.search);
+var y = src.get("year");
+var docs = [];
+if(y) {
+    var d = yearIndex[y]
+    if(d) docs = d;
+}
 export default setIndexesToContainer;
 /*
 maamar "/viewer/meluket/"
