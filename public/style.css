@@ -93,6 +93,11 @@ body,html {
   margin: 0;
 }
 
+.book_vol_index.ml {
+  margin:15px;
+  height:unset;
+}
+
 
 .book_vol_index .tile-grid {
   display: flex;
