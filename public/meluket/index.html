@@ -28,14 +28,16 @@
 <div class="all">
 <div class="title">Meluket</div>
 <div class="tabSwitcher">
-  <div id="parshaTab" class="tablink">
-      <div id="activeTab" class="active-tablink" style="transform: translate3d(0%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+  <div id="volTab" class="tablink">
+    <div id="activeTab" class="active-tablink" style="transform: translate3d(0%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
       transform-style: preserve-3d;"></div>
+    <div  class="inner-tab">Volume</div>
+</div>
+  <div id="parshaTab" class="tablink">
+      
       <div  class="inner-tab">Month</div>
   </div>
-  <div id="volTab" class="tablink">
-      <div  class="inner-tab">Volume</div>
-  </div>
+  
 </div>
 <div class="selections">
 
@@ -43,15 +45,37 @@
 </div>
 <script>
   
-  parshaTab.onclick = () => {
+  var sl = document.querySelector(".selections")
+  volTab.onclick = () => {
       activeTab.style.transform = /*css*/`
       translate3d(0%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)
       `
   }
-  volTab.onclick = () => {
+  parshaTab.onclick = () => {
       activeTab.style.transform = /*css*/`
       translate3d(100%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)
       `
+  }
+  var hebrew="אבגדהו"
+  function generateVolumes() {
+    if(!sl) return;
+    var bvi = document.createElement("div")
+    bvi.className = "book_vol_index";
+
+    var tg = document.createElement("div")
+    tg.className= "tile-grid"
+    bvi.appendChild(tg);
+    sl.appendChild(bvi);
+    for(var i = 0; i < 6; i++) {
+      (i => {
+        var bt = document.createElement("a")
+        bt.textContent = hebrew[i];
+        bt.className = "tile"
+        tg.appendChild(bt)
+        s.href = "/meluket/"+i;
+
+      })(i);
+    }
   }
 </script>
 </div>
