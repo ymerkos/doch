@@ -49,16 +49,20 @@
   volTab.onclick = () => {
       activeTab.style.transform = /*css*/`
       translate3d(0%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)
-      `
+      `;
+      generateVolumes()
   }
   parshaTab.onclick = () => {
       activeTab.style.transform = /*css*/`
       translate3d(100%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)
       `
   }
+
+  volTab.click()
   var hebrew="אבגדהו"
   function generateVolumes() {
     if(!sl) return;
+    sl.innerHTML = ""
     var bvi = document.createElement("div")
     bvi.className = "book_vol_index";
 
@@ -72,7 +76,7 @@
         bt.textContent = hebrew[i];
         bt.className = "tile"
         tg.appendChild(bt)
-        s.href = "/meluket/"+i;
+        bt.href = "/meluket/"+i;
 
       })(i);
     }
