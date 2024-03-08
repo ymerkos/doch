@@ -7,7 +7,7 @@
     
         <link rel="stylesheet" href="/style.css" />
     </head>
-
+ 
     <body>
         <div class="BH">
             ב"ה 
@@ -47,16 +47,32 @@
   import years from "./indecies/yearsInOrder.js";
   import yearIndex from "./indecies/yearOfDocs.js";
 
+  var hashVars = new URLSearchParams(location.hash.substring(1));
+  function setHashvar(key, val) {
+    hashVars = new URLSearchParams(location.hash.substring(1));
+    if(key) {
+      if(!val) {
+        hashVars.delete(key)
+      } else {
+        hashVars.set(key, val)
+      }
+    }
+  }
+
+  var isY = hashVars.get("year");
+
   var sl = document.querySelector(".selections")
   volTab.onclick = () => {
       activeTab.style.transform = /*css*/`
       translate3d(0%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)
       `;
-      generateVolumes()
+      generateVolumes();
+      setHashvar("year", null)
   }
 
   yearTab.onclick = () => {
-      generateYears()
+      generateYears();
+      setHashvar("year", 1)
       activeTab.style.transform = /*css*/`
       translate3d(100%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)
       `
@@ -65,8 +81,11 @@
   var hebrew="אבגדהו"
   document.addEventListener("DOMContentLoaded", () => {
 
-    volTab.click()
-
+    if(!isY)
+      volTab.click()
+    else {
+      yearTab.click()
+    }
     generateVolumes()
   })
 
