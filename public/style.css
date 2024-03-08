@@ -252,7 +252,9 @@ width: -webkit-fill-available;
 direction:rtl;
 }
 
-
+.viewer .right-box .paragraph-content p.heb {
+  direction: rtl;
+}
 .viewer .right-box .paragraph-content p {
   color: #000;
   margin:0;
