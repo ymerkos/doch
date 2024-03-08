@@ -141,7 +141,7 @@ window.gny= generateYears;
         var year = years[i]
         var bt = document.createElement("a")
         bt.textContent = isHebrew ? year 
-        : (5 + calculateGematria(year));
+        : ("5" + calculateGematria(year));
 
         bt.className = "tile"
         tg.appendChild(bt)

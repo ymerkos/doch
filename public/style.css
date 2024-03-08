@@ -106,10 +106,10 @@ body,html {
   flex-direction: row-reverse; /* Set to row-reverse for RTL */
 }
 
-
 .book_vol_index .tile {
-  width: 50px;
-  height: 50px;
+  min-width: 40px;
+  height: 40px;
+  padding: 10px;
   margin: 5px;
   display: flex;
   font-family: 'Noto Serif Hebrew', serif;
