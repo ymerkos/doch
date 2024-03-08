@@ -749,6 +749,7 @@ color: #CFCFCF;
   border-radius: 6px;
   font-weight: 500;
   border: 1px solid;
+  font-size: 12px;
   border-color: #ededec;
 }
 
@@ -847,7 +848,7 @@ color: #CFCFCF;
   display: flex;
   cursor: pointer;
   flex-direction: column;
-  flex-grow: 1;
+ /* flex-grow: 1;*/
   min-width: 200px;
   text-align: center;
   height: auto;
@@ -1224,5 +1225,5 @@ color: gray;
 
 
 .year-header {
-  font-size: 28px;
+  font-size: 18px;
 }
