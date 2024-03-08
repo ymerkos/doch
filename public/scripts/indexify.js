@@ -150,10 +150,11 @@ async function setIndexesToContainer({
             `
         }
     } else {
-        await processVolume(volumeNumber || ls)
-        volumeNumber = ls;
+        var myVol = volumeNumber || ls
+        await processVolume(myVol)
+        volumeNumber = myVol;
 
-        VOLUME = ls;
+        VOLUME = myVol;
         /*
         when using firebase
         var dr = await doc(db,...databasePath,ls);
