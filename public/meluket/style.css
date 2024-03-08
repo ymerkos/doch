@@ -5,6 +5,7 @@
 }
 
 .all {
+    margin-top: 31px;
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -29,6 +30,10 @@
 .index-tabs .tab {
 
     color:#a5a5a5
+}
+
+.index-tabs .tab:hover {
+    cursor:pointer;
 }
 
 .main-section {

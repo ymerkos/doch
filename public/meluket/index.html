@@ -69,33 +69,36 @@ window.monthsTxt = monthsTxt
 
   var sl = document.querySelector(".main-section")
   volTab.onclick = () => {
-      activeTab.style.transform = /*css*/`
-      translate3d(0%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)
-      `;
+    
       generateVolumes();
       setHashvar("year", null);
 
       setHashvar("month", null);
+
+      setActive(volTab)
   }
 
   monthTab.onclick = () => {
       generateMonths();
       setHashvar("year", null);
       setHashvar("month", 1);
-      activeTab.style.transform = /*css*/`
-      translate3d(100%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)
-      `
+      setActive(monthTab)
   }
   yearTab.onclick = () => {
       generateYears();
       setHashvar("year", 1);
-
+      setActive(yearTab)
       setHashvar("month", null);
-      activeTab.style.transform = /*css*/`
-      translate3d(200%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)
-      `
+     
   }
 
+  function setActive(el) {
+    var f = Array.from(document.querySelectorAll(".tab"))
+    f.forEach(q=> {
+      q.classList.remove("active")
+    });
+    el.classList.add("active")
+  }
   var hebrew="אבגדהו"
   document.addEventListener("DOMContentLoaded", () => {
     hashVars = new URLSearchParams(location.hash.substring(1));
@@ -121,13 +124,7 @@ window.gny= generateYears;
     //yearIndex
     if(!sl) return console.log("Not found",sl);
     sl.innerHTML = ""
-    var bvi = document.createElement("div")
-    bvi.className = "book_vol_index ml";
-
-    var tg = document.createElement("div")
-    tg.className= "tile-grid"
-    bvi.appendChild(tg);
-    sl.appendChild(bvi);
+    
 
     
     for(var i = 0; i < years.length; i++) {
@@ -138,7 +135,7 @@ window.gny= generateYears;
         : ("5" + calculateGematria(year));
 
         bt.className = "tile"
-        tg.appendChild(bt)
+        sl.appendChild(bt)
         bt.href = "/meluket/year/" + year;
 
       })(i);
@@ -150,14 +147,8 @@ window.gny= generateYears;
     //yearIndex
     if(!sl) return console.log("Not found",sl);
     sl.innerHTML = ""
-    var bvi = document.createElement("div")
-    bvi.className = "book_vol_index ml";
-
-    var tg = document.createElement("div")
-    tg.className= "tile-grid"
-    bvi.appendChild(tg);
-    sl.appendChild(bvi);
-    console.log("Appended?",bvi);
+  
+    
 
     
     for(var i = 1; i < 13; i++) {
@@ -171,11 +162,11 @@ window.gny= generateYears;
 
 
         var bt = document.createElement("a")
-        bt.textContent = (i) +") " + month[0][
+        bt.textContent = month[0][
           isHebrew ? 0  : 1 
         ]
         bt.className = "tile"
-        tg.appendChild(bt)
+        sl.appendChild(bt)
         bt.href = "/meluket/month/" + i;
 
       })(i);
@@ -185,19 +176,13 @@ window.gny= generateYears;
   function generateVolumes() {
     if(!sl) return;
     sl.innerHTML = ""
-    var bvi = document.createElement("div")
-    bvi.className = "book_vol_index ml";
 
-    var tg = document.createElement("div")
-    tg.className= "tile-grid"
-    bvi.appendChild(tg);
-    sl.appendChild(bvi);
     for(var i = 0; i < 6; i++) {
       (i => {
         var bt = document.createElement("a")
         bt.textContent = !isHebrew ? i+1 : hebrew[i];
         bt.className = "tile"
-        tg.appendChild(bt)
+        sl.appendChild(bt)
         bt.href = "/meluket/"+(i+1);
 
       })(i);
