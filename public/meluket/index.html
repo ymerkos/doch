@@ -61,7 +61,7 @@
     }
   }
 
-  var isY = hashVars.get("year");
+  
 
   var sl = document.querySelector(".selections")
   volTab.onclick = () => {
@@ -82,13 +82,18 @@
 
   var hebrew="אבגדהו"
   document.addEventListener("DOMContentLoaded", () => {
+    hashVars = new URLSearchParams(location.hash.substring(1));
+    var isY = hashVars.get("year");
 
-    if(!isY)
-      volTab.click()
-    else {
-      yearTab.click()
+    if(!isY) {
+      volTab.click();
+
+      generateVolumes()
     }
-    generateVolumes()
+    else {
+      yearTab.click();
+      generateYears()
+    }
   })
 
 window.gny= generateYears;
