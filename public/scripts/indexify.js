@@ -220,14 +220,14 @@ async function setIndexesToContainer({
             Object.keys(b)
             .forEach(w => {
                 
-                setContent(b[w], container, true, docId)
+                setContent(b[w], container, true)
             })
             return console.log("no booklets, did sicha")
         }
         console.log(b,isSicha,"Maamar")
 
         b.forEach(w=> {
-            var h = setMeluketBooklet(w,container, docId);
+            var h = setMeluketBooklet(w,container);
         })
     }
 
