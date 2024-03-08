@@ -212,7 +212,7 @@ async function setIndexesToContainer({
     }
 
     function setContentFromVolume(volData, isSicha, volId) {
-        var b = {...volData};
+        var b = Array.from(volData);
         console.log(b,"BVOL")
         container.innerHTML = "";
 
