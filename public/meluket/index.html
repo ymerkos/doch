@@ -50,7 +50,7 @@
 </div>
 <script type="module">
   var isHebrew = false;
-  import years from "/resources/indecies/yearsInOrder.js";
+  import years from "./indecies/yearsInOrder.js";
   import yearIndex from "./indecies/yearOfDocs.js";
   import monthIndex from "./indecies/monthsOfMaamarim.js";
   import monthsTxt from "/resources/indecies/monthsToTxt.js";
@@ -177,7 +177,7 @@ window.gny= generateYears;
 
 
         var bt = document.createElement("a")
-        bt.textContent = month[0][
+        bt.textContent = (i) +") " + month[0][
           isHebrew ? 0  : 1 
         ]
         bt.className = "tile"

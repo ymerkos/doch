@@ -103,7 +103,7 @@ body,html {
   display: flex;
   flex-wrap: wrap;
   max-width: 500px;
-  flex-direction: row-reverse; /* Set to row-reverse for RTL */
+  flex-direction: row; /* Set to row-reverse for RTL */
 }
 
 .book_vol_index .tile {
