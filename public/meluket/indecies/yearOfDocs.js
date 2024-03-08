@@ -198,7 +198,7 @@ export default {
 		"4_קכה"
 	],
 	"תנש\"א": [
-		"2_קמה",
+		"2_קמה", // the title in TOC says 41 not 51
 		"5_מז",
 		"5_סה"
 	],

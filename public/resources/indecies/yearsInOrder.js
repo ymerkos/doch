@@ -40,7 +40,7 @@ export default [
 	"תשמ\"ז",
 	"תשמ\"ח",
 	"תשמ\"ט",
-	"תש\"נ",
+	//"תש\"נ", no maaamarim
 	"תנש\"א",
-	"תשנ\"ב"
+	//"תשנ\"ב" no maamarim given in this year
 ];
