@@ -42,7 +42,8 @@ containerSelector = ".container"
 */
 async function setIndexesToContainer({
     containerSelector,
-    htmlEl
+    htmlEl,
+    volumeNumber = null
     
 }) {
 
@@ -63,7 +64,6 @@ async function setIndexesToContainer({
     var p = location.pathname.split("/");
     var ls = p[p.length-1];
 
-    var volumeNumber = null;
 
     var url = "/meluket/view/";
 
@@ -74,19 +74,53 @@ async function setIndexesToContainer({
     ] = decodeURIComponent(location.pathname)
         .split("/").splice(-2);
 
-    if(str == "year") {
-        
+    async function processYear(val) {
         isViewingByYear = true;
-        var def = await import("/meluket/indecies/yearOfDocs.js");
-        yearIndex = def.default;
+        if(!yearIndex) {
+            var def = await import("/meluket/indecies/yearOfDocs.js");
+            yearIndex = def.default;
+        }
         var yr = yearIndex[val];
-
-        
         window.yearIndex = yearIndex;
         if(!yr) {
-            return alert("That year, "+val+", isn't found. Hebrew only!")
+            return console.log("That year, "+val+", isn't found. Hebrew only!")
 
         }
+        setContentOfDocs(yr)
+        return yr;
+    }
+
+    async function processMonth(val) {
+        var def = await import("/meluket/indecies/monthsOfMaamarim.js");
+        monthIndex = def.default;
+        window.monthIndex = monthIndex;
+
+        var maamarim = monthIndex[val];
+
+
+        setContentOfDocs(maamarim)
+        return maamarim;
+    }
+
+    async function processVolume(val) {
+        
+        /*
+        when using firebase
+        var dr = await doc(db,...databasePath,ls);
+        var ds = await getDoc(dr);
+        */
+        var vol = TOC[val]
+        if(vol) {
+            setContentFromVolume(vol);
+        }
+        return vol;
+    }
+    if(str == "year") {
+        
+       
+
+        
+        var yr = await processYear(val);
 
 
         var yt = document.querySelector(".year-title");
@@ -100,13 +134,9 @@ async function setIndexesToContainer({
                 }</div>
             `
         }
-        setContentOfDocs(yr)
+        
     } else if(str == "month") {
-        var def = await import("/meluket/indecies/monthsOfMaamarim.js");
-        monthIndex = def.default;
-        window.monthIndex = monthIndex;
-
-        var maamarim = monthIndex[val];
+       await processMonth(val)
         var yt = document.querySelector(".year-title");
         if(yt) {
             yt.innerHTML = /*html*/`
@@ -119,12 +149,10 @@ async function setIndexesToContainer({
                 }</div>
             `
         }
-        setContentOfDocs(maamarim)
     } else {
-        
+        await processVolume(volumeNumber || ls)
         volumeNumber = ls;
 
-        var ls = volumeNumber//p[p.length-1];
         VOLUME = ls;
         /*
         when using firebase
@@ -143,8 +171,7 @@ async function setIndexesToContainer({
                     }</div>
                 `
             }
-            var b = vol;
-            setContentFromVolume(b);
+            
             
         }
     }
