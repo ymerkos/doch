@@ -111,7 +111,7 @@ async function setIndexesToContainer({
         */
         var vol = TOC[val]
         if(vol) {
-            setContentFromVolume(vol);
+            setContentFromVolume(vol, val);
         }
         return vol;
     }
@@ -152,9 +152,10 @@ async function setIndexesToContainer({
     } else {
         var myVol = volumeNumber || ls
         await processVolume(myVol)
-        volumeNumber = myVol;
+       
 
         VOLUME = myVol;
+        console.log(VOLUME)
         /*
         when using firebase
         var dr = await doc(db,...databasePath,ls);
@@ -168,7 +169,7 @@ async function setIndexesToContainer({
                     <!--<a href="/meluket/#month=1">All Months</a>-->
                   
                     <div class="year-header">${
-                        eng + " Vol. " + volumeNumber
+                        eng + " Vol. " + myVol
                     }</div>
                 `
             }
@@ -210,23 +211,23 @@ async function setIndexesToContainer({
         })
     }
 
-    function setContentFromVolume(volData, isSicha) {
-        var b = volData;
-
+    function setContentFromVolume(volData, isSicha, volId) {
+        var b = {...volData, volume:volId};
+        console.log(b,"BVOL")
         container.innerHTML = "";
 
         if(isSicha) {
             Object.keys(b)
             .forEach(w => {
                 
-                setContent(b[w], container, true)
+                setContent(b[w], container, true, docId)
             })
             return console.log("no booklets, did sicha")
         }
         console.log(b,isSicha,"Maamar")
 
         b.forEach(w=> {
-            var h = setMeluketBooklet(w,container);
+            var h = setMeluketBooklet(w,container, docId);
         })
     }
 
