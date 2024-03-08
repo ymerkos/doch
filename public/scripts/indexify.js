@@ -19,8 +19,9 @@ import {
 initializeApp(firebaseConfig);
 
 var db = getFirestore();
-import yearIndex from "/meluket/indecies/yearOfDocs.js";
-import years from "/meluket/indecies/yearsInOrder.js";
+
+var yearIndex = null;
+var monthIndex = null;
 import TOC from "/meluket/indecies/TOC.js";
 
 
@@ -58,18 +59,22 @@ async function setIndexesToContainer({
 
     var isViewingByYear = false;
     var [
-        yearStr,
-        yearVal
+        str,
+        val
     ] = decodeURIComponent(location.pathname)
         .split("/").splice(-2);
 
-    if(yearStr == "year") {
+    if(str == "year") {
         
         isViewingByYear = true;
+        var def = await import("/meluket/indecies/yearOfDocs.js");
+        yearIndex = def.default;
+        var yr = yearIndex[val];
 
-        var yr = yearIndex[yearVal];
+        
+        window.yearIndex = yearIndex;
         if(!yr) {
-            return alert("That year, "+yearVal+", isn't found. Hebrew only!")
+            return alert("That year, "+val+", isn't found. Hebrew only!")
 
         }
 
@@ -78,10 +83,24 @@ async function setIndexesToContainer({
         if(yt) {
             yt.innerHTML = /*html*/`
                 <a href="/meluket/#year=1">All Years</a>
-                <div class="year-header">${yearVal}</div>
+                <div class="year-header">${val}</div>
             `
         }
         setContentOfDocs(yr)
+    } else if(str == "month") {
+        var def = await import("/meluket/indecies/monthsOfMaamarim.js");
+        monthIndex = def.default;
+        window.monthIndex = monthIndex;
+
+        var maamarim = monthIndex[val];
+        var yt = document.querySelector(".year-title");
+        if(yt) {
+            yt.innerHTML = /*html*/`
+                <a href="/meluket/#year=1">All Months</a>
+                <div class="year-header">${val}</div>
+            `
+        }
+        setContentOfDocs(maamarim)
     } else {
         volumeNumber = ls;
 

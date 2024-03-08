@@ -18,6 +18,11 @@
       },
 
       {
+        "source": "/meluket/month/**",
+        "destination": "/templates/maamarIndex.html"
+      },
+
+      {
         "source": "/likkutei-sichos/view/**",
         "destination": "/viewer/index.html"
       },
