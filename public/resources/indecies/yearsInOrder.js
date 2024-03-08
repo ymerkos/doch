@@ -8,7 +8,7 @@ export default [
 	"תשט\"ו",
 	"תשט\"ז",
 	"תשי\"ז",
-	"תשי\"ח",
+	//"תשי\"ח", no maamarim for this year currently
 	"תשי\"ט",
 	"תש\"כ",
 	"תשכ\"א",
