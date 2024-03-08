@@ -93,9 +93,9 @@ async function setIndexesToContainer({
         if(yt) {
             yt.innerHTML = /*html*/`
                 <!--<a href="/meluket/#year=1">All Years</a>-->
-                <div class="meluket-title">${eng}</div>
+          
                 <div class="year-header">${
-                    isHebrew ? val
+                    eng + " " + isHebrew ? val
                     : ("5" + calculateGematria(val))
                 }</div>
             `
@@ -111,9 +111,9 @@ async function setIndexesToContainer({
         if(yt) {
             yt.innerHTML = /*html*/`
                 <!--<a href="/meluket/#month=1">All Months</a>-->
-                <div class="meluket-title">${eng}</div>
+        
                 <div class="year-header">${
-                     monthsTxt[val][0][
+                    eng + " " +monthsTxt[val][0][
                         isHebrew ? 0 : 1
                     ]
                 }</div>
@@ -137,9 +137,9 @@ async function setIndexesToContainer({
             if(yt) {
                 yt.innerHTML = /*html*/`
                     <!--<a href="/meluket/#month=1">All Months</a>-->
-                    <div class="meluket-title">${eng}</div>
+                  
                     <div class="year-header">${
-                        "Vol. " + volumeNumber
+                        eng + " Vol. " + volumeNumber
                     }</div>
                 `
             }
