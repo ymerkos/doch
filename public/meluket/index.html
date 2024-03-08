@@ -103,7 +103,7 @@
     hashVars = new URLSearchParams(location.hash.substring(1));
     var isY = hashVars.get("year");
     var isM = hashVars.get("month")
-    if(!isY) {
+    if(!isY && !isM) {
       volTab.click();
 
       generateVolumes()
