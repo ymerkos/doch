@@ -8,7 +8,7 @@
  * logic
  */
 
-
+var monthsOfMaamarim = {}
 for(var i = 0; i < g.docs.length; i++) {
     bb=g.docs[i].data();
     var m = bb.Maamar
@@ -18,12 +18,31 @@ for(var i = 0; i < g.docs.length; i++) {
     var h = ttl.heb;
     if(!h) continue
     var d = getYearAndMonthInfo(h)
-    console.log("Doing",g.docs[i],d)
+    //console.log("Doing",g.docs[i],d);
+    var mn  = d.month;
+    if(!mn) {
+        console.log("NO valid month",bb,g.docs[i].id,i,mn,m[0])
+        continue;
+    }
+    var eng = d.month.eng
+    if(!eng) {
+        console.log("NO english month!",g.docs[i].id,d,i,m[0],d.month)
+        continue;
+    }
+
+    if(!monthsOfMaamarim[eng]) {
+        monthsOfMaamarim[eng] = [];
+    }
+
+    monthsOfMaamarim[eng].push(g.docs[i].id)
+    
     await updateDoc(g.docs[i].ref, {
-        Year: d.year || null,
-        Month: d.month || null
+     //   Year: d.year || null,
+        Month: mn
     })
 }
+monthsOfMaamarim
+
 var years = {
     "תש\"י": "5710",
     "תשי\"א": "5711",
@@ -100,7 +119,7 @@ var monthsNumbers = {
 	"פסח": "7",
     "החודש, ה'תשמ": "7",
 	"ניסן": "7",
-    
+
 	"אייר": "8",
     "ל\"ג בעומר": "8",
 
