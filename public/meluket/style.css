@@ -18,13 +18,10 @@
 
 
 .year-title {
-    margin-top: calc(var(---header-height) + 65px);
+    margin-top: calc(var(---header-height) + 60px);
     display: flex;
-    margin-left: 50%;
-    flex-direction: column;
-    transform: translateX(-50%);
-    gap: 20px;
     align-items: center;
+    flex-direction: column;
 }
 
 .year-title a {
