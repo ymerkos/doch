@@ -25,21 +25,29 @@
     </div>
   </header>
 <link href="./style.css" type="text/css" rel="stylesheet">
-
-
-<!--B"H-->
+<div class="background-helper"></div>
 <div class="all">
-  <div class="index-header">Meluket</div>
-  <div class="index-main">
-      <div class="index-tabs">
-          <div class="tab active" id="volTab">Volumes</div>
-          <div class="tab" id="monthTab">Months</div>
-          <div class="tab" id="yearTab">Years</div>
-      </div>
-      <div class="main-section">
-         
-      </div>
+<div class="meluket-title">Meluket</div>
+<div class="tabSwitcher">
+  <div id="volTab" class="tablink">
+    <div id="activeTab" class="active-tablink" style="transform: translate3d(0%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+      transform-style: preserve-3d;"></div>
+    <div  class="inner-tab">Volume</div>
+</div>
+
+  <div id="monthTab" class="tablink">
+        
+    <div  class="inner-tab">Month</div>
   </div>
+  <div id="yearTab" class="tablink">
+      
+      <div  class="inner-tab">Year</div>
+  </div>
+  
+</div>
+<div class="selections">
+
+</div>
 </div>
 <script type="module">
   var isHebrew = false;
@@ -52,7 +60,6 @@ window.monthsTxt = monthsTxt
   import yearsEngToHeb from "/resources/indecies/yearsEngToHeb.js";
   var hashVars = new URLSearchParams(location.hash.substring(1));
   function setHashvar(key, val) {
-    return;
     hashVars = new URLSearchParams(location.hash.substring(1));
     if(key) {
       if(!val) {
@@ -67,7 +74,7 @@ window.monthsTxt = monthsTxt
 
   
 
-  var sl = document.querySelector(".main-section")
+  var sl = document.querySelector(".selections")
   volTab.onclick = () => {
       activeTab.style.transform = /*css*/`
       translate3d(0%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)

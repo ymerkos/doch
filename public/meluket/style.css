@@ -1,94 +1,62 @@
 /**B"H*/
-body {
-    background: url(/resources/images/background-index.jpeg);
+.index-main {
+    display: flex;
+    flex-direction: column;
 }
+
 .all {
-   
- 
-    display:flex;
-    flex-direction:column;
-
-    height:var(---awtsmoos-height);
-}
-.background-helper {
-    z-index:-1;
-    position:absolute;
-    left:0;right:0;
-    top:0;bottom:0;
-    background:rgba(255,0,0,0.5)
-}
-.meluket-title {
-    color: #564c40;
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    font-family: American Typewriter, sans-serif;
-    font-size: 70px;
-    font-weight: 400;
-}
-
-
-
-
-
-.tabSwitcher {
-    opacity: 1;
-    background-color: rgba(255, 255, 255, .5);
-    border-radius: 17px;
-    flex-direction: row;
-    justify-content: center;
-    align-self: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
     align-items: center;
+    flex-wrap: wrap;
+}
+.index-main {
+    display: flex;
+    flex-direction: column;
+}
+.index-tabs {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.index-tabs .tab.active {
+    font-weight: bold;
+    border-bottom: solid;
+    color:black;
+}
+.index-tabs .tab {
+
+    color:#a5a5a5
+}
+
+.main-section {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 500px;
+    flex-direction: row;
+}
+
+.main-section .tile {
+    min-width: 40px;
+    height: 40px;
     padding: 10px;
+    margin: 5px;
     display: flex;
-}
-
-.tabSwitcher .tablink {
-    width: 150px;
-    grid-column-gap: 12px;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0);
-    border-radius: 100px;
-    flex-direction: row;
+    font-family: 'Noto Serif Hebrew', serif;
     justify-content: center;
     align-items: center;
-    padding: 10px 24px;
-    font-weight: 600;
-    display: flex;
-    color: #4d4d4d;
-    vertical-align: top;
-    text-align: left;
+    background-color: #f7f7f7;
     cursor: pointer;
-    text-decoration: none;
-    position:relative;
 }
 
-.active-tablink {
-    transition:transform .5s ease;
-    z-index: 0;
-    grid-column-gap: 12px;
-    background-color: #b2c6a5;
-    border-radius: 10px;
-    flex-direction: row;
-    flex: 0 auto;
-    justify-content: center;
-    align-items: center;
-    font-size: 0;
-    line-height: 0;
-    position: absolute;
-    top: 0%;
-    bottom: 0%;
-    left: 0%;
-    right: 0%;
+.main-section .tile:hover {
+    background-color:#ededec;
+    transform: scale(1.1);
 }
 
-.inner-tab {
-    color: #464646;
-    flex: 0 auto;
-    font-family: Antic Didone, sans-serif;
-    font-size: 20px;
-    position: relative;
-
+.main-section .tile:active  {
+    transform: scale(1); 
 }
 
-/*   */
