@@ -19,7 +19,9 @@ import {
 initializeApp(firebaseConfig);
 
 var db = getFirestore();
-import yearIndex from "/meluket/yearOfDocs.js";
+import yearIndex from "/meluket/indecies/yearOfDocs.js";
+import years from "/meluket/indecies/yearsInOrder.js";
+
 var src = new URLSearchParams(location.search);
 var y = src.get("year");
 var docs = [];
@@ -49,7 +51,7 @@ if(!container) {
     return alert("No container for "+containerSelector)
 }
 
-console.log("Gt container",container)
+
 var ls = volumeNumber//p[p.length-1];
 var VOLUME = ls;
 
@@ -58,12 +60,12 @@ var ds = await getDoc(dr);
 
 if(ds.exists()) {
     var b = await ds.data();
-    console.log("Got data",b)
+    
     var bl = b.booklets;
     if(!bl) {
         Object.keys(b)
         .forEach(w => {
-            console.log("seting",b[w],b,w)
+            
             setContent(b[w], container, true)
         })
         return console.log("no booklets")
