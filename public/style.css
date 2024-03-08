@@ -734,15 +734,21 @@ color: #CFCFCF;
 .menu-btn:hover {
   cursor:pointer
 }
- .menu-btn {
-  user-select:none;
+.menu-btn a {
+  text-decoration: none;
+  color:black;
+}
+.menu-btn {
+  user-select: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1px 12px;
+  padding: 7px 12px;
   position: relative;
   background-color: #ffffff;
+  font-family: sans-serif;
   border-radius: 6px;
+  font-weight: 500;
   border: 1px solid;
   border-color: #ededec;
 }
