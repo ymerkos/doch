@@ -432,7 +432,6 @@ padding: 0px 5px;
 
   max-width: 600px;
   margin: auto;
-  margin-top: 100px;
   flex-direction: column;
   padding: 0 10px;
   
@@ -1211,7 +1210,7 @@ color: gray;
 /**maamar index page at /meluket/something (befor viewer) **/
 
 .year-title {
-  margin-top: calc(var(---header-height) + 60px);
+  margin-top: calc(var(---header-height));
   display: flex;
   align-items: center;
   flex-direction: column;
