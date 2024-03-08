@@ -14,6 +14,29 @@
     font-weight: 400;
 }
 
+
+
+
+.year-title {
+    margin-top: calc(var(---header-height) + 65px);
+    display: flex;
+    margin-left: 50%;
+    flex-direction: column;
+    transform: translateX(-50%);
+    gap: 20px;
+    align-items: center;
+}
+
+.year-title a {
+    color: revert;
+    text-decoration: revert;
+}
+
+
+.year-header {
+    font-size: 28px;
+}
+
 .tabSwitcher {
     opacity: 1;
     background-color: rgba(255, 255, 255, .5);
