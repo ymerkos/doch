@@ -269,7 +269,7 @@ async function setIndexesToContainer({
 
             const divIndexTitle = document.createElement('div');
             divIndexTitle.classList.add('index-title');
-            divIndexTitle.textContent = g.title || g.Title || w;
+            divIndexTitle.textContent = g.title || g.Title ;
             divIndexHeader.appendChild(divIndexTitle);
 
             const divIndexNumber = document.createElement('div');
