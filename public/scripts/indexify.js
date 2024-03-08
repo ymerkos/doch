@@ -46,7 +46,7 @@ async function setIndexesToContainer({
         return alert("No container for "+containerSelector)
     }
 
-
+    var VOLUME = null;
 
 
     var p = location.pathname.split("/");
@@ -77,7 +77,7 @@ async function setIndexesToContainer({
         var yt = document.querySelector(".year-title");
         if(yt) {
             yt.innerHTML = /*html*/`
-                <a href="/meluket">All Years</a>
+                <a href="/meluket/#year=1">All Years</a>
                 <div class="year-header">${yearVal}</div>
             `
         }
@@ -86,7 +86,7 @@ async function setIndexesToContainer({
         volumeNumber = ls;
 
         var ls = volumeNumber//p[p.length-1];
-        var VOLUME = ls;
+        VOLUME = ls;
         /*
         when using firebase
         var dr = await doc(db,...databasePath,ls);
@@ -114,6 +114,7 @@ async function setIndexesToContainer({
         var doc = vl.find(q => 
             q.contents.find(maam => maam.page == page)
         );
+        doc.volume = vol;
         return doc;
     }
 
@@ -173,7 +174,7 @@ async function setIndexesToContainer({
             parent.appendChild(item);
 
             var id =
-                VOLUME+"_"+g.page;
+                (g.volume || VOLUME)+"_"+g.page;
             // console.log("HI!",id,VOLUME,g.page)
             item.onclick=() => {
                 location.href=url+id;
@@ -181,9 +182,7 @@ async function setIndexesToContainer({
         } else {
             const divIndexItem = document.createElement('div');
             divIndexItem.classList.add('index-item');
-            divIndexItem.onclick = function() {
-                location.href = '${href(w)}';
-            };
+           
 
             const divIndexHeader = document.createElement('div');
             divIndexHeader.classList.add('index-header');
