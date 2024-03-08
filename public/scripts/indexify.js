@@ -11,7 +11,7 @@ import firebaseConfig from "../config.js"
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 
-import monthsTxt from "/resources/indecies/monthsToTxt.js";
+import monthsTxt from "/meluket/indecies/monthsToTxt.js";
 import calculateGematria from "/scripts/gematria.js";
 
 import yearsEngToHeb from "/resources/indecies/yearsEngToHeb.js";
