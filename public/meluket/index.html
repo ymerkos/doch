@@ -36,7 +36,7 @@
 
   <div id="monthTab" class="tablink">
         
-    <div  class="inner-tab">Year</div>
+    <div  class="inner-tab">Month</div>
   </div>
   <div id="yearTab" class="tablink">
       
@@ -51,6 +51,7 @@
 <script type="module">
   import years from "./indecies/yearsInOrder.js";
   import yearIndex from "./indecies/yearOfDocs.js";
+  import monthIndex from "./indecies/monthsOfMaamarim.js";
 
   var hashVars = new URLSearchParams(location.hash.substring(1));
   function setHashvar(key, val) {
@@ -74,14 +75,26 @@
       translate3d(0%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)
       `;
       generateVolumes();
-      setHashvar("year", null)
+      setHashvar("year", null);
+
+      setHashvar("month", null);
   }
 
-  yearTab.onclick = () => {
+  monthTab.onclick = () => {
       generateYears();
-      setHashvar("year", 1)
+      setHashvar("year", null);
+      setHashvar("month", 1);
       activeTab.style.transform = /*css*/`
       translate3d(100%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)
+      `
+  }
+  yearTab.onclick = () => {
+      generateYears();
+      setHashvar("year", 1);
+
+      setHashvar("month", null);
+      activeTab.style.transform = /*css*/`
+      translate3d(200%, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)
       `
   }
 
@@ -89,11 +102,14 @@
   document.addEventListener("DOMContentLoaded", () => {
     hashVars = new URLSearchParams(location.hash.substring(1));
     var isY = hashVars.get("year");
-
+    var isM = hashVars.get("month")
     if(!isY) {
       volTab.click();
 
       generateVolumes()
+    } else if(isM) {
+      monthTab.click()
+      generateMonths();
     }
     else {
       yearTab.click();
@@ -101,6 +117,9 @@
     }
   })
 
+  function generateMonths() {
+
+  }
 window.gny= generateYears;
   function generateYears() {
     //yearIndex
@@ -129,6 +148,34 @@ window.gny= generateYears;
     }
   }
 
+
+  function generateMonths() {
+    //yearIndex
+    if(!sl) return console.log("Not found",sl);
+    sl.innerHTML = ""
+    var bvi = document.createElement("div")
+    bvi.className = "book_vol_index ml";
+
+    var tg = document.createElement("div")
+    tg.className= "tile-grid"
+    bvi.appendChild(tg);
+    sl.appendChild(bvi);
+    console.log("Appended?",bvi);
+
+    
+    for(var i = 1; i < 13; i++) {
+      (i => {
+        var month = i
+        var bt = document.createElement("a")
+        bt.textContent = i
+        bt.className = "tile"
+        tg.appendChild(bt)
+        bt.href = "/meluket/month/" + i;
+
+      })(i);
+    }
+  }
+
   function generateVolumes() {
     if(!sl) return;
     sl.innerHTML = ""
@@ -142,7 +189,7 @@ window.gny= generateYears;
     for(var i = 0; i < 6; i++) {
       (i => {
         var bt = document.createElement("a")
-        bt.textContent = hebrew[i];
+        bt.textContent = i//hebrew[i];
         bt.className = "tile"
         tg.appendChild(bt)
         bt.href = "/meluket/"+(i+1);
