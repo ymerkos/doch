@@ -31,13 +31,9 @@
 <script type="module">
    import indexer from "/scripts/indexify.js" 
    
-  var p = location.pathname.split("/");
-  var ls = p[p.length-1];
+  
    await indexer({
-    containerSelector: ".container",
-    url: "/meluket/view/"+ls+"/",
-    volumeNumber:ls,
-    databasePath: ["books","Meluket","TOC_VOL"]
+    containerSelector: ".container"
    })
 </script>
 </body>

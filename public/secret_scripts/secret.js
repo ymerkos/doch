@@ -18,6 +18,45 @@ async function loadJSON() {
     return json;
 }
 
+function downloadObjectAsJson(obj, filename) {
+  // Convert the object to a JSON string
+  const jsonString = JSON.stringify(obj, null, 2);
+
+  // Create a Blob containing the JSON data
+  const blob = new Blob([jsonString], { type: 'application/json' });
+
+  // Create a download link
+  const downloadLink = document.createElement('a');
+
+  // Create a URL for the Blob and set it as the href attribute of the link
+  downloadLink.href = URL.createObjectURL(blob);
+
+  // Set the filename for the download
+  downloadLink.download = filename;
+
+  // Append the link to the document
+  document.body.appendChild(downloadLink);
+
+  // Simulate a click on the link to trigger the download
+  downloadLink.click();
+
+  // Remove the link from the document
+document.body.removeChild(downloadLink);
+}
+
+
+async function getTableOfContentsMaamar() {
+  var col = collection(db, "books","Meluket","TOC_VOL")
+  var d = {}
+  var docs = await getDocs(col)
+  for(var i = 0; i < docs.docs.length; i++) {
+      var b = docs.docs[i].get("booklets")
+      d[docs.docs[i].id] = b
+  }
+  d;
+  return d;
+}
+
 async function processAndSaveDocuments() {
   const maamarimRef = collection(db, '/books/Meluket/Maamarim');
   const snapshot = await getDocs(maamarimRef);
@@ -495,31 +534,7 @@ async function matchChabadOrgToAwtsfaria(chabad /*primary array*/ , awtsfaria, t
     return y;
   }
 
-    function downloadObjectAsJson(obj, filename) {
-         // Convert the object to a JSON string
-         const jsonString = JSON.stringify(obj, null, 2);
-       
-         // Create a Blob containing the JSON data
-         const blob = new Blob([jsonString], { type: 'application/json' });
-       
-         // Create a download link
-         const downloadLink = document.createElement('a');
-       
-         // Create a URL for the Blob and set it as the href attribute of the link
-         downloadLink.href = URL.createObjectURL(blob);
-       
-         // Set the filename for the download
-         downloadLink.download = filename;
-       
-         // Append the link to the document
-         document.body.appendChild(downloadLink);
-       
-         // Simulate a click on the link to trigger the download
-         downloadLink.click();
-       
-         // Remove the link from the document
-     document.body.removeChild(downloadLink);
-   }
+   
 }
 
 
