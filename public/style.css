@@ -1059,6 +1059,11 @@ color: gray;
   background-color: #f9f9f9;
 }
 
+.mission-container.default {
+  background-color: #ffffff;
+  margin-top:0;
+}
+
 .mission-container .mission-heading {
   font-family: serif;
   font-weight: 400;
