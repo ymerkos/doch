@@ -312,6 +312,7 @@ async function setIndexesToContainer({
         }
 
         b.contents.forEach((g) => {
+            g.volume = b.volume;
             setContent(g, c, false, id);
         });
     }
