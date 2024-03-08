@@ -111,7 +111,7 @@ async function setIndexesToContainer({
         */
         var vol = TOC[val]
         if(vol) {
-            setContentFromVolume(vol, val);
+            setContentFromVolume(vol, false, val);
         }
         return vol;
     }
@@ -212,14 +212,14 @@ async function setIndexesToContainer({
     }
 
     function setContentFromVolume(volData, isSicha, volId) {
-        var b = {...volData, volume:volId};
+        var b = {...volData};
         console.log(b,"BVOL")
         container.innerHTML = "";
 
         if(isSicha) {
             Object.keys(b)
             .forEach(w => {
-                
+                b[w].volume = volId;
                 setContent(b[w], container, true)
             })
             return console.log("no booklets, did sicha")
@@ -227,6 +227,8 @@ async function setIndexesToContainer({
         console.log(b,isSicha,"Maamar")
 
         b.forEach(w=> {
+            w.volume = volId;
+            console.log(w,"HI")
             var h = setMeluketBooklet(w,container);
         })
     }
