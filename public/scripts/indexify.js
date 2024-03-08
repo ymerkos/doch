@@ -114,8 +114,8 @@ async function setIndexesToContainer({
         var doc = vl.find(q => 
             q.contents.find(maam => maam.page == page)
         );
-        doc.volume = vol;
-        return doc;
+
+        return {...doc, volume:vol};
     }
 
     window.gdbi = getDocById;
@@ -126,8 +126,9 @@ async function setIndexesToContainer({
         docIDs.forEach(w => {
             var doc = getDocById(w);
 
+            console.log("DOC",doc,w)
             
-            setMeluketBooklet(doc, container)
+            setMeluketBooklet(doc, container, w)
             
         })
     }
@@ -152,7 +153,7 @@ async function setIndexesToContainer({
         })
     }
 
-    function setContent(g, parent, isSicha) {
+    function setContent(g, parent, isSicha, docId) {
         if(!isSicha) {
             const item = document.createElement('div');
             item.classList.add('item');
@@ -172,8 +173,8 @@ async function setIndexesToContainer({
             item.appendChild(page);
 
             parent.appendChild(item);
-
-            var id =
+            console.log("HI!",g)
+            var id = docId ||
                 (g.volume || VOLUME)+"_"+g.page;
             // console.log("HI!",id,VOLUME,g.page)
             item.onclick=() => {
@@ -221,7 +222,7 @@ async function setIndexesToContainer({
         
     }
 
-    function setMeluketBooklet(b, c) {
+    function setMeluketBooklet(b, c, id) {
         var bn = b.booklet_name || '';
         if(bn) {
             const bookletName = document.createElement('div');
@@ -231,7 +232,7 @@ async function setIndexesToContainer({
         }
 
         b.contents.forEach((g) => {
-            setContent(g, c);
+            setContent(g, c, false, id);
         });
     }
 }
