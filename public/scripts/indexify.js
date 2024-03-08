@@ -16,6 +16,7 @@ import calculateGematria from "/scripts/gematria.js";
 
 import yearsEngToHeb from "/resources/indecies/yearsEngToHeb.js";
 
+var isHebrew = false;
 import {
     getFirestore,
     getDoc,
@@ -89,7 +90,10 @@ async function setIndexesToContainer({
         if(yt) {
             yt.innerHTML = /*html*/`
                 <a href="/meluket/#year=1">All Years</a>
-                <div class="year-header">${val}</div>
+                <div class="year-header">${
+                    isHebrew ? val
+                    : ("5" + calculateGematria(val))
+                }</div>
             `
         }
         setContentOfDocs(yr)
@@ -102,8 +106,12 @@ async function setIndexesToContainer({
         var yt = document.querySelector(".year-title");
         if(yt) {
             yt.innerHTML = /*html*/`
-                <a href="/meluket/#year=1">All Months</a>
-                <div class="year-header">${val}</div>
+                <a href="/meluket/#month=1">All Months</a>
+                <div class="year-header">${
+                    monthsTxt[val][0][
+                        isHebrew ? 0 : 1
+                    ]
+                }</div>
             `
         }
         setContentOfDocs(maamarim)
