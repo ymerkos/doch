@@ -1227,3 +1227,16 @@ color: gray;
 .year-header {
   font-size: 18px;
 }
+
+.coming-soon {
+  background: #f3f3f37a;
+  cursor: auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+.book-name-coming-soon {
+  font-family: serif;
+  color: #949494;
+
+}
