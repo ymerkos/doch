@@ -1,15 +1,28 @@
 /**B"H*/
+body {
+    background: url(/resources/images/background-index.jpeg);
+}
 .all {
-    background:cyan;
+   
+ 
     display:flex;
     flex-direction:column;
+
+    height:var(---awtsmoos-height);
 }
-.title {
+.background-helper {
+    z-index:-1;
+    position:absolute;
+    left:0;right:0;
+    top:0;bottom:0;
+    background:rgba(255,0,0,0.5)
+}
+.meluket-title {
     color: #564c40;
     text-align: center;
     margin-top: 20px;
     margin-bottom: 30px;
-    font-family: Antic Didone, sans-serif;
+    font-family: American Typewriter, sans-serif;
     font-size: 70px;
     font-weight: 400;
 }
