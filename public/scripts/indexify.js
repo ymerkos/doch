@@ -95,8 +95,8 @@ async function setIndexesToContainer({
                 <!--<a href="/meluket/#year=1">All Years</a>-->
           
                 <div class="year-header">${
-                    eng + " " + isHebrew ? val
-                    : ("5" + calculateGematria(val))
+                    eng + " " + (isHebrew ? val
+                    : ("5" + calculateGematria(val)))
                 }</div>
             `
         }
