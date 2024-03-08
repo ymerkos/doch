@@ -37,14 +37,18 @@ async function checkIfLoggedin() {
       window.isAllowed = isAllowed;
       window.activeUser = user;
       console.log('User is signed in:', user, isAllowed);
+      if(window.loginBtn ) {
       loginBtn.innerText = "Log out";
       loginBtn.onclick = signOutBtn;
+      }
 
     } else {
       // User is signed out
       window.isAllowed = false;
+      if(window.loginBtn ) {
       loginBtn.innerText = "Log in";
       loginBtn.onclick = signInGoogle;
+      }
       console.log('User is signed out');
     }
 
@@ -98,7 +102,7 @@ onAuthStateChanged(auth, async (user) => {
   window.isAllowed = false;
 }
 
-  
+  if(window.loginBtn)
   loginBtn.onclick = signInGoogle;
 
 function signOutBtn() {

@@ -23,14 +23,9 @@ import yearIndex from "/meluket/indecies/yearOfDocs.js";
 import years from "/meluket/indecies/yearsInOrder.js";
 import TOC from "/meluket/indecies/TOC.js";
 
-var src = new URLSearchParams(location.search);
-var y = src.get("year");
-var docs = [];
-if(y) {
-    var d = yearIndex[y];
 
-    if(d) docs = d;
-}
+window.yearIndex=yearIndex;
+window.TOC=TOC;
 export default setIndexesToContainer;
 /*
 maamar "/viewer/meluket/"
@@ -65,15 +60,26 @@ async function setIndexesToContainer({
     var [
         yearStr,
         yearVal
-    ] = location.pathname.split("/").splice(-2);
+    ] = decodeURIComponent(location.pathname)
+        .split("/").splice(-2);
 
     if(yearStr == "year") {
+        
         isViewingByYear = true;
 
         var yr = yearIndex[yearVal];
         if(!yr) {
             return alert("That year, "+yearVal+", isn't found. Hebrew only!")
 
+        }
+
+
+        var yt = document.querySelector(".year-title");
+        if(yt) {
+            yt.innerHTML = /*html*/`
+                <a href="/meluket">All Years</a>
+                <div class="year-header">${yearVal}</div>
+            `
         }
         setContentOfDocs(yr)
     } else {
@@ -112,13 +118,16 @@ async function setIndexesToContainer({
     }
 
     window.gdbi = getDocById;
-    
+    window.setContentOfDocs = setContentOfDocs;
+
     function setContentOfDocs(docIDs) {
+        container.innerHTML = "";
         docIDs.forEach(w => {
             var doc = getDocById(w);
-            if(doc.booklet_name) {
-                setMeluketBooklet(doc, container)
-            }
+
+            
+            setMeluketBooklet(doc, container)
+            
         })
     }
 

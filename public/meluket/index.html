@@ -84,12 +84,12 @@ window.gny= generateYears;
     sl.appendChild(bvi);
     console.log("Appended?",bvi);
 
-    var k = Object.keys(years)
-    for(var i = 0; i < k.length; i++) {
+    
+    for(var i = 0; i < years.length; i++) {
       (i => {
-        var year = years[k]
+        var year = years[i]
         var bt = document.createElement("a")
-        bt.textContent = k
+        bt.textContent = year
         bt.className = "tile"
         tg.appendChild(bt)
         bt.href = "/meluket/year/" + year;
