@@ -47,6 +47,9 @@ async function setIndexesToContainer({
 }) {
 
 
+    var sf = `סה"מ מלוקט`
+    var eng = `Sefer Hamaamarim Meluket`
+
     var container = document.querySelector(containerSelector) || htmlEl;
     if(!container) {
         
@@ -108,7 +111,7 @@ async function setIndexesToContainer({
             yt.innerHTML = /*html*/`
                 <!--<a href="/meluket/#month=1">All Months</a>-->
                 <div class="year-header">${
-                    monthsTxt[val][0][
+                    "Month: " + monthsTxt[val][0][
                         isHebrew ? 0 : 1
                     ]
                 }</div>
@@ -116,6 +119,7 @@ async function setIndexesToContainer({
         }
         setContentOfDocs(maamarim)
     } else {
+        
         volumeNumber = ls;
 
         var ls = volumeNumber//p[p.length-1];
@@ -127,6 +131,15 @@ async function setIndexesToContainer({
         */
         var vol = TOC[ls]
         if(vol) {
+            var yt = document.querySelector(".year-title");
+            if(yt) {
+                yt.innerHTML = /*html*/`
+                    <!--<a href="/meluket/#month=1">All Months</a>-->
+                    <div class="year-header">${
+                        "Volume: " + vol
+                    }</div>
+                `
+            }
             var b = vol;
             setContentFromVolume(b);
             
