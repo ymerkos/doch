@@ -1191,3 +1191,25 @@ align-items: center;
   background:rgb(109, 255, 109);
 
 }
+
+
+
+
+/**maamar index page at /meluket/something (befor viewer) **/
+
+.year-title {
+  margin-top: calc(var(---header-height) + 60px);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.year-title a {
+  color: revert;
+  text-decoration: revert;
+}
+
+
+.year-header {
+  font-size: 28px;
+}

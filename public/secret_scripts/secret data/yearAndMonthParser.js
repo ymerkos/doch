@@ -256,3 +256,30 @@ var monthsOldEng = {
     "אב": "Av",
     "אלול": "Elul"
     } 
+
+
+function getHebAndEngMonthData(){
+
+    v=`
+    1	תשרי	Tishrei
+    2	חשון	Cheshvan
+    3	כסלו	Kislev
+    4	טבת	Teves
+    5	שבט	Shevat
+    6	אדר	Adar
+    7	ניסן	Nissan
+    8	אייר	Iyar
+    9	סיון	Sivan
+    10	תמוז	Tammuz
+    11	מנחם-אב	Av
+    12	אלול	Elul
+    `.split("\n")
+    .filter(Boolean)
+    .map(w=>w.split("\t"))
+    .map(w=>[
+        w[0], 
+        [w.slice(1)]
+    ])
+    c=Object.fromEntries(v)
+    console.log(JSON.stringify(c,null,"\t"))
+}

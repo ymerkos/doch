@@ -49,10 +49,14 @@
 </div>
 </div>
 <script type="module">
+  var isHebrew = false;
   import years from "./indecies/yearsInOrder.js";
   import yearIndex from "./indecies/yearOfDocs.js";
   import monthIndex from "./indecies/monthsOfMaamarim.js";
-
+  import monthsTxt from "/resources/indecies/monthsToTxt.js";
+  import calculateGematria from "/scripts/gematria.js";
+window.monthsTxt = monthsTxt
+  import yearsEngToHeb from "/resources/indecies/yearsEngToHeb.js";
   var hashVars = new URLSearchParams(location.hash.substring(1));
   function setHashvar(key, val) {
     hashVars = new URLSearchParams(location.hash.substring(1));
@@ -130,14 +134,15 @@ window.gny= generateYears;
     tg.className= "tile-grid"
     bvi.appendChild(tg);
     sl.appendChild(bvi);
-    console.log("Appended?",bvi);
 
     
     for(var i = 0; i < years.length; i++) {
       (i => {
         var year = years[i]
         var bt = document.createElement("a")
-        bt.textContent = year
+        bt.textContent = isHebrew ? year 
+        : (5 + calculateGematria(year));
+
         bt.className = "tile"
         tg.appendChild(bt)
         bt.href = "/meluket/year/" + year;
@@ -163,9 +168,18 @@ window.gny= generateYears;
     
     for(var i = 1; i < 13; i++) {
       (i => {
-        var month = i
+        
+        var month = monthsTxt[i];
+        if(!month) {
+          console.log("no month for",i,monthsTxt);
+          return;
+        }
+
+
         var bt = document.createElement("a")
-        bt.textContent = i
+        bt.textContent = month[
+          isHebrew ? 0  : 1 
+        ]
         bt.className = "tile"
         tg.appendChild(bt)
         bt.href = "/meluket/month/" + i;
@@ -187,7 +201,7 @@ window.gny= generateYears;
     for(var i = 0; i < 6; i++) {
       (i => {
         var bt = document.createElement("a")
-        bt.textContent = i+1//hebrew[i];
+        bt.textContent = !isHebrew ? i+1 : hebrew[i];
         bt.className = "tile"
         tg.appendChild(bt)
         bt.href = "/meluket/"+(i+1);
