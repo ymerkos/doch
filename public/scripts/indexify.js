@@ -148,7 +148,7 @@ async function setIndexesToContainer({
         }
         console.log(b,isSicha,"Maamar")
 
-        bl.forEach(w=> {
+        b.forEach(w=> {
             var h = setMeluketBooklet(w,container);
         })
     }
@@ -171,7 +171,7 @@ async function setIndexesToContainer({
             page.classList.add('page');
             page.textContent = g.page;
             item.appendChild(page);
-
+//7:30 to 8:58
             parent.appendChild(item);
             console.log("HI!",g)
             var id = docId ||
