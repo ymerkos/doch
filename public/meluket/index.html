@@ -70,9 +70,10 @@
     generateVolumes()
   })
 
+window.gny= generateYears;
   function generateYears() {
     //yearIndex
-    if(!sl) return;
+    if(!sl) return console.log("Not found",sl);
     sl.innerHTML = ""
     var bvi = document.createElement("div")
     bvi.className = "book_vol_index ml";
@@ -81,6 +82,8 @@
     tg.className= "tile-grid"
     bvi.appendChild(tg);
     sl.appendChild(bvi);
+    console.log("Appended?",bvi);
+
     var k = Object.keys(years)
     for(var i = 0; i < k; i++) {
       (i => {
