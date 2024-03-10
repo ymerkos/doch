@@ -4,7 +4,6 @@
     <head>
         <title>Dach | דא״ח</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
-    
         <link rel="stylesheet" href="style.css" />
     </head>
 
@@ -64,11 +63,51 @@
 
 <div class="mission-container default">
   <div class="mission-heading">Acknowledgements</div>
-  <p class="mission-statement">At the core of our mission is a commitment to democratizing access to the profound teachings of Chabad Chassidus, as embodied by the Lubavitcher Rebbe's Torah. DACH.org serves as the premier online library dedicated to preserving and disseminating these timeless insights, integrating advanced AI technologies and community-driven methodologies to make them accessible to a global audience.</p>
+  <p class="mission-statement">We extend our sincere appreciation to all individuals who have contributed their expertise to this project. From meticulous editors and skilled translators to intuitive UX/UI designers and creative software developers, each of you has played a crucial role in enhancing this project. We especially want to thank the exceptional efforts of Developer <strong><a href="mailto:info@awtsmoos.com">Yakkov Kafuer</a></strong>, whose persistent dedication has truly transformed this project into a reality. Additionally, we express our gratitude to the generous donors. Your commitment and contributions have been invaluable in shaping the triumph of our endeavor.</p>
 </div>
+
 <div class="mission-container">
-  <div class="mission-heading">Mission Statement:</div>
-  <p class="mission-statement">At the core of our mission is a commitment to democratizing access to the profound teachings of Chabad Chassidus, as embodied by the Lubavitcher Rebbe's Torah. DACH.org serves as the premier online library dedicated to preserving and disseminating these timeless insights, integrating advanced AI technologies and community-driven methodologies to make them accessible to a global audience.</p>
+  <div class="mission-heading">Q&A</div>
+  <div class="qa-container">
+    <div class="question">
+      <p>What is Dach.dev?</p>
+      <div class="answer">
+        <p>Dach.dev is a digital platform dedicated to making the profound teachings of Chabad Chassidus accessible to a global audience. Our mission is to break down barriers to learning, offering a user-friendly space for individuals to explore and engage with these timeless insights.</p>
+      </div>
+    </div>
+    <div class="question">
+      <p>What sets Dach.dev apart?</p>
+      <div class="answer">
+        <p>Dach.dev stands out for its commitment to preserving Chabad Chassidus by digitizing its extensive collection. We prioritize user-friendliness, providing an easy-to-navigate platform that transforms the learning experience</p>
+      </div>
+    </div>
+    <div class="question">
+      <p>How does Dach.dev make Chassidus accessible</p>
+      <div class="answer">
+        <p>We've taken the first step by digitizing a set of Chassidic books, ensuring that users can delve into the teachings without the need for an extensive library. Our platform is designed for ease of use, catering to both seasoned learners and those just beginning their Chassidus journey.</p>
+      </div>
+    </div>
+    <div class="question">
+      <p>What are your future goals for Dach.dev?</p>
+      <div class="answer">
+        <p>While we're excited about the current digitization efforts, the journey is dynamic. Future goals include exploring advanced translations and interactive tools. However, we're keen to let the community shape the direction – the possibilities are vast.</p>
+      </div>
+    </div>
+    <div class="question">
+      <p>How can users contribute or get involved?</p>
+      <div class="answer">
+        <p>A: We welcome contributions, ideas, and insights from the community. Whether you're well-versed in Chassidus or a newcomer, your voice matters. Engage with us, share your thoughts, and be part of the evolving story at Dach.dev.</p>
+      </div>
+    </div>
+
+  </div>
 </div>
+<script>
+  document.querySelectorAll('.question').forEach(item => {
+    item.addEventListener('click', () => {
+      item.classList.toggle('active');
+    });
+  });
+</script>
     </body>
 </html>

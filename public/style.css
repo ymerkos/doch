@@ -130,6 +130,42 @@ transform: scale(1.1);
   transform: scale(1.0);
   }
 
+  .qa-container {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .question {
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-weight:300;
+    cursor: pointer;
+    font-size: 17px; /* Adjust the font size as needed */
+  }
+
+  .answer {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 10px;
+    border-radius: 5px;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 2;
+    background-color: #f4f4f4;
+    transition: max-height 0.3s ease-out;
+  }
+
+  .question.active .answer {
+    max-height: 200px; /* Adjust this value to match your content's height */
+    transition: max-height 0.3s ease-in;
+  }
+  
 .viewer {
   height: 100%
 }
