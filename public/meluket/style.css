@@ -18,8 +18,11 @@
 }
 .index-tabs {
     display: flex;
+    font-family: sans-serif;
+    padding: 10px 3px;
+    margin-top: 30px;
     flex-direction: row;
-    gap: 10px;
+    gap: 15px;
 }
 
 .index-tabs .tab.active {
