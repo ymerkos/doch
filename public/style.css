@@ -136,7 +136,7 @@ transform: scale(1.1);
     padding: 0;
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
   }
 
   .question {
@@ -162,7 +162,7 @@ transform: scale(1.1);
   }
 
   .question.active .answer {
-    max-height: 200px; /* Adjust this value to match your content's height */
+    max-height: 500px; /* Adjust this value to match your content's height */
     transition: max-height 0.3s ease-in;
   }
   
