@@ -11,6 +11,8 @@
 
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8G4BNTZDFN"></script>
+<script src="/scripts/login.js" type="module"></script>
+
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -33,6 +35,21 @@
     </div>
  </div>
  <script>
+  window.addEventListener("awtsmoosAuth",e => {
+    window.isAllowed = e.detail.isAllowed;
+    console.log("allowed",e)
+    if(window.isAllowed) {
+      Array.from(
+        document.querySelectorAll(
+          "a.tile"
+        )
+      ).forEach(q => {
+        var url = new URL(q.href);
+        if(!url.searchParams.get("edit"))
+          q.href = q.href+"?edit"
+      })
+    }
+  })
  document.addEventListener("DOMContentLoaded", function () {
     // Get the container
     const buttonGrid = document.getElementById("tileGrid");
@@ -50,11 +67,11 @@
         (i => {
             const button = document.createElement("a");
             button.className = "tile";
-            button.href="./"+(i+1)
+            button.href="./"+(i+1) + (
+              window.isAllowed?  "?edit":""
+            )
             button.textContent = hebrewNumerals[i];
-            button.onclick = () => {
-
-            }
+            
             // Append the button to the container
             buttonGrid.appendChild(button);
         })(i);

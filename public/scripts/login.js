@@ -41,14 +41,17 @@ async function checkIfLoggedin() {
       if(window.loginBtn ) {
         loginBtn.innerText = "Log out";
         loginBtn.onclick = signOutBtn;
+        loginBtn.classList.remove("hidden")
       }
 
     } else {
       // User is signed out
       window.isAllowed = false;
       if(window.loginBtn ) {
-      loginBtn.innerText = "Log in";
-      loginBtn.onclick = signInGoogle;
+        
+        loginBtn.classList.remove("hidden")
+        loginBtn.innerText = "Log in";
+        loginBtn.onclick = signInGoogle;
       }
       console.log('User is signed out');
     }

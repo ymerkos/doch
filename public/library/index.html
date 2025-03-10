@@ -29,7 +29,24 @@
 
       <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8G4BNTZDFN"></script>
+<script src="/scripts/login.js" type="module"></script>
+
 <script>
+  window.addEventListener("awtsmoosAuth",e => {
+    window.isAllowed = e.detail.isAllowed;
+    console.log("allowed",e)
+    if(window.isAllowed) {
+      Array.from(
+        document.querySelectorAll(
+          "a.book"
+        )
+      ).forEach(q => {
+        var url = new URL(q.href);
+        if(!url.searchParams.get("edit"))
+          q.href = q.href+"?edit"
+      })
+    }
+  })
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());

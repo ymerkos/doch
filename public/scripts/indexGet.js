@@ -25,18 +25,24 @@ window.addEventListener("awtsmoosAuth", (e) => {
         var pr = Array.from(
             document.querySelectorAll(".private")
         );
+            
         pr.forEach(w=>{
             w.classList.remove("private")
             w.classList.add("private-admin")
         })
-        Array.from(
+        var ar = Array.from(
             document.querySelectorAll(
                 "a.index-item"
             )
-        ).forEach(q=> {
+        )
+        if(window.homeBtn)
+            ar.push(window.homeBtn)
+        ar.forEach(q=> {
             var url = new URL(q.href);
-            url = url + "?edit";
-            q.href = url;
+            if(!url.searchParams.get("edit")) {
+                url = url + "?edit";
+                q.href = url;
+            }
         })
     }
 })

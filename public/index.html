@@ -20,7 +20,7 @@
     </div>
     <div class="right">
      <!-- <div class="menu-btn">א</div>-->
-      <div class="menu-btn hidden loginBtn">Log in</div>
+      <div class="menu-btn hidden loginBtn" id="loginBtn">Log in</div>
       <a href="mailto:info@dach.dev" class="menu-btn feedback">Feedback?</a>
     </div>
   </header>
@@ -42,17 +42,36 @@
 
   gtag('config', 'G-8G4BNTZDFN');
 </script>
+
 <div class="about-image">
   <img src="https://firebasestorage.googleapis.com/v0/b/awtsfaria.appspot.com/o/about-hero.png?alt=media" alt="about image">
 </div>
+<script src="/scripts/login.js" type="module"></script>
 
-
+<script type="module">
+  window.addEventListener("awtsmoosAuth",e => {
+    window.isAllowed = e.detail.isAllowed;
+    console.log("allowed",e)
+    if(window.isAllowed) {
+      Array.from(
+        document.querySelectorAll(
+          "a.lib"
+        )
+      ).forEach(q => {
+        var url = new URL(q.href);
+        if(!url.searchParams.get("edit"))
+          q.href = q.href+"?edit"
+      })
+    }
+  })
+</script>
 <div class="home-btns">
-    <a href="/library">
-    <div class="hero-btn">
-        Library</div>
+  <div class="hero-btn">
+    <a class="lib" href="/library">
+    
+        Library
     </a>
-   
+   </div>
     </div>
 </div>
 <div class="mission-container">
