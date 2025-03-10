@@ -21,12 +21,22 @@ db = getFirestore();
 window.addEventListener("awtsmoosAuth", (e) => {
     console.log("CALLED event",e.detail)
     if(e.detail.isAllowed) {
+        window.isAllowed = true;
         var pr = Array.from(
             document.querySelectorAll(".private")
         );
         pr.forEach(w=>{
             w.classList.remove("private")
             w.classList.add("private-admin")
+        })
+        Array.from(
+            document.querySelectorAll(
+                "a.index-item"
+            )
+        ).forEach(q=> {
+            var url = new URL(q.href);
+            url = url + "?edit";
+            q.href = url;
         })
     }
 })
@@ -92,7 +102,7 @@ function setThings(data, href) {
     }
 
     function createIndexItem(w) {
-        const indexItem = document.createElement("div");
+        const indexItem = document.createElement("a");
         indexItem.className = "index-item";
         if(!w?.isPublic) {
             if(window.isAllowed) {
@@ -100,7 +110,7 @@ function setThings(data, href) {
             } else 
                 indexItem.classList.add("private")
         }
-        indexItem.onclick = () => (location.href = href(w));
+        indexItem.href = href(w);
         
         const indexHeader = document.createElement("div");
         indexHeader.className = "index-header";
