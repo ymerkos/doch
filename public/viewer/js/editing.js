@@ -8,7 +8,16 @@
  */
 
 import { showToast } from '/viewer/js/utils.js';
-import { db, getDocRef, updateDoc, setDoc } from '/viewer/js/firebase.js';
+import { db, 
+    getDocRef, 
+    updateDoc, 
+    setDoc, 
+    arrayUnion,
+    arrayRemove,
+    updateMapElementByPage
+
+ } from '/viewer/js/firebase.js';
+import { getDocID } from '/viewer/js/firebase.js';
 
 /**
  * @function submitEdit
@@ -149,6 +158,38 @@ function toggleSuperscript() {
     }
 }
 
+async function makeSichaPublic(e) {
+    try {
+        var el = e.target;
+        if(!el) {
+            return await showToast("Issue with making public")
+        }
+        var isItPublic = el.checked;
+        var id = getDocID();
+        var [page, vol] = id.split("_")
+        var ref = getDocRef();
+        await updateDoc(ref, {
+            isPublic: isItPublic
+        });
+
+        await updateMapElementByPage(
+            "/books/Likkutei Sichos/TOC_VOL/"+vol,
+            page,
+            {
+                isPublic: isItPublic
+            }
+        )
+        await showToast("Made it " + (isItPublic ? "public" : 
+            "private")
+        );
+
+    } catch(e) {
+        await showToast("Something went wrong. did NOT update")
+        console.log(e);
+    }
+
+}
+
 async function submitSicha() {
     var body = document.getElementById("sichaInput")?.value;
     var footnotes = document.getElementById("sichaFootnoteInput")?.value
@@ -186,4 +227,9 @@ async function updateSichos(ref, body, footnotes) {
     }
 }
 
-export { submitEdit, toggleBold, toggleSuperscript, submitSicha };
+export { submitEdit, 
+    toggleBold, 
+    toggleSuperscript, 
+    makeSichaPublic,
+    submitSicha 
+};

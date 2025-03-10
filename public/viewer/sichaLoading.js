@@ -93,7 +93,8 @@ async function getMaamar(maamId) {
                 Volume:sichaDoc.get("Volume"),
                 Kitzur: sichaDoc.get("Kitzur"),
                 Footnotes:sichaDoc.get("Footnotes"),
-                Title:sichaDoc.get("Title")
+                Title:sichaDoc.get("Title"),
+                isPublic:sichaDoc.get("isPublic")
             }
             
 
@@ -130,7 +131,8 @@ async function getSicha(sichaId) {
                 Main_text:sichaDoc.get("Main_text") || sichaDoc.get("Main_Text"),
                 Volume:sichaDoc.get("Volume"),
                 Footnotes:sichaDoc.get("Footnotes"),
-                Title:sichaDoc.get("Title")
+                Title:sichaDoc.get("Title"),
+                isPublic:sichaDoc.get("isPublic")
             }
             
 
@@ -222,7 +224,12 @@ function setTextToDoc(sicha, isSicha = false) {
         p.classList.add("sicha")
     }
 
-
+    if(sicha.isPublic) {
+        var pb = document.getElementById("isPublic")
+        if(pb) {
+            pb.checked = true;
+        }
+    }
     
     if(window.Kitzur) {
         console.log("Kitzur",sicha,sicha.Kitzur)

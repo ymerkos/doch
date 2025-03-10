@@ -11,7 +11,8 @@ import {
     toggleBold, 
     toggleSuperscript, 
     submitEdit,
-    submitSicha
+    submitSicha,
+    makeSichaPublic
  } from '/viewer/js/editing.js';
 import { showToast, makeElementEditable, saveEditableElement, findParentWithDatasetProperty } from '/viewer/js/utils.js';
 import { continueIfLoggedIn } from '/viewer/js/auth.js'; // Assuming this exists externally
@@ -35,6 +36,10 @@ let errorClicked = false;        // @global Error click state
 function setupUIEvents() {
     var sichaSubmit = document.getElementById("sichaSubmit")
     sichaSubmit.addEventListener("click", submitSicha)
+
+    
+    var pb = document.getElementById("isPublic")
+    pb.addEventListener("change", makeSichaPublic)
     mBold.onclick = toggleBold;         // @event Bind bold toggle
     mSup.onclick = toggleSuperscript;   // @event Bind superscript toggle
 

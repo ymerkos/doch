@@ -89,12 +89,23 @@ body,html {
 
 }
 
+.index-item.private {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.index-item.private-admin {
+  opacity: 0.3;
+  
+}
+
 .book_vol_index {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: calc(100vh + 60px);
   margin: 0;
+  margin-top: 30px;
 }
 
 .book_vol_index.ml {
@@ -107,7 +118,8 @@ body,html {
   display: flex;
   flex-wrap: wrap;
   max-width: 500px;
-  flex-direction: row; /* Set to row-reverse for RTL */
+  justify-content:center;
+  flex-direction: row-reverse; /* Set to row-reverse for RTL */
 }
 
 .book_vol_index .tile {

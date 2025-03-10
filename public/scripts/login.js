@@ -62,7 +62,8 @@ async function checkIfLoggedin() {
       detail: logged // You can pass any data you want in the detail property
     });
     window.dispatchEvent(changedAuth);
-    console.log("User",loginBtn.onclick)
+   
+    
     return logged;
 }
 window.checkIfLoggedin = checkIfLoggedin;

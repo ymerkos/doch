@@ -17,7 +17,9 @@ import {
     doc, 
     collection, 
     updateDoc,
-    deleteField
+    deleteField,
+    arrayUnion,
+    arrayRemove 
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"; // @import Firestore functions
 
 // @action Initialize Firebase app
@@ -53,6 +55,36 @@ function getDocRef(pthId = null) {
     return doc(db, pathInFirebase + pthId); // @return Document reference
 }
 
+
+async function updateMapElementByPage (docPath, pageNumber, newData) {
+    const docRef = doc(db, docPath);
+    
+    // Fetch the document
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+        let data = docSnap.data();
+
+        // Find the key where `page` matches the given pageNumber
+        let keyToUpdate = Object.keys(data).find(key => data[key].page == pageNumber);
+        console.log(data,keyToUpdate)
+        if (!keyToUpdate) {
+            throw new Error("No matching page found!");
+            return;
+        }
+
+        // Update only that specific key using Firestore's dot notation
+        await updateDoc(docRef, {
+            [`${keyToUpdate}`]: { ...data[keyToUpdate], ...newData } 
+        });
+
+        console.log(`Updated entry at key ${keyToUpdate}!`);
+    } else {
+        throw new Error("Document does not exist!");
+    }
+};
+
+
 window.getDocRef = getDocRef;
 window.db = db;
 window.getDoc = getDoc;
@@ -64,4 +96,11 @@ window.doc = doc;
 window.collection = collection;
 window.deleteField=deleteField
 export { db, doc, getDocID, getDocRef, getDoc, setDoc, 
-    getDocs, collection, updateDoc };
+    getDocs, collection, 
+    updateDoc,
+    arrayUnion,
+    arrayRemove,
+    updateMapElementByPage
+
+
+};
