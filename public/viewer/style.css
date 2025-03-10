@@ -1,0 +1,89 @@
+/**B"H*/
+/* B"H */
+/* @stylesheet Main styles for the Dach application */
+
+/* Form styling for editSecrets */
+.form-row {
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    /* @style Ensures form rows are flexible and wrap on small screens */
+  }
+  
+  .form-item {
+    flex: 1;
+    padding: 15px;
+    margin-right: 10px;
+    min-width: 0;
+    /* @style Makes form items grow evenly with padding and no overflow */
+  }
+  
+  .horizontal-row .form-item:nth-child(3) {
+    flex: 3;
+    /* @style Gives the third item in a horizontal row more space */
+  }
+  
+  input[type="submit"] {
+    width: 100%;
+    /* @style Ensures submit button spans full width */
+  }
+  
+  /* Dark mode styles */
+  .dark-mode {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    /* @style Applies dark background and light text when dark mode is active */
+  }
+  
+  /* Viewer layout */
+  .viewer {
+    display: flex;
+    flex-direction: column;
+    /* @style Main container stacks elements vertically */
+  }
+  
+  .flex-container {
+    display: flex;
+    flex: 1;
+    /* @style Flexbox for left and right boxes */
+  }
+  
+  .left-box, .right-box {
+    padding: 10px;
+    /* @style Adds spacing inside panels */
+  }
+  
+  .left-box {
+    flex: 0 0 30%;
+    /* @style Left panel takes 30% width */
+  }
+  
+  .right-box {
+    flex: 1;
+    /* @style Right panel takes remaining space */
+  }
+  
+  .tab-container {
+    position: relative;
+    /* @style Allows tab indicator positioning */
+  }
+  
+  .tabs {
+    display: flex;
+    cursor: ns-resize; /* @style Indicates vertical resizing */
+  }
+  
+  .tab {
+    padding: 10px;
+    /* @style Spacing for tab labels */
+  }
+  
+  .hidden {
+    display: none;
+    /* @style Hides elements with this class */
+  }
+  
+  .paragraph-container.english-active .english-p {
+    display: block;
+    /* @style Shows English paragraphs when active */
+  }

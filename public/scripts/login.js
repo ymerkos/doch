@@ -23,6 +23,7 @@ const googleProvider = new GoogleAuthProvider();
 var loginBtn = document.querySelector(".loginBtn");
 
 var isAllowed = false;
+console.log("Login file")
 await checkIfLoggedin();
 
 window.checkIfLoggedin = checkIfLoggedin;
@@ -38,8 +39,8 @@ async function checkIfLoggedin() {
       window.activeUser = user;
       console.log('User is signed in:', user, isAllowed);
       if(window.loginBtn ) {
-      loginBtn.innerText = "Log out";
-      loginBtn.onclick = signOutBtn;
+        loginBtn.innerText = "Log out";
+        loginBtn.onclick = signOutBtn;
       }
 
     } else {
@@ -60,6 +61,8 @@ async function checkIfLoggedin() {
     var changedAuth = new CustomEvent("awtsmoosAuth", {
       detail: logged // You can pass any data you want in the detail property
     });
+    window.dispatchEvent(changedAuth);
+    console.log("User",loginBtn.onclick)
     return logged;
 }
 window.checkIfLoggedin = checkIfLoggedin;
@@ -106,7 +109,7 @@ onAuthStateChanged(auth, async (user) => {
   loginBtn.onclick = signInGoogle;
 
 function signOutBtn() {
-    
+    console.log("Signin out")
     signOut(auth).then(() => {
         console.log('User signed out');
     }).catch((error) => {
@@ -116,7 +119,7 @@ function signOutBtn() {
 
 window.signOutBtn = signOutBtn;
 async function signInGoogle() {
-
+  console.log("Trying to sign in firebase")
     // Login
     try {
         var result = await signInWithPopup(auth, googleProvider)

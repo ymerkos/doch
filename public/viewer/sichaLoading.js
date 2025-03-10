@@ -49,14 +49,18 @@ enableIndexedDbPersistence(db)
 
 async function getIt() {
     
-    var sichaId = getLastPath("sicha", true);
+    var sichaId = getLastPath("sichos", true);
+    console.log("sicha?",sichaId)
     if(!sichaId) {
         console.log("No sicha with that ID found");
     }
 
-    if(sichaId)
-        getSicha(sichaId);
 
+    if(sichaId){
+        getSicha(sichaId);
+        
+        return 
+    }
     var maamId = getLastPath("meluket", true)
     if(maamId) {
         console.log("found mamar getting")
@@ -101,6 +105,7 @@ async function getMaamar(maamId) {
             console.log("maamar found: ", data,curVolume);
             setTextToDoc(data, false); // Returns the document data
         } else {
+            setTextToDoc("Not available (yet)", false)
             console.log("No such document!");
         }
     } catch (error) {
@@ -122,7 +127,7 @@ async function getSicha(sichaId) {
 
         if (sichaDoc.exists()) {
             var data = {
-                Main_text:sichaDoc.get("Main_text"),
+                Main_text:sichaDoc.get("Main_text") || sichaDoc.get("Main_Text"),
                 Volume:sichaDoc.get("Volume"),
                 Footnotes:sichaDoc.get("Footnotes"),
                 Title:sichaDoc.get("Title")
@@ -135,6 +140,7 @@ async function getSicha(sichaId) {
             console.log("Sicha found: ", data,window.curVolume);
             setTextToDoc(data, true); // Returns the document data
         } else {
+            setTextToDoc("Not available (yet)", true)
             console.log("No such document!");
         }
     } catch (error) {
@@ -209,8 +215,11 @@ function setTextToDoc(sicha, isSicha = false) {
         return;
     }
 
+
     if(!isSicha) {
         p.classList.add("maamer");
+    } else {
+        p.classList.add("sicha")
     }
 
 
@@ -319,6 +328,9 @@ function setTextToDoc(sicha, isSicha = false) {
         callEvents();
 
         
+    } else {
+        console.log("NOTHING")
+        p.innerHTML = sicha
     }
 }
 
@@ -381,6 +393,10 @@ function processText(MainText, EnglishText="") {
     return resultHTML
 }
 
+function setSupsForP() {
+
+}
+
 /**
  * gets the last path paramter
  * so like /1/2/3 gets 3
@@ -413,7 +429,7 @@ function getLastPath(searchString, checkString) {
         return cleanedLastSegment;
     }
     
-    return cleanedLastSegment;
+    return null;
 }
 
 function getElementAfter(target) {

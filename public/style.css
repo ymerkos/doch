@@ -9,6 +9,9 @@ a {
   color: inherit; /* Use the default text color */
 }
 
+.sicha {
+  font-family:'Courier New', Courier, monospace
+}
 .invisible {
   visibility: hidden;
 }

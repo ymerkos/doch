@@ -1,5 +1,5 @@
 //B"H
-
+import {changeHashElement} from "/viewer/js/utils.js"
 let paragraphContainer = document.querySelector('.paragraph-content');
 let paragraphs = Array.from(paragraphContainer.querySelectorAll('.p-div'));
 
@@ -46,7 +46,7 @@ function highlightParagraph() {
 }
 
 function setHash(pId) {
-    changeHashElement("par", pId)
+   changeHashElement("par", pId)
 }
 
 function notificationalism(p, index) {
@@ -86,7 +86,7 @@ function notificationalism(p, index) {
     setHash(p.dataset.pIndex)
 
 }
-
+window.callEvents = callEvents;
 function callEvents() {
     var initialHash = location.hash;
     paragraphContainer = document.querySelector('.paragraph-content');
