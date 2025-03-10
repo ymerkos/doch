@@ -1,0 +1,63 @@
+/* B"H */
+/* Styles for the fixed header component */
+
+.header {
+    display: flex;
+    position: fixed;
+    top: 0;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: var(--header-height); /* Uses global header height variable */
+    padding: 12px;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: 0px 3px 4px #00000033; /* Subtle shadow for depth */
+    z-index: 20; /* Ensures header stays above other content */
+  }
+  
+  .header .left {
+    display: flex;
+    gap: 33px; /* Space between left-side items */
+    position: relative;
+  }
+  
+  .header .menu-item {
+    display: flex;
+    align-items: center;
+    font-family: sans-serif;
+    font-weight: 500;
+    color: #666666; /* Gray text for menu items */
+    font-size: 16px;
+  }
+  
+  .header .right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Space between right-side items */
+  }
+  
+  .menu-btn {
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 12px;
+    position: relative;
+    background-color: #ffffff;
+    font-family: sans-serif;
+    border-radius: 6px;
+    font-weight: 500;
+    border: 1px solid #ededec; /* Light border for buttons */
+    font-size: 12px;
+  }
+  
+  .menu-btn:hover {
+    cursor: pointer; /* Indicates clickable button */
+  }
+  
+  .menu-btn a {
+    text-decoration: none;
+    color: black; /* Black text for menu links */
+  }

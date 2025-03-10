@@ -157,17 +157,18 @@ function toggleSuperscript() {
         }
     }
 }
+window.makeSichaPublic=makeSichaPublic;
 
-async function makeSichaPublic(e) {
+async function makeSichaPublic(e, docID) {
     try {
         var el = e.target;
         if(!el) {
             return await showToast("Issue with making public")
         }
         var isItPublic = el.checked;
-        var id = getDocID();
+        var id = docID || getDocID();
         var [page, vol] = id.split("_")
-        var ref = getDocRef();
+        var ref = getDocRef(id);
         await updateDoc(ref, {
             isPublic: isItPublic
         });

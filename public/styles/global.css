@@ -1,0 +1,26 @@
+/* B"H */
+/* Global styles and variables for the application */
+
+:root {
+    --header-height: 60px; /* Defines the height of the header */
+    --awtsmoos-height: calc(100vh - var(--header-height)); /* Calculates available height below header */
+  }
+  
+  body, html {
+    margin: 0; /* Remove default margins */
+    height: calc(100% - calc(var(--header-height) / 2)); /* Adjust height considering header */
+    user-select: none; /* Prevent text selection on mobile (media query override) */
+  }
+  
+  a {
+    text-decoration: none; /* Remove underline from links */
+    color: inherit; /* Inherit text color from parent */
+  }
+  
+  .invisible {
+    visibility: hidden; /* Utility class to hide elements visually while keeping them in the layout */
+  }
+  
+  .hidden {
+    display: none !important; /* Utility class to completely hide elements */
+  }

@@ -1,0 +1,145 @@
+/* B"H */
+/* Styles for the home page layout and components */
+
+.home-content {
+    margin-top: var(--header-height); /* Offset for fixed header */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .home-code {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Space between elements */
+    position: relative;
+    background-color: white;
+  }
+  
+  .home-code .lang {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: "Noto Serif Hebrew-Regular", Helvetica;
+    font-weight: 400;
+    color: #666666; /* Gray text */
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 16px;
+    white-space: nowrap;
+    direction: rtl; /* Right-to-left for Hebrew */
+  }
+  
+  .home-code .text-wrapper-3 {
+    position: relative;
+    width: 53.3px;
+    height: 19px;
+    margin-top: -1px;
+    font-family: "Roboto-Regular", Helvetica;
+    font-weight: 400;
+    color: #666666;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 16px;
+    white-space: nowrap;
+  }
+  
+  .home-code .hero-banner {
+    display: flex;
+    flex-direction: column;
+    font-family: "Cardo-Regular";
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0;
+    position: relative;
+    background-color: #004e5f; /* Dark teal background */
+    overflow: hidden;
+    width: 100%;
+    gap: 30px;
+  }
+  
+  .hero-title {
+    position: relative;
+    font-weight: 400;
+    text-align: center;
+    color: #ffffff; /* White text */
+    font-size: 34px;
+  }
+  
+  .hero-sub {
+    position: relative;
+    width: fit-content;
+    font-weight: 400;
+    text-align: center;
+    color: #ffffff;
+    font-size: 16px;
+  }
+  
+  .hero-btn {
+    display: flex;
+    color: #929292; /* Gray text */
+    flex-direction: column;
+    align-items: center;
+    border: 1.5px solid #c5c5c5; /* Light border */
+    justify-content: center;
+    margin: 5px;
+    padding: 15px 35px;
+    position: relative;
+    border-radius: 5px;
+  }
+  
+  .home-code .books {
+    display: flex;
+    margin: 40px;
+    gap: 25px; /* Space between book items */
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 600px;
+    position: relative;
+  }
+  
+  .home-code .book {
+    display: flex;
+    cursor: pointer;
+    flex-direction: column;
+    min-width: 200px;
+    text-align: center;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 25px;
+    border: 1px solid #c6c6c6; /* Light border */
+  }
+  
+  .book:hover {
+    background-color: #f0f0f0; /* Light gray on hover */
+  }
+  
+  .book .disabled {
+    cursor: default; /* Normal cursor for disabled items */
+    background-color: #f0f0f0;
+  }
+  
+  .book-sub {
+    color: grey;
+    font-family: sans-serif;
+    font-size: 10px;
+  }
+  
+  .book-name {
+    font-family: serif;
+  }
+  
+  .home-btns {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px; /* Space above buttons */
+  }

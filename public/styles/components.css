@@ -1,0 +1,36 @@
+/* B"H */
+/* Styles for reusable UI components */
+
+.loader {
+    width: 30px;
+    position: absolute;
+    top: calc(50% - 15px); /* Center vertically */
+    left: calc(50% - 15px); /* Center horizontally */
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid rgb(227, 227, 227); /* Light gray border */
+    border-right-color: grey; /* Animated segment */
+    animation: l2 1s infinite linear; /* Spin animation */
+  }
+  
+  @keyframes l2 {
+    to {
+      transform: rotate(1turn); /* Full rotation */
+    }
+  }
+  
+  .edited-notifier {
+    position: absolute;
+    top: -36px;
+    display: block;
+    padding: 10px;
+    background: cyan !important; /* Highlight edited content */
+  }
+  
+  .custom {
+    background: rgb(255 236 201) !important; /* Custom background color */
+  }
+  
+  .highlighted {
+    background: cyan; /* Highlight style for footnotes or selections */
+  }

@@ -1,0 +1,42 @@
+/* B"H */
+/* Responsive design adjustments for different screen sizes */
+
+@media only screen and (max-width: 600px) {
+    .header .menu-item {
+      display: none; /* Hide menu items on small screens */
+    }
+  
+    .viewer .header {
+      display: none; /* Hide viewer header */
+    }
+  
+    .viewer .flex-container {
+      top: 0; /* Adjust for no header */
+    }
+  
+    .viewer .left-box {
+      position: fixed;
+      bottom: 0;
+      max-height: 70vh;
+      height: 100px;
+      width: 100%;
+      box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.1); /* Shadow for elevation */
+    }
+  
+    .viewer .left-box .content {
+      height: calc(100% - 60px); /* Adjust content height */
+    }
+  
+    .viewer .right-box .paragraph-content .maamer .p-div {
+      flex-direction: column; /* Stack paragraphs vertically */
+    }
+  
+    .about-title {
+      color: gray;
+      font-family: 'roboto';
+      font-size: 8vw !important; /* Responsive font size */
+      margin-top: 2px;
+      font-weight: bold;
+      text-align: center;
+    }
+  }

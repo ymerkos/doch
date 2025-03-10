@@ -1,0 +1,36 @@
+/* B"H */
+/* Styles for the question-and-answer section */
+
+.qa-container {
+    font-family: sans-serif;
+    margin: 0 auto; /* Center container */
+    padding: 10px;
+    max-width: 600px;
+  }
+  
+  .question {
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-weight: 300;
+    cursor: pointer; /* Indicates clickable */
+    font-size: 17px;
+  }
+  
+  .answer {
+    max-height: 0; /* Hidden by default */
+    overflow: hidden;
+    padding: 0 10px;
+    border-radius: 5px;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 2;
+    background-color: #f4f4f4; /* Light gray background */
+    transition: max-height 0.3s ease-out; /* Smooth reveal */
+  }
+  
+  .question.active .answer {
+    max-height: 500px; /* Reveal answer; adjust as needed */
+    transition: max-height 0.3s ease-in;
+  }

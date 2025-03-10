@@ -41,7 +41,7 @@
 var p = location.pathname.split("/");
 var ls = p[p.length-1];
 var data = await getKeys("books/Likkutei Sichos/TOC_VOL/"+ls);
-
+window.TOC = data;
 setThings(data, (w) => `/likkutei-sichos/view/${ls}/${w.page}_${ls}`)
 </script>
 </body>

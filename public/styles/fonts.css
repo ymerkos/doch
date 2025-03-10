@@ -1,0 +1,24 @@
+/* B"H */
+/* Font definitions and imports for custom typography */
+
+@font-face {
+    font-family: 'hei'; /* Custom font for Hebrew text */
+    src: url('/static/fonts/HEILIG.OTF') format('opentype');
+  }
+  
+  @font-face {
+    font-family: 'miriam'; /* Custom font for specific elements */
+    src: url('/static/fonts/mriam.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'fb'; /* Custom font for specific content */
+    src: url('/static/fonts/pft_frank.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'roboto'; /* Custom Roboto font for general use */
+    src: url('https://firebasestorage.googleapis.com/v0/b/awtsfaria.appspot.com/o/RobotoCondensed.ttf?alt=media&token=3a4b0dec-19b2-46b5-9d41-59bca558785a') format('truetype');
+  }
+  
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@100..900&display=swap'); /* Google font for Hebrew text */

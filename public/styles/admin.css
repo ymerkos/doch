@@ -1,0 +1,52 @@
+/* B"H */
+/* Styles for the admin page interface */
+
+.admin-container {
+    margin-top: 100px; /* Offset for header */
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px; /* Space between elements */
+  }
+  
+  .admin-container .submission-div {
+    padding: 5px;
+    background: cyan; /* Highlight submissions */
+  }
+  
+  .admin-container .submission-div:hover {
+    cursor: pointer; /* Indicates clickable */
+  }
+  
+  .admin-container .info .field {
+    gap: 5px;
+    display: flex; /* Field layout */
+  }
+  
+  .admin-container .body {
+    position: fixed;
+    left: 0;
+    right: 0;
+    margin-left: 50px;
+    margin-right: 50px;
+    display: block;
+    padding: 10px;
+    background: orange; /* Admin body background */
+  }
+  
+  .admin-container .body .btn {
+    padding: 5px;
+    background: red; /* Default button color */
+    color: white;
+    display: inline-block;
+  }
+  
+  .admin-container .body .btn:hover {
+    cursor: pointer;
+  }
+  
+  .admin-container .body .btn.approve {
+    color: black;
+    background: rgb(109, 255, 109); /* Green for approve button */
+  }

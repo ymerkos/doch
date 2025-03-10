@@ -1,0 +1,84 @@
+/* B"H */
+/* Styles for the viewer component, used for displaying content */
+
+.viewer {
+    height: 100%; /* Full height of container */
+  }
+  
+  .viewer.print {
+    height: auto !important; /* Override for print mode */
+  }
+  
+  .viewer .flex-container {
+    display: flex;
+    position: fixed;
+    top: calc(var(--header-height)); /* Offset for header */
+    width: 100%;
+    height: 100%;
+  }
+  
+  .viewer.print .flex-container {
+    position: unset !important; /* Reset for print mode */
+    width: unset;
+    height: unset;
+  }
+  
+  /* Left and right box layouts */
+  .viewer .left-box, .right-box {
+    height: 100%; /* Full height of parent */
+  }
+  
+  .viewer .left-box {
+    min-width: 300px;
+    z-index: 98324234; /* High z-index for layering */
+    width: 20vw;
+    background-color: #FBFBFA; /* Light background */
+    box-shadow: 1px 0px 1px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-sizing: border-box;
+  }
+  
+  .viewer .left-box.dark-mode {
+    background-color: #3D3D3D; /* Dark mode background */
+  }
+  
+  /* Right box styles */
+  .viewer .right-box {
+    flex-grow: 1; /* Takes remaining space */
+    background-color: white;
+    box-sizing: border-box;
+    position: relative;
+  }
+  
+  .viewer .right-box.dark-mode {
+    background-color: #292929; /* Dark mode background */
+  }
+  
+  .viewer .right-box .paragraph-content {
+    overflow-y: scroll;
+    height: calc(100% - var(--header-height) - 45px); /* Adjust for header and app bar */
+    margin-top: 45px;
+  }
+  
+  .viewer.print .right-box .paragraph-content {
+    overflow-y: unset !important; /* Reset for print */
+    height: unset !important;
+  }
+  
+  /* Paragraph styling */
+  .viewer .right-box .paragraph-content p {
+    color: #000;
+    margin: 0;
+    padding: 15px;
+    text-align: justify;
+    font-family: 'hei', sans-serif;
+    font-size: 25.1px;
+    width: -webkit-fill-available;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+  
+  .viewer .right-box .paragraph-content p.dark-mode {
+    color: #CFCFCF; /* Light text for dark mode */
+  }
+  
+  /* Additional viewer styles omitted for brevity; include as needed */
