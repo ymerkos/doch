@@ -116,8 +116,11 @@ function setThings(data, href) {
             } else 
                 indexItem.classList.add("private")
         }
-        indexItem.href = href(w);
-        
+        if(w) {
+            indexItem.href = href(w);
+        } else {
+            console.log("What?.",w)
+        }
         const indexHeader = document.createElement("div");
         indexHeader.className = "index-header";
     
@@ -149,8 +152,13 @@ function setThings(data, href) {
     function renderIndex(data, container) {
         container.innerHTML = ""; // Clear previous content
     
-        data.forEach(w => {
-            container.appendChild(createIndexItem(w));
+        data.forEach((w,i) => {
+            if(w) {
+                container.appendChild(createIndexItem(w));
+            } else {
+                console.log("no data",data,i);
+                
+            }
         });
     }
     
