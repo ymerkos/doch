@@ -97,8 +97,6 @@ window.getAllDocuments=getAllDocuments;
 //console.log("Getkeys?",getKeys,getAllDocuments)
 function setThings(data, href) {
     var k = Object.keys(data);
-    data.length = k.length;
-    data = Array.from(data);
    // console.log(data);
     var c = document.querySelector(".index-container");
 
@@ -152,9 +150,9 @@ function setThings(data, href) {
     function renderIndex(data, container) {
         container.innerHTML = ""; // Clear previous content
     
-        data.forEach((w,i) => {
+        k.forEach((w,i) => {
             if(w) {
-                container.appendChild(createIndexItem(w));
+                container.appendChild(createIndexItem(data[w]));
             } else {
                 console.log("no data",data,i);
                 
