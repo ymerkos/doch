@@ -97,8 +97,6 @@ window.getAllDocuments=getAllDocuments;
 //console.log("Getkeys?",getKeys,getAllDocuments)
 function setThings(data, href) {
     var k = Object.keys(data);
-    data.length = k.length;
-    data = Array.from(data);
    // console.log(data);
     var c = document.querySelector(".index-container");
 
@@ -116,8 +114,11 @@ function setThings(data, href) {
             } else 
                 indexItem.classList.add("private")
         }
-        indexItem.href = href(w);
-        
+        if(w) {
+            indexItem.href = href(w);
+        } else {
+            console.log("What?.",w)
+        }
         const indexHeader = document.createElement("div");
         indexHeader.className = "index-header";
     
@@ -149,8 +150,13 @@ function setThings(data, href) {
     function renderIndex(data, container) {
         container.innerHTML = ""; // Clear previous content
     
-        data.forEach(w => {
-            container.appendChild(createIndexItem(w));
+        k.forEach((w,i) => {
+            if(w) {
+                container.appendChild(createIndexItem(data[w]));
+            } else {
+                console.log("no data",data,i);
+                
+            }
         });
     }
     
