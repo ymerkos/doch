@@ -164,7 +164,7 @@ function setupUIEvents() {
 window.isSichaEditing = false;
 var current = "";
 
-async function editSichaToggle(editBtn, isHTML = false) {
+async function editSichaToggle(btn, isHTML = false) {
     var pc = document.querySelector(
         ".paragraph-container"
     )
@@ -192,8 +192,9 @@ async function editSichaToggle(editBtn, isHTML = false) {
             footnoteHolder.contentEditable = true;
 
             
-           
+            editBtnHTML.disabled = true;
         } else {
+            editBtn.disabled = true;
             var pDiv =document.createElement("div")
             pDiv.className = "p-div editAll";
 
@@ -223,7 +224,7 @@ async function editSichaToggle(editBtn, isHTML = false) {
 
         }
         
-        editBtn.innerText = "Save edits";
+        btn.innerText = "Save edits";
 
 
       //  console.log(body,body==sichaData.Main_text)
@@ -242,6 +243,8 @@ async function editSichaToggle(editBtn, isHTML = false) {
             
             footnotes = footnoteHolder.innerHTML;
         } else {
+            editBtn.disabled = false;
+            editBtnHTML.disabled = false;
             var pr = pc.querySelector(".editAll p.heb")
             body = pr?.innerText;
             if(!body?.trim()) {
@@ -263,7 +266,7 @@ async function editSichaToggle(editBtn, isHTML = false) {
         footnoteHolder.contentEditable = false;
         current = "";
         window.isSichaEditing = false;
-        editBtn.innerText = "Edit again";
+        btn.innerText = "Edit again";
         window.sichaData.Main_text = body;
         window.sichaData.Footnotes = footnotes;
         
