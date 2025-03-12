@@ -264,6 +264,9 @@ async function editSichaToggle(editBtn, isHTML = false) {
         current = "";
         window.isSichaEditing = false;
         editBtn.innerText = "Edit again";
+        window.sichaData.Main_text = body;
+        window.sichaData.Footnotes = footnotes;
+        
         
     }
 }
