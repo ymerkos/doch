@@ -1,5 +1,7 @@
 //B"H
 
+  
+
 import indexer from "/scripts/indexify.js";
 var desktopHeight = 50;
 const expanded = document.getElementById('expanded');
@@ -10,21 +12,37 @@ var clickedAtAll=false;
 var old;
 
 var indexHTML = null;
+
+var sichaIndexData =null;
 async function getIndexHTML(holder) {
     if(!holder) holder = document.createElement("div");
-    await indexer({
-        htmlEl: holder,
-        volumeNumber: window.curVolume,
-        url: window.isMaamar ? "/viewer/meluket/" :`/viewer/sicha/`,
-        
-        databasePath: [
-            "books",
-            window.isMaamar ? "Meluket" : 
-            "Likkutei Sichos",
-            "TOC_VOL"
-        ]
-    })
-    console.log(window.gg=holder,holder.innerHTML)
+    if(window.isMaamar) {
+        await indexer({
+            htmlEl: holder,
+            volumeNumber: window.curVolume,
+            url: window.isMaamar ? "/viewer/meluket/" :`/viewer/sicha/`,
+            
+            databasePath: [
+                "books",
+                window.isMaamar ? "Meluket" : 
+                "Likkutei Sichos",
+                "TOC_VOL"
+            ]
+        })
+        console.log(window.gg=holder,holder.innerHTML)
+    } else {
+        console.log("HI",sichaIndexData)
+        if(!sichaIndexData) {
+            var p = location.pathname.split("/");
+            var ls = p[p.length-1].split("_")[1];
+            var data = await getKeys("books/Likkutei Sichos/TOC_VOL/"+ls);
+            window.TOC = data;
+            setThings(data, (w) => `/likkutei-sichos/view/${ls}/${w.page}_${ls}`, holder);
+            sichaIndexData = holder.innerHTML;
+        } else {
+            holder.innerHTML = sichaIndexData
+        }
+    }
     return holder.innerHTML;
 }
 

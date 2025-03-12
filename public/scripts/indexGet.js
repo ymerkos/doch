@@ -95,10 +95,10 @@ async function getAllDocuments(nm,field="Title") {
 window.getAllDocuments=getAllDocuments;
 
 //console.log("Getkeys?",getKeys,getAllDocuments)
-function setThings(data, href) {
+function setThings(data, href, container) {
     var k = Object.keys(data);
    // console.log(data);
-    var c = document.querySelector(".index-container");
+    var c =container || document.querySelector(".index-container");
 
     if (!c) {
         alert("Something's wrong");
