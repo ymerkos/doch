@@ -204,6 +204,7 @@ function setTextToDoc(sicha, isSicha = false) {
         alert("problem")
         return;
     }
+    window.sichaData = sicha;
     window.sicha = sicha;
     footnotify(sicha)
     var maamar= sicha.Maamar;
@@ -450,32 +451,70 @@ function getElementAfter(target) {
     }
   }
 
-  
-function footnotify(sicha) {
+  function footnotify(sicha) {
     //B"H
-    var dp = new DOMParser()
-    var d = dp.parseFromString(sicha.Footnotes, "text/html")
-    var p = d.getElementsByTagName("p")
-    var ar = Array.from(p)
-    var notes = {}
-    ar.forEach(w=> {
-        var reg = /^(\d+\*?)\)/;
-        var par = w.innerHTML;
+    var dp = new DOMParser();
+    var d = dp.parseFromString(sicha.Footnotes, "text/html");
+    var p = d.getElementsByTagName("p");
+    var ar = Array.from(p);
+    var notes = {};
+    var currentNote = null;
+    var currentContent = "";
+    var currentNum = null;
+    ar.forEach((w, index) => {
+        var par = w.innerHTML.trim();
         var info = null;
-        const match = par.match(reg);
-        if(match) {
-            info = match[1]
-        } else {
+        
+        // Check if paragraph starts with number followed by )
+        var match = par.match(/^(\d+)\)/);
+        
+        // Special case for first paragraph - always treat as note 1
+        /*if (index === 0) {
+            info = "1";
+            // Remove the number if it exists
+            if (match) {
+                par = par.replace(match[0], "").trim();
+            }
+        } 
+        // For other paragraphs, check if they start with a number
+        else */
+        if (match) {
+            info = match[1];
+            par = par.replace(match[0], "").trim();
+        }
 
+        // If we found a new numbered section
+        if (info) {
+            // If we were building a previous note, save it
+            if (currentNote) {
+                notes[currentNote] = currentNote + ") "
+                + currentContent.trim();
+            }
+            // Start new note
+            currentNote = info;
+            currentContent = par;
+        } 
+        // If no number, append to current note if one exists
+        else if (currentNote) {
+            currentContent += "<p>" + par + "</p>";
         }
-        if(info) {
-            notes[info] = par;
-        }
-    })
+    });
+
+    // Save the last note if there is one
+    if (currentNote) {
+        notes[currentNote] = currentNote + ") "+
+            currentContent.trim();
+    }
+
     window.notes = notes;
-
+    return notes; // Optional: return the notes object if needed
 }
-
+/*
+function awtsTrim(txt) {
+    if(txt[0] == "(")
+       // txt = txt.
+}
+*/
 window.getPath=getPath
 
 

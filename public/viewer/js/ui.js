@@ -12,9 +12,17 @@ import {
     toggleSuperscript, 
     submitEdit,
     submitSicha,
-    makeSichaPublic
+    makeSichaPublic,
+    updateSichos,
+    fancyHTML
  } from '/viewer/js/editing.js';
-import { showToast, makeElementEditable, saveEditableElement, findParentWithDatasetProperty } from '/viewer/js/utils.js';
+import { 
+    showToast,
+    makeElementEditable, 
+    saveEditableElement, 
+    findParentWithDatasetProperty,
+    betterEditing
+} from '/viewer/js/utils.js';
 import { continueIfLoggedIn } from '/viewer/js/auth.js'; // Assuming this exists externally
 
 // B"H - Blessed be He
@@ -37,7 +45,14 @@ function setupUIEvents() {
     var sichaSubmit = document.getElementById("sichaSubmit")
     sichaSubmit.addEventListener("click", submitSicha)
 
-    
+    var editBtn =  document.getElementById("editBtn")
+    editBtn.addEventListener("click", async () => {
+        editSichaToggle(editBtn)
+    });
+
+    editBtnHTML.addEventListener("click", async () => {
+        await editSichaToggle(editBtnHTML,"html")
+    })
     var pb = document.getElementById("isPublic")
     pb.addEventListener("change", makeSichaPublic)
     mBold.onclick = toggleBold;         // @event Bind bold toggle
@@ -45,10 +60,10 @@ function setupUIEvents() {
 
     // @event Keyboard shortcuts for formatting
     addEventListener("keypress", e => {
-        if (e.ctrlKey && (e.key === 'b' || e.key === 'B')) { // @condition Ctrl+B
-            e.preventDefault();
-            toggleBold();                               // @call Toggle bold
-        } else if (e.ctrlKey && (e.key === 'm' || e.key === 'M')) { // @condition Ctrl+M
+      
+        
+        if (e.ctrlKey && (e.code === 'KeyM' || e.key === 'M')) { // @condition Ctrl+M
+            
             e.preventDefault();
             toggleSuperscript();                        // @call Toggle superscript
         }
@@ -146,6 +161,112 @@ function setupUIEvents() {
     });
 }
 
+window.isSichaEditing = false;
+var current = "";
+
+async function editSichaToggle(editBtn, isHTML = false) {
+    var pc = document.querySelector(
+        ".paragraph-container"
+    )
+    var editableParagraphs = 
+        Array.from(
+            document.querySelectorAll(
+                ".paragraph-container .p-div p.heb"
+            )
+        );
+      //  console.log("Editin",window.ed=editableParagraphs);
+    var footnoteHolder = document.querySelector("#content0");
+    
+
+    if(!isSichaEditing) {
+        window.isSichaEditing = true;
+        current = footnoteHolder.innerHTML
+        if(!isHTML) {
+            editableParagraphs.forEach(p => {
+                p.contentEditable = true;
+                betterEditing(p);
+            });
+
+            
+            footnoteHolder.innerHTML = window.sichaData.Footnotes;
+            footnoteHolder.contentEditable = true;
+
+            
+           
+        } else {
+            var pDiv =document.createElement("div")
+            pDiv.className = "p-div editAll";
+
+            var pr = document.createElement("p")
+            pr.classList.add("heb");
+            pDiv.appendChild(pr);
+
+            var mainText = sichaData
+            .Main_text;
+
+            pr.innerText = mainText;
+
+            var displayHTML = fancyHTML(pr.innerText)
+             pr.innerHTML = displayHTML;
+        
+            pr.contentEditable = true;
+            betterEditing(pr);
+
+            pc.innerHTML = "";
+            pc.appendChild(pDiv);
+
+
+            var footnoteHTML = window.sichaData.Footnotes;
+            var fancy = fancyHTML(footnoteHTML);
+            footnoteHolder.innerHTML = fancy;
+            footnoteHolder.contentEditable = true;
+
+        }
+        
+        editBtn.innerText = "Save edits";
+
+
+      //  console.log(body,body==sichaData.Main_text)
+
+    } else {
+        var body;
+        var footnotes="";
+        if(!isHTML) {
+            editableParagraphs.forEach(p => {
+                p.contentEditable = false;
+            });
+            
+            body = editableParagraphs.map(w=>`<p>${
+                w.innerHTML
+            }</p>`).join("")//.split("\\n").join("<br>");
+            
+            footnotes = footnoteHolder.innerHTML;
+        } else {
+            var pr = pc.querySelector(".editAll p.heb")
+            body = pr?.innerText;
+            if(!body?.trim()) {
+                await showToast("No body to save");
+                return;
+            }
+
+            var maybeFootnotes = footnoteHolder.innerHTML;
+            if(!maybeFootnotes) {
+                await showToast("No footnote content")
+            } else {
+                footnotes = footnoteHolder.innerText
+            }
+        }
+       
+        var up = await updateSichos(body, footnotes);
+        
+        footnoteHolder.innerHTML = current || "";
+        footnoteHolder.contentEditable = false;
+        current = "";
+        window.isSichaEditing = false;
+        editBtn.innerText = "Edit again";
+        
+    }
+}
 /**
  * @function setupEditingMode
  * @description Configures UI for editing mode.

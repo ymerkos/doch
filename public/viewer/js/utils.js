@@ -97,6 +97,31 @@ function changeHashElement(key, value) {
     location.hash = "#" + curHash.toString();       // @action Update location.hash
 }
 
+function betterEditing(editor) {
+    editor.addEventListener('keypress', function(e) {
+       // console.log("e",e)
+        if (e.code === 'Enter') {
+            e.preventDefault();
+            
+            // Create a br element
+            const br = document.createElement('br');
+            
+            // Get current selection and range
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+            
+            // Insert the br at cursor position
+            range.deleteContents();
+            range.insertNode(br);
+            
+            // Move cursor after the br
+            range.setStartAfter(br);
+            range.setEndAfter(br);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    });
+}
 let timeout = null;                                     // @global Timeout variable
 
 export { 
@@ -104,5 +129,6 @@ export {
     saveEditableElement, 
     findParentWithDatasetProperty, 
     showToast,
-    changeHashElement
+    changeHashElement,
+    betterEditing
 };

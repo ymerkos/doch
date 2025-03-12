@@ -50,6 +50,7 @@ function setHash(pId) {
 }
 
 function notificationalism(p, index) {
+    if(window.isSichaEditing) return;
     var n = window.notes;
     if(!n) return;
     
@@ -76,7 +77,7 @@ function notificationalism(p, index) {
     //console.log(window.cn=curNotes);
     Object.keys(curNotes).forEach(q => {
         var p = document.createElement("p");
-        p.setAttribute("dir","rtl");
+ 
         p.className="ftnote"
         p.innerHTML = curNotes[q];
         an[q] = p;

@@ -136,6 +136,7 @@ function toggleBold() {
  * @description Toggles superscript formatting on selected text.
  */
 function toggleSuperscript() {
+    console.log("super")
     const selection = window.getSelection();      // @var Current selection
     const selectedText = selection.toString();    // @var Selected text
 
@@ -202,17 +203,17 @@ async function submitSicha() {
     await showToast("Submitting body and footnotes..");
     try {
 
-        var ref = getDocRef();
-        await updateSichos(ref, body, footnotes)
+        
+        await updateSichos(body, footnotes)
     } catch(e) {
         await showToast("Issue submitting")
         console.log(e);
     }
 }
 
-async function updateSichos(ref, body, footnotes) {
+async function updateSichos(body, footnotes) {
    
-
+    var ref = getDocRef();
     try {
         await updateDoc(ref, {
             Footnotes: footnotes,
@@ -228,9 +229,22 @@ async function updateSichos(ref, body, footnotes) {
     }
 }
 
-export { submitEdit, 
+function fancyHTML(text) {
+   return text
+        .replace(/&/g, '&amp;')           // Handle HTML entities
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/&lt;p&gt;/g, '<span class="p-open">&lt;p&gt;</span>')
+        .replace(/&lt;\/p&gt;/g, '<span class="p-close">&lt;/p&gt;</span>');
+
+}
+
+export { 
+    submitEdit, 
     toggleBold, 
     toggleSuperscript, 
     makeSichaPublic,
-    submitSicha 
+    submitSicha,
+    updateSichos,
+    fancyHTML
 };

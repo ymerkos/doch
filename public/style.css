@@ -4,6 +4,10 @@
   ---awtsmoos-height:calc(100vh - var(---header-height));
 }
 
+.footnotesCnt {
+  direction: rtl;
+}
+
 a {
   text-decoration: none; /* Remove underline */
   color: inherit; /* Use the default text color */
