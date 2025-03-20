@@ -65,6 +65,8 @@
         adjustFontSize(".paragraph-container p", "increase")
         
         adjustFontSize(".paragraph-container p b", "increase")
+        
+        adjustFontSize(".viewer .left-box .content b", "increase")
       }
 
       function decreaseFont() {
@@ -72,6 +74,9 @@
         adjustFontSize(".paragraph-container p", "decrease")
         
         adjustFontSize(".paragraph-container p b", "decrease")
+        
+        adjustFontSize(".viewer .left-box .content b", "decrease")
+        //
       }
 
       function adjustFontSize(sl, action) {
@@ -201,8 +206,12 @@
                       <button class="btn" id="editBtn"> Edit</button>
                       <button class="btn" id="editBtnHTML"> Edit HTML</button>
                 
+                      <div class="special">
+                        <label for="setSpecial">Special Sichos 16-17</label>
+                        <input type="checkbox" id="setSpecial">
+                      </div>
                         <div class="form-row horizontal-row">
-                      
+                          
                         </div>
 <!--
                         <h3>Paste Sicha Title</h3>
@@ -214,6 +223,45 @@
                         </div>
 -->
                         <h3>Paste Sicha body from google doc</h3>
+                        <div class="specialInputs regular hidden">
+                          <div class="config">
+                            <div>
+                            <label for="boldFont"><b>bold</b>:</label>
+                            <select id="boldFont">
+                              <option value="font0">font0</option>
+                              <option value="font1">font1</option>
+                              <option value="font2">font2</option>
+                              <option value="font3">font3</option>
+                              <option value="font4">font4</option>
+                              <option value="font5">font5</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label for="supFont"> <sup>superscript</sup>:</label>
+                            <select id="supFont">
+                              <option value="font0">font0</option>
+                              <option value="font1">font1</option>
+                              <option value="font2">font2</option>
+                              <option value="font3">font3</option>
+                              <option value="font4">font4</option>
+                              <option value="font5">font5</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label for="plainFont"> plain:</label>
+                            <select id="plainFont">
+                              <option value="font0">font0</option>
+                              <option value="font1">font1</option>
+                              <option value="font2">font2</option>
+                              <option value="font3">font3</option>
+                              <option value="font4">font4</option>
+                              <option value="font5">font5</option>
+                            </select>
+                          </div>
+                          </div>
+                          
+                        <button class="btn" id="parseTextFromSpecial"> Parse Text</button>
+                        </div>
                         <div class="form-row">
                             <textarea name="Sicha HTML" id="sichaInput"
                              placeholder="Paste sicha body from google doc"
@@ -221,6 +269,27 @@
                         </div>
 
                         <h3>Paste Sicha footnotes from google doc</h3>
+                        <div class="specialInputs footnotes hidden">
+                          <div class="config">
+                            <div>
+                            <label for="boldFontFootnotes"><b>bold</b>:</label>
+                            <select id="boldFontFootnotes">
+                              <option value="font0">font0</option>
+                              <option value="font1">font1</option>
+                              <option value="font2">font2</option>
+                              <option value="font3">font3</option>
+                              <option value="font4">font4</option>
+                              <option value="font5">font5</option>
+                              
+                              <option value="font6">font6</option>
+                              
+                              <option value="font7">font7</option>
+                            </select>
+                          </div>
+                        </div>
+                        
+                        <button class="btn" id="parseTextFromSpecialFootnotes"> Parse Text</button>
+                      </div>
                         <div class="form-row">
                           <textarea name="Sicha Fotnotes HTML" id="sichaFootnoteInput"
                            placeholder="Paste footnotes from google doc"

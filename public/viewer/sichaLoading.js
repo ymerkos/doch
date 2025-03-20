@@ -206,6 +206,10 @@ function setTextToDoc(sicha, isSicha = false) {
     }
     window.sichaData = sicha;
     window.sicha = sicha;
+
+    document.getElementById("sichaInput").value = sicha.Main_text
+    
+    document.getElementById("sichaFootnoteInput").value = sicha.Footnotes
     footnotify(sicha)
     var maamar= sicha.Maamar;
     var mt = sicha.Main_text;

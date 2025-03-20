@@ -25,6 +25,11 @@ import {
 } from '/viewer/js/utils.js';
 import { continueIfLoggedIn } from '/viewer/js/auth.js'; // Assuming this exists externally
 
+import {
+    
+    processText,
+    processFootnoteText
+} from "/viewer/js/text-parsing.js"
 // B"H - Blessed be He
 // @global UI elements
 const mBold = document.getElementById('mBold');
@@ -33,6 +38,7 @@ const reportErrorBtn = document.getElementById('reportErrorBtn');
 const errorReport = document.getElementById('errorReport');
 const errorCancel = document.getElementById('errorCancel');
 const errorReportD = document.getElementById('errorReportD');
+
 let curParIdx = null;            // @global Current paragraph index
 let initialHTML = null;          // @global Initial HTML content
 let errorClicked = false;        // @global Error click state
@@ -42,6 +48,39 @@ let errorClicked = false;        // @global Error click state
  * @description Sets up all UI-related event listeners.
  */
 function setupUIEvents() {
+
+    var ss = document.getElementById("setSpecial");
+    var si = document.querySelectorAll(".specialInputs")
+
+    var sichaInput = document.getElementById("sichaInput")
+    var sichaFootnoteInput = document.getElementById("sichaFootnoteInput")
+    ss.onchange = e => {
+        if(ss.checked) {
+            si.forEach(w=>w.classList.remove("hidden"))
+        } else {
+            si.forEach(w=>w.classList.add("hidden"));
+        }
+        window.isSpecialPasting = ss.checked;
+    }
+
+
+    var pt = document.getElementById("parseTextFromSpecial");
+    pt.addEventListener("click", e=>{
+        
+       var res = processText({
+            text: sichaInput.value
+        })
+        sichaInput.value = res;
+    })
+    var ptf = document.getElementById("parseTextFromSpecialFootnotes");
+    ptf.addEventListener("click", e=>{
+        
+       var res = processFootnoteText({
+            text: sichaFootnoteInput.value
+        })
+        sichaFootnoteInput.value = res;
+    })
+    //
     var sichaSubmit = document.getElementById("sichaSubmit")
     sichaSubmit.addEventListener("click", submitSicha)
 

@@ -688,6 +688,15 @@ color: white;
   height:80vh;
 }
 
+
+.viewer .left-box .content b {
+  font-family: 'hei-b';
+
+  
+  font-size: 14px;
+}
+
+
 .footnotes-container {
   display: flex;
   align-items: center;

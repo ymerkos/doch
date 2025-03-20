@@ -16,7 +16,7 @@ const sichaFootnoteInput = document.getElementById('sichaFootnoteInput');
 
 // @function Initializes the application
 function initializeApp() {
-    makeSichaForm(sichaInput);         // @call Sets up main sicha input form
+    makeSichaForm(sichaInput, "main");         // @call Sets up main sicha input form
     makeSichaForm(sichaFootnoteInput); // @call Sets up footnote input form
     
     // @condition Check if in editing mode
