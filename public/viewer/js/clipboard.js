@@ -47,9 +47,7 @@ async function makeSichaForm(textarea, type) {
                 if (htmlContent) { // @condition If HTML was found
                     console.log("HTML content pasted:", htmlContent); // @log Full HTML
 
-                    var parsed = htmlContent;
-                    
-                        parseHTML(htmlContent);            // @call Parse HTML content
+                    var parsed = parseHTML(htmlContent);            // @call Parse HTML content
                     textarea.value = parsed;  
                     txtResult = htmlContent                        // @action Set parsed content
                 } else if (plainText) { // @condition If only plain text was found
