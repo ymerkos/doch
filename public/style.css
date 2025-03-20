@@ -50,6 +50,10 @@ a {
   background-color: white;
 }
 
+@font-face {
+  font-family: "hei-b";
+  src: url("/static/fonts/Heilig-Bold.ttf") format('truetype'); 
+}
 /* Define a custom font */
 @font-face {
   font-family: 'hei'; /* Choose a name for your font family */
@@ -323,6 +327,12 @@ direction:rtl;
   font-weight: 400;
   line-height: 1.4;
   /*max-width: 500px;*/
+}
+
+
+.viewer .right-box .paragraph-content p b {
+  font-family: "hei-b";
+  font-size: 21.5px;
 }
 
 

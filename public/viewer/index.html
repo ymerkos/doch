@@ -63,17 +63,22 @@
       function increaseFont() {
         adjustFontSize("#content0", "increase")
         adjustFontSize(".paragraph-container p", "increase")
+        
+        adjustFontSize(".paragraph-container p b", "increase")
       }
 
       function decreaseFont() {
         adjustFontSize("#content0", "decrease")
         adjustFontSize(".paragraph-container p", "decrease")
+        
+        adjustFontSize(".paragraph-container p b", "decrease")
       }
 
       function adjustFontSize(sl, action) {
        
         const paragraphs = Array.from(document.querySelectorAll(sl));
-        console.log("Trying",sl,paragraphs,action)
+        
+        
         paragraphs.forEach(paragraph => {
           const currentFontSize = window.getComputedStyle(paragraph).fontSize;
           let newSize;
