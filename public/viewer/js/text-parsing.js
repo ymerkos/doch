@@ -111,16 +111,20 @@ function processFootnoteText({
     // Move standalone nekudot (ַ, ָ, and ּ) to the next character
     outputText = outputText.replace(/([ַָּ])([^<])/g, "$2$1");
 
-    // Swap parentheses ( and )
-    outputText = outputText.replace(/\(/g, "TEMPORARY_OPEN")
-                          .replace(/\)/g, "(")
-                          .replace(/TEMPORARY_OPEN/g, ")");
 
-    // Swap square brackets [ and ]
-    outputText = outputText.replace(/\[/g, "TEMPORARY_OPEN_BRACKET")
-                          .replace(/\]/g, "[")
-                          .replace(/TEMPORARY_OPEN_BRACKET/g, "]");
+    var shouldSwap = document.getElementById("setParenthesisFoot")?.checked;
+    if(shouldSwap) {
+        // Swap parentheses ( and )
+        outputText = outputText.replace(/\(/g, "TEMPORARY_OPEN")
+                            .replace(/\)/g, "(")
+                            .replace(/TEMPORARY_OPEN/g, ")");
 
+        // Swap square brackets [ and ]
+        outputText = outputText.replace(/\[/g, "TEMPORARY_OPEN_BRACKET")
+                            .replace(/\]/g, "[")
+                            .replace(/TEMPORARY_OPEN_BRACKET/g, "]");
+        
+    }
     // Replace both &nbsp; and regular spaces with a single space and collapse multiple spaces
     outputText = outputText.replace(/(&nbsp;|\s)+/g, " ");
 
@@ -162,17 +166,22 @@ function processText({
     // Move standalone nekudot (ַ, ָ, and ּ) to the next character
     outputText = outputText.replace(/([ַָּ])([^<])/g, "$2$1");
 
-    // Swap parentheses ( and )
-    outputText = outputText.replace(/\(/g, "TEMPORARY_OPEN")
-                            .replace(/\)/g, "(")
-                            .replace(/TEMPORARY_OPEN/g, ")");
-
-    // Swap square brackets [ and ]
-    outputText = outputText.replace(/\[/g, "TEMPORARY_OPEN_BRACKET")
-                            .replace(/\]/g, "[")
-                            .replace(/TEMPORARY_OPEN_BRACKET/g, "]");
 
 
+    var shouldSwap = document.getElementById("setParenthesisMain")?.checked;
+
+    if(shouldSwap) {
+        // Swap parentheses ( and )
+        outputText = outputText.replace(/\(/g, "TEMPORARY_OPEN")
+                                .replace(/\)/g, "(")
+                                .replace(/TEMPORARY_OPEN/g, ")");
+
+        // Swap square brackets [ and ]
+        outputText = outputText.replace(/\[/g, "TEMPORARY_OPEN_BRACKET")
+                                .replace(/\]/g, "[")
+                                .replace(/TEMPORARY_OPEN_BRACKET/g, "]");
+
+    }
 
     // Replace &nbsp; with a single space and collapse multiple spaces into one
     outputText = outputText.replace(/&nbsp;/g, " ").replace(/\s+/g, " ");
