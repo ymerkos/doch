@@ -1,5 +1,6 @@
 //B"H
-
+import heb_volumes from "/templates/heb_volumes.js";
+window.heb_volumes = heb_volumes;
 import firebaseConfig from "../config.js"
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
@@ -49,17 +50,17 @@ window.addEventListener("awtsmoosAuth", (e) => {
 // Function to load all keys in a document at a specific path
 const loadKeysInDocument = async (documentPath) => {
     try {
-        const documentRef = doc(db, documentPath);
-        const documentSnapshot = await getDoc(documentRef);
+            const documentRef = doc(db, documentPath);
+            const documentSnapshot = await getDoc(documentRef);
 
-        if (documentSnapshot.exists()) {
-        const data = documentSnapshot.data();
+            if (documentSnapshot.exists()) {
+            const data = documentSnapshot.data();
 
-       // console.log(' the document:', data);
-        return data;
-        } else {
-        console.log('Document does not exist.');
-        }
+            // console.log(' the document:', data);
+                return data;
+            } else {
+                console.log('Document does not exist.',documentPath);
+            }
     } catch (error) {
         console.error('Error loading document keys:', error);
     }
@@ -94,12 +95,18 @@ async function getAllDocuments(nm,field="Title") {
   }
 window.getAllDocuments=getAllDocuments;
 
+//B"H
+function findHebVolume(num) {
+    return heb_volumes?.find(q => q["eng vol"] == num)?.["heb vol full"]
+    
+}
+
 //console.log("Getkeys?",getKeys,getAllDocuments)
-function setThings(data, href, container) {
+function setThings(data, href, isParsha) {
     var k = Object.keys(data);
    // console.log(data);
-    var c =container || document.querySelector(".index-container");
-
+    var c = document.querySelector(".index-container");
+    console.log("container",c)
     if (!c) {
         alert("Something's wrong");
         return;
@@ -108,14 +115,19 @@ function setThings(data, href, container) {
     function createIndexItem(w) {
         const indexItem = document.createElement("a");
         indexItem.className = "index-item";
-        if(!w?.isPublic) {
+        if(!w?.isPublic && !isParsha) {
             if(window.isAllowed) {
                 indexItem.classList.add("private-admin")
             } else 
                 indexItem.classList.add("private")
         }
         if(w) {
-            indexItem.href = href(w);
+            if(!isParsha) 
+                indexItem.href = href(w); 
+            else {
+                var vol = w.vol;
+                indexItem.href =  `/likkutei-sichos/view/${vol}/${w.page}_${vol}`
+            }
         } else {
             console.log("What?.",w)
         }
@@ -123,8 +135,25 @@ function setThings(data, href, container) {
         indexHeader.className = "index-header";
     
         const indexTitle = document.createElement("div");
-        indexTitle.className = "index-title";
-        indexTitle.textContent = w.title || w.Title || w;
+        indexTitle.classList.add("index-title");
+        
+        if(isParsha) {
+            indexTitle.classList.add("parsha")
+            var volDiv = document.createElement("div")
+            volDiv.className = "sicha-volume"
+            volDiv.innerText = findHebVolume(w.vol);
+            indexTitle.appendChild(volDiv);
+
+            var sichaTitle = document.createElement("div");
+            sichaTitle.className = "sicha-name"
+            sichaTitle.innerText = w.title;
+
+            indexTitle.appendChild(sichaTitle);
+
+        } else {
+            indexTitle.textContent = w.title || w.Title || w;
+        //
+        }
     
         const indexNumber = document.createElement("div");
         indexNumber.className = "index-number";
@@ -148,6 +177,7 @@ function setThings(data, href, container) {
     }
     
     function renderIndex(data, container) {
+        console.log(container)
         container.innerHTML = ""; // Clear previous content
     
         k.forEach((w,i) => {

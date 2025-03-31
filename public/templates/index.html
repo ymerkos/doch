@@ -40,9 +40,40 @@
   
 var p = location.pathname.split("/");
 var ls = p[p.length-1];
-var data = await getKeys("books/Likkutei Sichos/TOC_VOL/"+ls);
+
+function isStringNumber(str) {
+    // Regular expression for pure numbers (0-9 only)
+    const isPureNumbers = /^[0-9]+$/.test(str);
+    
+    // Regular expression for any Hebrew characters (Unicode range for Hebrew: U+0590 to U+05FF)
+    const containsHebrew = /[\u0590-\u05FF]/.test(str);
+    
+    if (isPureNumbers) {
+        return true;
+    } else if (containsHebrew) {
+        return false
+    } else {
+        return null
+    }
+}
+
+var sichosPath = "books/Likkutei Sichos";
+
+try {
+  ls = decodeURIComponent(ls);
+} catch(e){}
+
+var isParsha = false;
+if(isStringNumber(ls)) {
+  sichosPath += "/TOC_VOL/";
+} else {
+  sichosPath += "/TOC_PARSHA/"
+  isParsha = true;
+}
+var data = await getKeys(sichosPath+ls);
 window.TOC = data;
-setThings(data, (w) => `/likkutei-sichos/view/${ls}/${w.page}_${ls}`)
+
+setThings(data, (w) => `/likkutei-sichos/view/${ls}/${w.page}_${ls}`, isParsha)
 </script>
 </body>
 </html>

@@ -19,8 +19,10 @@ import {
     updateDoc,
     deleteField,
     arrayUnion,
-    arrayRemove 
+    arrayRemove,
+    writeBatch,
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"; // @import Firestore functions
+window.writeBatch = writeBatch;
 
 // @action Initialize Firebase app
 initializeApp(firebaseConfig);

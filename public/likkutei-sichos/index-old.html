@@ -1,0 +1,84 @@
+<!--B"H-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dach | דא״ח</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8G4BNTZDFN"></script>
+<script src="/scripts/login.js" type="module"></script>
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8G4BNTZDFN');
+</script>
+<header class="header">
+    <div class="left">
+      
+      <div class="logo"><a href="/">Dach | דא״ח</a></div>
+    </div>
+    <div class="right">
+      <div class="menu-btn loginBtn">Log in</div>
+    </div>
+  </header>
+<div class="book_vol_index">
+    <div class="tile-grid" id="tileGrid">
+     
+    </div>
+ </div>
+ <script>
+  window.addEventListener("awtsmoosAuth",e => {
+    window.isAllowed = e.detail.isAllowed;
+    console.log("allowed",e)
+    if(window.isAllowed) {
+      Array.from(
+        document.querySelectorAll(
+          "a.tile"
+        )
+      ).forEach(q => {
+        var url = new URL(q.href);
+        if(!url.searchParams.get("edit"))
+          q.href = q.href+"?edit"
+      })
+    }
+  })
+ document.addEventListener("DOMContentLoaded", function () {
+    // Get the container
+    const buttonGrid = document.getElementById("tileGrid");
+
+    // Array of hardcoded Hebrew numerals for 1-39
+    const hebrewNumerals = [
+      "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י",
+      "יא", "יב", "יג", "יד", "טו", "טז", "יז", "יח", "יט", "כ",
+      "כא", "כב", "כג", "כד", "כה", "כו", "כז", "כח", "כט", "ל",
+      "לא", "לב", "לג", "לד", "לה", "לו", "לז", "לח", "לט"
+    ];
+
+    // Generate buttons using hardcoded Hebrew numerals
+    for (let i = 0; i < hebrewNumerals.length; i++) {
+        (i => {
+            const button = document.createElement("a");
+            button.className = "tile";
+            button.href="./"+(i+1) + (
+              window.isAllowed?  "?edit":""
+            )
+            button.textContent = hebrewNumerals[i];
+            
+            // Append the button to the container
+            buttonGrid.appendChild(button);
+        })(i);
+      
+    }
+  });
+</script>
+
+ </body>
+ </html>

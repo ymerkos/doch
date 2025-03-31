@@ -1,0 +1,128 @@
+
+/*B"H*/
+
+@font-face {
+    font-family: "FbFrankReal";
+    src: url("/static/fonts/FbFrankReal_1.ttf") format('truetype'); 
+}
+
+body {
+    font-family: FbFrankReal; 
+    margin: 0;
+    padding: 0;
+    line-height: 1.1;
+    color: #333;
+}
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    
+    margin-top: 100px;
+    background: #fff;
+    border-radius: 8px; 
+}
+.tabs {
+    display: flex;
+    justify-content: right;
+    border-bottom: 2px solid #ccc;
+}
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 25px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.tab:hover {
+    background: #f1f1f1;
+}
+.tab.active {
+    color: black;
+    border-bottom: 3px solid #333;
+}
+.content {
+    display: none;
+    padding: 9px;
+}
+.content.active {
+    display: block;
+}
+/* Volume-specific grid styling */
+.volume-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 15px;
+
+    margin-top: 20px;
+}
+/* Parsha-specific grid styling */
+.parsha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+/* Shared item styling */
+.item {
+    text-align: center;
+    background: #f1f1f1;
+    transition: 0.3s;
+    cursor: pointer;
+    white-space: pre-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    font-size: 18px;
+    padding: 12px;
+    height: 45px; /* Consistent height */
+    display: flex; /* Flex for centering content */
+    justify-content: center;
+    align-items: center;
+}
+.item:hover {
+    background: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+/* Volume-specific item styling */
+.volume-item {
+    flex-direction: column; /* Stack volume and book vertically */
+    align-items: center;
+    justify-content: flex-start; /* Start from the top */
+    height: auto;     
+    padding: 12px 0px;
+}
+.volume {
+    font-size: 23px;
+    font-weight: normal;
+}
+.book {
+    font-size: 11px;
+    color: #8f8f8f;
+    margin-top: 5px;
+}
+h2 {
+    margin: 50px 0px 0px 0px;
+}
+/* Volume grid media queries */
+@media (max-width: 768px) {
+    .volume-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+@media (max-width: 480px) {
+    .volume-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+/* Parsha grid media queries */
+@media (max-width: 768px) {
+    .parsha-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+@media (max-width: 480px) {
+    .parsha-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

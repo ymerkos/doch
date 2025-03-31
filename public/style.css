@@ -4,6 +4,16 @@
   ---awtsmoos-height:calc(100vh - var(---header-height));
 }
 
+
+.sicha-volume {
+  font-weight: 800;
+}
+.index-title.parsha {
+  display: flex;
+  gap: 10px;
+}
+
+
 .footnotesCnt {
   direction: rtl;
 }
@@ -1032,6 +1042,10 @@ body {
  
     flex-direction: column;
     
+  }
+
+  .paragraph-content {
+    max-width: 100vw;
   }
 
 }
