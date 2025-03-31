@@ -141,9 +141,11 @@ function setThings(data, href, isParsha) {
             indexTitle.classList.add("parsha")
             var volDiv = document.createElement("div")
             volDiv.className = "sicha-volume"
-            volDiv.innerText = findHebVolume(w.vol);
-            indexTitle.appendChild(volDiv);
-
+            var vol =  findHebVolume(w.vol);;
+            if(vol) {
+                volDiv.innerText = vol;
+                indexTitle.appendChild(volDiv);
+            }
             var sichaTitle = document.createElement("div");
             sichaTitle.className = "sicha-name"
             sichaTitle.innerText = w.title;
