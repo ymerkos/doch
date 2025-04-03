@@ -30,6 +30,10 @@ import {
     processText,
     processFootnoteText
 } from "/viewer/js/text-parsing.js"
+
+import {
+    toggleEnglish
+} from "/viewer/js/language.js"
 // B"H - Blessed be He
 // @global UI elements
 const mBold = document.getElementById('mBold');
@@ -48,6 +52,9 @@ let errorClicked = false;        // @global Error click state
  * @description Sets up all UI-related event listeners.
  */
 function setupUIEvents() {
+
+    var setupEnglish = document.getElementById("showE");
+    setupEnglish.addEventListener("click", toggleEnglish)
 
     var ss = document.getElementById("setSpecial");
     var si = document.querySelectorAll(".specialInputs")
