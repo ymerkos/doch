@@ -62,12 +62,13 @@ function handleSearch(searchTerm) {
 	);
 	searchTerm = searchTerm || document.querySelector("#searchTxt")
 		?.value.trim();
-	
+        removeHighlighted();
 	// If no search term, cleanse all kav-hit marks from the page
 	if(!searchTerm) {
 		
-		return removeHighlighted();
+		return 
 	}
+    
 	
 	//  console.log("Searching", searchTerm);
 	
