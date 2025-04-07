@@ -8,7 +8,7 @@ window.searchFunctions = {
 
     },
     "remove something": () => {
-        
+
     }
 }
 /**
@@ -105,9 +105,9 @@ function processNodeForReplace(node, searchTerm, replaceTerm) {
 	}
 }
 
-function handleReplace() {
-	const search = document.getElementById("searchTxt").value.trim();
-	const replace = document.getElementById("replaceTxt").value.trim();
+function handleReplace(search, replace) {
+	search = search || document.getElementById("searchTxt").value.trim();
+	replace = replace || document.getElementById("replaceTxt").value.trim();
 	if (!search) return alert("Search term required for replace.");
 
 	const allParagraphs = Array.from(document.querySelectorAll(".paragraph-container .p-div"));
@@ -124,6 +124,14 @@ function handleReplace() {
 window.searchForManyWords = (words=[]) => {
     words.forEach(w => {
         handleSearch(w)
+    })
+}
+
+window.replaceManyWordPairs = (words=[]) => {
+    words.forEach(w => {
+        var from = w[0];
+        var to = w[1];
+        handleReplace(from, to)
     })
 }
 window.searchForWord = handleSearch;
@@ -212,6 +220,17 @@ function setup() {
 				.filter(Boolean);
 			window.searchForManyWords?.(checkedWords);
 		});
+
+    document.getElementById("replaceBtnAll")
+    .addEventListener("click", () => {
+        const checkedWords = [...presetListEl.querySelectorAll("input[type='checkbox']:checked")]
+            .map(cb => [
+                cb.closest(".item")?.dataset?.from,
+                cb.closest(".item")?.dataset?.to
+            ])
+            .filter(t=>t?.length > 1);
+        window.replaceManyWordPairs?.(checkedWords);
+    });
 
 	document.getElementById("searchBtn").addEventListener("click", () => handleSearch());
 	document.getElementById("replaceBtn").addEventListener("click", () => handleReplace());

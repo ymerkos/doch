@@ -97,13 +97,15 @@ replace search styles*/
   margin: 12px 0 4px;
 }
 
-.list.presets {
+.list.presets,
+.list.fncs {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.item {
+.item,
+label.fnc-label {
   display: flex;
   align-items: center;
   gap: 8px;
