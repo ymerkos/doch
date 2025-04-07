@@ -129,9 +129,56 @@
                         <div class="tab-indicator"></div>
                     </div>
                     <div class="content footnotesCnt" id="content0">
-                      
+                    
                     </div>
                     <div class="content hidden" id="content1">
+						<div class="findReplace">
+							<h3>Custom</h3>
+							<div class="ctrls">
+							  <div class="box">
+								<div class="label">Search</div>
+								<input type="text" id="searchTxt">
+								<button id="searchBtn" class="btn green">Search</button>
+							  </div>
+							  <div class="box">
+								<div class="label">Replace</div>
+								<input type="text" id="replaceTxt">
+								<button id="replaceBtn" class="btn red">Replace</button>
+							  </div>
+							  <div class="box">
+								<button id="addPresetBtn" class="btn blue">Add Preset</button>
+							  </div>
+							</div>
+						  
+							<div class="presets">
+							  <div class="hdr">
+								<h3>Preset List</h3>
+								<div>
+								  <label for="selectAllPresets">all</label>
+								  <input type="checkbox" id="selectAllPresets">
+								</div>
+							  </div>
+							  <div class="list presets" id="presetList">
+								<!-- Dynamic items go here -->
+							  </div>
+							</div>
+						  
+							<div class="ctrls">
+							  <button id="searchBtnAll" class="btn green">Search</button>
+							  <button id="replaceBtnAll" class="btn red">Replace</button>
+							</div>
+						  
+							<div class="hdr">
+							  <h3>Other Functions</h3>
+							  <div>
+								<label for="selectAllFunctions">all</label>
+								<input type="checkbox" id="selectAllFunctions">
+							  </div>
+							</div>
+							<div class="list fncs"></div>
+						  </div>
+						  
+                    
                       <div class="editSecrets hidden">
 
                         <!DOCTYPE html>
@@ -187,9 +234,8 @@
                         </body>
                         </html>
 
-                      </div>
                     </div>
-                  
+                  </div>
                     <div class="content hidden" id="content2">
              
                       <div class="editSecrets hidden">

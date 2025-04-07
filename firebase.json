@@ -51,6 +51,15 @@
         ]
       },
       {
+        "source": "/viewer/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
         "source": "/static/**",
         "headers": [
           {

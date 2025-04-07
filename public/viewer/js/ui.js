@@ -34,6 +34,13 @@ import {
 import {
     toggleEnglish
 } from "/viewer/js/language.js"
+
+
+import {
+    handleReplace,
+    setup,
+    handleSearch
+} from "/viewer/js/search.js";
 // B"H - Blessed be He
 // @global UI elements
 const mBold = document.getElementById('mBold');
@@ -42,6 +49,7 @@ const reportErrorBtn = document.getElementById('reportErrorBtn');
 const errorReport = document.getElementById('errorReport');
 const errorCancel = document.getElementById('errorCancel');
 const errorReportD = document.getElementById('errorReportD');
+
 
 let curParIdx = null;            // @global Current paragraph index
 let initialHTML = null;          // @global Initial HTML content
@@ -53,6 +61,7 @@ let errorClicked = false;        // @global Error click state
  */
 function setupUIEvents() {
 
+    setup();
     var setupEnglish = document.getElementById("showE");
     setupEnglish.addEventListener("click", toggleEnglish)
 
