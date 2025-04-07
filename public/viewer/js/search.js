@@ -4,9 +4,7 @@
 // of the DOM, revealing the searched word in the light of Ohr Ein Sof.
 
 window.searchFunctions = {
-    "convert laeenger mem to regular mem": () => {
-
-    },
+  
     "remove something": () => {
 
     }

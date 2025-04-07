@@ -61,7 +61,7 @@ replace search styles*/
   margin-bottom: 16px;
 }
 
-.btn {
+.findReplace  .btn {
   padding: 6px 12px;
   font-size: 14px;
   border: none;
@@ -70,46 +70,46 @@ replace search styles*/
   transition: background 0.2s ease;
 }
 
-.btn.green {
+.findReplace  .btn.green {
   background-color: #4caf50;
   color: white;
 }
-.btn.green:hover {
+.findReplace  .btn.green:hover {
   background-color: #388e3c;
 }
 
-.btn.red {
+.findReplace  .btn.red {
   background-color: #f44336;
   color: white;
 }
-.btn.red:hover {
+.findReplace .btn.red:hover {
   background-color: #d32f2f;
 }
 
-.btn.blue {
+.findReplace .btn.blue {
   background-color: #2196f3;
   color: white;
 }
-.btn.blue:hover {
+.findReplace .btn.blue:hover {
   background-color: #1976d2;
 }
 
-.hdr {
+.findReplace .hdr {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 12px 0 4px;
 }
 
-.list.presets,
-.list.fncs {
+.findReplace .list.presets,
+.findReplace .list.fncs {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.item,
-label.fnc-label {
+.findReplace .item,
+.findReplace label.fnc-label {
   display: flex;
   align-items: center;
   gap: 8px;
