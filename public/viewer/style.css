@@ -57,6 +57,10 @@ replace search styles*/
   font-weight: bold;
 }
 
+.findReplace .presets {
+  margin-bottom: 16px;
+}
+
 .btn {
   padding: 6px 12px;
   font-size: 14px;

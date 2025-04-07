@@ -233,6 +233,10 @@ function setup() {
         window.replaceManyWordPairs?.(checkedWords);
     });
 
+    document.getElementById("clearHighlights")?.addEventListener(
+        "click",
+        removeHighlighted
+    )
 	document.getElementById("searchBtn").addEventListener("click", () => handleSearch());
 	document.getElementById("replaceBtn").addEventListener("click", () => handleReplace());
 
