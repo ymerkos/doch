@@ -231,7 +231,7 @@ async function editSichaToggle(btn, isHTML = false) {
         );
       //  console.log("Editin",window.ed=editableParagraphs);
     var footnoteHolder = document.querySelector("#content0");
-    
+    console.log("Editing",btn)
 
     if(!isSichaEditing) {
         window.isSichaEditing = true;

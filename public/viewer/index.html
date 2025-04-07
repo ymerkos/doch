@@ -147,7 +147,9 @@
 							  </div>
 							  <div class="box">
 								<button id="addPresetBtn" class="btn blue">Add Preset</button>
-							  </div>
+								<button id="removePresetBtn" class="btn danger">Remove Selected</button>
+
+							</div>
 							</div>
 						  
 							<div class="presets">
@@ -156,11 +158,13 @@
 								<div>
 								  <label for="selectAllPresets">all</label>
 								  <input type="checkbox" id="selectAllPresets">
+
 								</div>
 							  </div>
 							  <div class="list presets" id="presetList">
 								<!-- Dynamic items go here -->
 							  </div>
+							  
 							</div>
 						  
 							<div class="ctrls">
@@ -175,7 +179,16 @@
 								<input type="checkbox" id="selectAllFunctions">
 							  </div>
 							</div>
-							<div class="list fncs"></div>
+							<div class="list fncs">
+								<!--Same layout as presets,
+								checbkox and label for each 
+								(but no need to add or remove in HTML,
+								all pre-defined in JS)-->
+							</div>
+							<div class="ctrls">
+								<button id="executeFunctions" class="btn red">Execute</button>
+							
+							</div>
 						  </div>
 						  
                     
