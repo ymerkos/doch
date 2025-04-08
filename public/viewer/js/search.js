@@ -81,13 +81,13 @@ window.searchFunctions = {
 		);
 
 		if(matches.length) {
-			node.textContent =("Replaced " + matches.length + " hebrew hyphens etc.")
-		} else node.textContent =("No hebrew hyphens")
+			node.textContent =matches.length
+		} else node.textContent =0
 		return matches;
 
 
 
-	
+	;
 	},
     "remove final mems": (node) => {
 		
@@ -106,10 +106,10 @@ window.searchFunctions = {
 		);
 
 		if(matches.length) {
-			node.textContent =("Replaced " + matches.length + " final mems etc.")
+			node.textContent = matches.length;
 		}
 		else {
-			node.textContent =("No final mems found")
+			node.textContent = 0
 		}
 		return matches;
     },
@@ -127,9 +127,9 @@ window.searchFunctions = {
 
 		var result= [yuds, vavYuds, vavs];
 		if(result.every(w=>w.length)) {
-			node.textContent =("Replaced some: " + result.map(q=>q.length).join(","))
+			node.textContent =result.map(q=>q.length).join(",")
 		} else {
-			node.textContent =("Didn't replace any yuds or vavs etc");
+			node.textContent = 0
 		}
 	},
 
@@ -143,7 +143,7 @@ window.searchFunctions = {
         const replacement = ' ';
         
         var matches = replaceTextInNodes(regex, replacement, paragraphs);
-		node.textContent = matches
+		node.textContent = matches.length;
 		
 	}
 }
@@ -168,7 +168,7 @@ function processNodeForSearch(node, searchTerm, color) {
 		const regex = new RegExp(`(^|[\\s"׳״'”.,!?/()[\\]{}])(${searchTerm})(?=[\\s"׳״'”.,!?/()[\\]{}]|$)`, 'g');
 		
 		
-		console.log(window.regex1 = regex, window.text = text)
+		
 		if(regex.test(text)) {
 			const newContainer = document.createElement('span');
 			const markedText = text.replace(regex, (_, before, word) => {
