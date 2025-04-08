@@ -340,7 +340,8 @@ direction:rtl;
 }
 
 
-.viewer .right-box .paragraph-content p b {
+.viewer .right-box .paragraph-content 
+.paragraph-container.sicha p b {
   font-family: "hei-b";
   font-size: 21.5px;
 }
