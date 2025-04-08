@@ -1,5 +1,7 @@
 //B"H
-
+import {
+	addGuidedBtn
+} from "/viewer/js/study-guide.js";
 import firebaseConfig from "../config.js"
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
@@ -140,6 +142,8 @@ async function getSicha(sichaId) {
             var userParagraphs = await getUserParagraphs("sicha",sichaId)
             window.userParagraphs = userParagraphs;
             console.log("Sicha found: ", data,window.curVolume);
+
+
             setTextToDoc(data, true); // Returns the document data
         } else {
             setTextToDoc("Not available (yet)", true)
@@ -268,7 +272,11 @@ function setTextToDoc(sicha, isSicha = false) {
             
             volumify(vol,isSicha)
         }
+
+
         p.innerHTML = processText(mt,eng);
+
+        addGuidedBtn(p)
         setSupsForP(p)
         callEvents()
     } else if(maamar) {

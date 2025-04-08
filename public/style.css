@@ -325,7 +325,7 @@ direction:rtl;
 .viewer .right-box .paragraph-content p.heb {
   direction: rtl;
 }
-.viewer .right-box .paragraph-content p {
+.viewer .right-box .paragraph-content p.heb {
   color: #000;
   margin:0;
   padding:15px;
@@ -376,7 +376,7 @@ direction:rtl;
 .viewer .right-box .app-bar {
   background-color: #FBFBFA;
   position: absolute;
-  z-index: 1000;
+  z-index: 123123213123213123232131;
    width: 100%;
     box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.1);
 }

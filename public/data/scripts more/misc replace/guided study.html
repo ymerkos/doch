@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Study Guide Button - Option 2</title>
+
+    <!-- Embedded CSS -->
+    <style>
+        /* --- Common Button Structure & Base Effects --- */
+        .ai-button-base {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px; /* Space between icon and text */
+            padding: 16px 28px; /* Slightly adjusted padding */
+            border: none;
+            border-radius: 12px; /* Slightly more rounded */
+            cursor: pointer;
+            text-align: left;
+            min-width: 280px; /* Adjusted min-width for longer text */
+            max-width: 90%; /* Prevent button from getting too wide on small screens */
+            transition: all 0.2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none; /* For use as <a> */
+        }
+
+        .ai-button-base .icon {
+            flex-shrink: 0; /* Prevent icon from shrinking */
+            display: flex; /* Ensure SVG alignment */
+            align-items: center;
+        }
+
+        .ai-button-base .icon svg {
+            width: 24px;
+            height: 24px;
+            display: block; /* Remove extra space below SVG */
+            fill: currentColor; /* Icon color matches text */
+            opacity: 0.9;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .ai-button-base .content {
+            display: flex;
+            flex-direction: column;
+            min-width: 0; /* Allow content to shrink if needed */
+        }
+
+        .ai-button-base .title {
+            display: block;
+            font-size: 1.1em;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 4px;
+            white-space: nowrap; /* Prevent title wrap */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Add ellipsis if too long */
+        }
+
+        .ai-button-base .subtitle {
+            display: block;
+            font-size: 0.8em; /* Slightly smaller subtitle */
+            font-weight: 400;
+            line-height: 1.4; /* Adjust line height for readability */
+            opacity: 0.85;
+            /* Removed white-space nowrap to allow subtitle wrap */
+        }
+
+        .ai-button-base:focus { outline: none; }
+        .ai-button-base:focus-visible {
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.5); /* Consistent focus ring */
+        }
+
+        /* --- Option 2: Dark Mode + Abstract Path/Steps Icon --- */
+        .ai-button-icon-opt2 {
+            color: #e0e0e0;
+            background-color: #2c303a;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid #4a4f5e;
+        }
+        .ai-button-icon-opt2 .subtitle { opacity: 0.7; }
+        .ai-button-icon-opt2:hover {
+            background-color: #353a47;
+            border-color: #6a6f7e;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(136, 211, 206, 0.15); /* Fainter glow */
+        }
+        .ai-button-icon-opt2:hover .icon svg {
+            transform: translateX(2px); /* Subtle slide */
+        }
+        .ai-button-icon-opt2:active {
+            transform: translateY(0);
+            background-color: #252831;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Option 2: Dark Mode + Abstract Path/Steps Icon -->
+    <button class="ai-button-base ai-button-icon-opt2">
+        <span class="icon">
+            <!-- Abstract Steps/Path Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 11H6.83l3.58-3.59L9 6l-6 6 6 6 1.41-1.41L6.83 13H21v-2zM3 4v16h2V4H3z"/></svg>
+        </span>
+        <div class="content">
+            <span class="title">Study Guide</span>
+            <span class="subtitle">A comprehensive Walkthrough of the Sicha. step by step.</span>
+        </div>
+    </button>
+
+</body>
+</html>
