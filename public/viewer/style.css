@@ -247,12 +247,14 @@ replace search styles*/
 	
     text-align: justify;
     padding: 50px 30px;;
+  line-height:150%;
 }
 
 .studyContent {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    max-width:500px;
+
 }
 
 .study-body p {
@@ -260,6 +262,7 @@ replace search styles*/
 	
     max-width: 500px;
     width: unset !important;
+    margin: 3px;
     padding: 3px !important;
     font-family: "Noto Sans", sans-serif;
 }
@@ -275,7 +278,9 @@ replace search styles*/
     width: 100%;
 }
 
-
+.study-body .studyContent li {
+  margin-bottom: 15px;
+}
 .study-header .back:hover {
 	cursor: hover
 }
