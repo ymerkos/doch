@@ -3,11 +3,152 @@
 // every node, every tag, every whisper of text. The Kav pierces the Atzilus 
 // of the DOM, revealing the searched word in the light of Ohr Ein Sof.
 
-window.searchFunctions = {
-  
-    "remove something": () => {
+import { 
+    showToast
+} from '/viewer/js/utils.js';
 
+/*
+ * Applies a regex-based text replacement across all text nodes within an array of HTML nodes.
+ * @param {RegExp} regex - The regular expression to match text patterns.
+ * @param {string} replacement - The string to replace matched patterns.
+ * @param {Node[]} nodes - Array of DOM nodes to process.
+ * @returns {string[]} Array of matched strings (optional, like your original code).
+ */
+function replaceTextInNodes(regex, replacement, nodes) {
+    if (!(regex instanceof RegExp)) {
+        throw new Error('First argument must be a RegExp object');
     }
+    if (typeof replacement !== 'string') {
+        throw new Error('Second argument must be a string');
+    }
+    if (!Array.isArray(nodes)) {
+        throw new Error('Third argument must be an array of DOM nodes');
+    }
+
+    // Ensure regex is global
+    const globalRegex = new RegExp(regex.source, (regex.flags.includes('g') ? regex.flags : regex.flags + 'g'));
+    const matches = [];
+
+    function processNode(node) {
+        if (!node) return;
+
+        if (node.nodeType === Node.TEXT_NODE) {
+            const originalText = node.textContent;
+            if (originalText.trim() === '') return; // Skip empty text nodes
+
+            // Collect matches
+            const currentMatches = originalText.match(globalRegex);
+            if (currentMatches) {
+                matches.push(...currentMatches);
+            }
+
+            // Apply replacement
+            const newText = originalText.replace(globalRegex, replacement);
+            if (newText !== originalText) {
+                node.textContent = newText;
+            }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            Array.from(node.childNodes).forEach(child => processNode(child));
+        }
+    }
+
+    nodes.forEach((node, index) => {
+        if (!(node instanceof Node)) {
+            console.warn(`Node at index ${index} is not a valid DOM node, skipping`);
+            return;
+        }
+        processNode(node);
+    });
+
+    return matches;
+}
+
+window.searchFunctions = {
+	"remove hebrew hyphen (-) with space": () => {
+		
+		var paragraphs= Array.from(
+			document.querySelectorAll(
+				".paragraph-container .p-div p.heb"
+			)
+		);
+
+		const regex = /(\S)(־ )/g; // Hebrew hyphen followed by space
+    	const replacement = '$1';  // Keep the non-whitespace char, remove hyphen and space
+		var matches = replaceTextInNodes(
+			regex,
+			replacement,
+			paragraphs
+		);
+
+		if(matches.length) {
+			showToast("Replaced " + matches.length + " hebrew hyphens etc.")
+		} else showToast("No hebrew hyphens")
+		return matches;
+
+
+
+	
+	},
+    "remove final mems": () => {
+		
+		var paragraphs= Array.from(
+			document.querySelectorAll(
+				".paragraph-container .p-div p.heb"
+			)
+		);
+
+		const regex = /ם(?=[א-ת])/g; // Hebrew hyphen followed by space
+    	const replacement =  'ס';  // Keep the non-whitespace char, remove hyphen and space
+		var matches = replaceTextInNodes(
+			regex,
+			replacement,
+			paragraphs
+		);
+
+		if(matches.length) {
+			showToast("Replaced " + matches.length + " final mems etc.")
+		}
+		else {
+			showToast("No final mems found")
+		}
+		return matches;
+    },
+
+	"remove doulbe yuds and vavs": () => {
+		var paragraphs= Array.from(
+			document.querySelectorAll(
+				".paragraph-container .p-div p.heb"
+			)
+		);
+		// Perform replacements sequentially
+		var yuds = replaceTextInNodes(/ײ/g, 'יי', paragraphs); // Double Yod ligature
+		var vavYuds = replaceTextInNodes(/ױ/g, 'וי', paragraphs); // Vav Yod ligature
+		var vavs = replaceTextInNodes(/װ/g, 'וו', paragraphs); // Double Vav ligature
+
+		var result= [yuds, vavYuds, vavs];
+		if(result.every(w=>w.length)) {
+			showToast("Replaced some: " + result.map(q=>q.length).join(","))
+		} else {
+			showToast("Didn't replace any yuds or vavs etc");
+		}
+	},
+
+	"remove extra spaces": () => {
+		var paragraphs= Array.from(
+			document.querySelectorAll(
+				".paragraph-container .p-div p.heb"
+			)
+		);
+		const regex = / |(\u00A0+)| {2,}/g;
+        const replacement = ' ';
+        
+        var matches = replaceTextInNodes(regex, replacement, paragraphs);
+		if(matches.length) {
+			showToast("Remove extra spaces: " + matches.length)
+		} else{
+			showToast("No extra spaces removed")
+		}
+	}
 }
 /**
  * @method processNodeForSearch

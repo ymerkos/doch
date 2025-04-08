@@ -38,6 +38,7 @@ async function getIndexHTML(holder) {
             var ls = p[p.length-1].split("_")[1];
             var data = await getKeys("books/Likkutei Sichos/TOC_VOL/"+ls);
             window.TOC = data;
+            
             setThings(data, (w) => `/likkutei-sichos/view/${ls}/${w.page}_${ls}`, holder);
             sichaIndexData = holder.innerHTML;
         } else {

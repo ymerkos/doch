@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hebrew Character Replacer</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1.1rem; /* Slightly larger font for Hebrew */
+            line-height: 1.6;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+        #outputText {
+            border: 1px dashed #ccc;
+            padding: 15px;
+            min-height: 100px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            white-space: pre-wrap; /* Preserve whitespace and wrap lines */
+            word-wrap: break-word;
+            font-size: 1.1rem; /* Match textarea font size */
+            line-height: 1.6; /* Match textarea line height */
+        }
+        .info {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #eef;
+            border-left: 3px solid #44d;
+            border-radius: 4px;
+        }
+        code {
+            background-color: #eee;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hebrew Character Replacer</h1>
+
+        <div class="info">
+            This tool replaces specific Hebrew ligature characters:<br>
+            - <code>ײ</code> will be replaced with <code>יי</code><br>
+            - <code>ױ</code> will be replaced with <code>וי</code><br>
+            - <code>װ</code> will be replaced with <code>וו</code>
+        </div>
+
+        <label for="inputText">Enter or paste your text here:</label>
+        <textarea id="inputText" placeholder="Paste text containing ײ, ױ, or װ..."></textarea>
+
+        <label for="outputText">Processed Text:</label>
+        <pre id="outputText"></pre> <!-- Using <pre> to preserve whitespace -->
+
+    </div>
+
+    <script>
+        const inputText = document.getElementById('inputText');
+        const outputPre = document.getElementById('outputText');
+
+        function performReplacements() {
+            let text = inputText.value;
+
+            // Perform the replacements sequentially using global replace (g flag)
+            // Use the actual characters directly in the regex and replacement string
+            let processedText = text.replace(/ײ/g, 'יי'); // Replace Double Yod ligature
+            processedText = processedText.replace(/ױ/g, 'וי'); // Replace Vav Yod ligature
+            processedText = processedText.replace(/װ/g, 'וו'); // Replace Double Vav ligature
+
+            // Display the processed text
+            // Using textContent is safer for displaying text
+            outputPre.textContent = processedText;
+        }
+
+        // Add event listener to update on input
+        inputText.addEventListener('input', performReplacements);
+
+        // Initial processing in case there's already text (e.g., browser remembers)
+        performReplacements();
+    </script>
+</body>
+</html>
