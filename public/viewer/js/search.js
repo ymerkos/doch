@@ -64,7 +64,7 @@ function replaceTextInNodes(regex, replacement, nodes) {
 }
 
 window.searchFunctions = {
-	"remove hebrew hyphen (-) with space": () => {
+	"remove hebrew hyphen (-) with space": (node) => {
 		
 		var paragraphs= Array.from(
 			document.querySelectorAll(
@@ -81,15 +81,15 @@ window.searchFunctions = {
 		);
 
 		if(matches.length) {
-			showToast("Replaced " + matches.length + " hebrew hyphens etc.")
-		} else showToast("No hebrew hyphens")
+			node.textContent =("Replaced " + matches.length + " hebrew hyphens etc.")
+		} else node.textContent =("No hebrew hyphens")
 		return matches;
 
 
 
 	
 	},
-    "remove final mems": () => {
+    "remove final mems": (node) => {
 		
 		var paragraphs= Array.from(
 			document.querySelectorAll(
@@ -106,15 +106,15 @@ window.searchFunctions = {
 		);
 
 		if(matches.length) {
-			showToast("Replaced " + matches.length + " final mems etc.")
+			node.textContent =("Replaced " + matches.length + " final mems etc.")
 		}
 		else {
-			showToast("No final mems found")
+			node.textContent =("No final mems found")
 		}
 		return matches;
     },
 
-	"remove doulbe yuds and vavs": () => {
+	"remove doulbe yuds and vavs": (node) => {
 		var paragraphs= Array.from(
 			document.querySelectorAll(
 				".paragraph-container .p-div p.heb"
@@ -127,13 +127,13 @@ window.searchFunctions = {
 
 		var result= [yuds, vavYuds, vavs];
 		if(result.every(w=>w.length)) {
-			showToast("Replaced some: " + result.map(q=>q.length).join(","))
+			node.textContent =("Replaced some: " + result.map(q=>q.length).join(","))
 		} else {
-			showToast("Didn't replace any yuds or vavs etc");
+			node.textContent =("Didn't replace any yuds or vavs etc");
 		}
 	},
 
-	"remove extra spaces": () => {
+	"remove extra spaces": (node) => {
 		var paragraphs= Array.from(
 			document.querySelectorAll(
 				".paragraph-container .p-div p.heb"
@@ -143,13 +143,14 @@ window.searchFunctions = {
         const replacement = ' ';
         
         var matches = replaceTextInNodes(regex, replacement, paragraphs);
-		if(matches.length) {
-			showToast("Remove extra spaces: " + matches.length)
-		} else{
-			showToast("No extra spaces removed")
-		}
+		node.textContent = matches
+		
 	}
 }
+
+function randomLightishRGBA() {
+	return `rgba(${Math.floor(Math.random() * 101) + 100}, ${Math.floor(Math.random() * 101) + 100}, ${Math.floor(Math.random() * 101) + 100}, ${Math.random().toFixed(1)})`;
+  }
 /**
  * @method processNodeForSearch
  * @description Recursively processes a node, seeking text to mark with the 
@@ -159,7 +160,9 @@ window.searchFunctions = {
  * @param {string} searchTerm - The word to find, a spark of intent.
  * @returns {void} - Transforms the node’s reality without tangible return.
  */
-function processNodeForSearch(node, searchTerm) {
+function processNodeForSearch(node, searchTerm, color) {
+	var count = 0;
+	color = color || randomLightishRGBA()
 	if(node.nodeType === Node.TEXT_NODE) {
 		const text = node.textContent;
 		const regex = new RegExp(`(^|[\\s"׳״'”.,!?/()[\\]{}])(${searchTerm})(?=[\\s"׳״'”.,!?/()[\\]{}]|$)`, 'g');
@@ -169,7 +172,11 @@ function processNodeForSearch(node, searchTerm) {
 		if(regex.test(text)) {
 			const newContainer = document.createElement('span');
 			const markedText = text.replace(regex, (_, before, word) => {
-				return `${before}<span class="kav-hit">${word}</span>`;
+
+				count++;
+				return `${before}<span class="kav-hit" style="background: ${
+					color
+				}">${word}</span>`;
 			});
 			
 			newContainer.innerHTML = markedText;
@@ -179,9 +186,10 @@ function processNodeForSearch(node, searchTerm) {
 		// Dive deeper, as the Awtsmoos permeates all layers.
 		Array.from(node.childNodes)
 			.forEach(child => {
-				processNodeForSearch(child, searchTerm);
+				count += processNodeForSearch(child, searchTerm, color);
 			});
 	}
+	return count;
 }
 
 /*
@@ -196,12 +204,13 @@ function processNodeForSearch(node, searchTerm) {
  * @returns {void} - Returns nothing, yet remakes all in its path.
  */
 function handleSearch(searchTerm) {
+	var count = 0;
 	const allParagraphs = Array.from(
 		document.querySelectorAll(".paragraph-container .p-div")
 	);
 	searchTerm = searchTerm || document.querySelector("#searchTxt")
 		?.value.trim();
-        removeHighlighted();
+      //  removeHighlighted();
 	// If no search term, cleanse all kav-hit marks from the page
 	if(!searchTerm) {
 		
@@ -211,12 +220,14 @@ function handleSearch(searchTerm) {
 	
 	//  console.log("Searching", searchTerm);
 	
+	var color = randomLightishRGBA()	
 	allParagraphs.forEach(paragraph => {
 		Array.from(paragraph.childNodes)
 			.forEach(node => {
-				processNodeForSearch(node, searchTerm);
+				count += processNodeForSearch(node, searchTerm, color);
 			});
 	});
+	return count;
 }
 
 function removeHighlighted() {
@@ -262,9 +273,11 @@ function handleReplace(search, replace) {
 
 
 window.searchForManyWords = (words=[]) => {
+	var count = 0;
     words.forEach(w => {
-        handleSearch(w)
+        count += handleSearch(w)
     })
+	return count;
 }
 
 window.replaceManyWordPairs = (words=[]) => {
@@ -309,11 +322,15 @@ function setup() {
 		div.dataset.from = from;
 		div.dataset.to = to;
 
+
 		const checkbox = document.createElement("input");
 		checkbox.type = "checkbox";
+		
+		var info = document.createElement("div");
 		checkbox.addEventListener("change", () => {
 			if (checkbox.checked) {
-				window.searchForWord?.(from);
+				var count = window.searchForWord?.(from);
+				info.innerText = count;
 			} else {
 				window.hideSearchTerms?.();
 			}
@@ -325,6 +342,9 @@ function setup() {
 		div.appendChild(checkbox);
 		div.appendChild(label);
 		presetListEl.appendChild(div);
+
+		presetListEl.appendChild(info);
+		info.classList="count-info";
 	}
 
 	addPresetBtn.addEventListener("click", () => {
@@ -404,6 +424,10 @@ function populateFunctionList() {
       label.appendChild(checkbox);
       label.appendChild(document.createTextNode(' ' + key));
       fncList.appendChild(label);
+
+	  var info = document.createElement("div");
+	  info.classList.add("functionInfo")
+	  label.appendChild(info)
     }
   }
   
@@ -425,12 +449,14 @@ function populateFunctionList() {
     }
   
     selected.forEach(cb => {
+		var par = cb.parentNode;
+		var info = par.querySelector(".functionInfo")
       const fnName = cb.value;
       const fn = window.searchFunctions[fnName];
       if (typeof fn === 'function') {
         try {
           console.log(`Executing: ${fnName}`);
-          fn(); // Awtsmoos descends into the algorithm
+          fn(info); // Awtsmoos descends into the algorithm
         } catch (err) {
           console.error(`Function ${fnName} threw an error:`, err);
         }
