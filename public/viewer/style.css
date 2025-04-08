@@ -241,12 +241,15 @@ replace search styles*/
 	overflow-y: scroll;
 	font-family: "Noto Sans", sans-serif;
 	height: calc(100vh - 250px);    
-	
+	display:flex;
+	align-items: center;
     padding: 50px 30px;;
 }
 
 .study-body p {
     font-size: 16px;
+	
+    max-width: 500px;
     width: unset !important;
     padding: 3px !important;
     font-family: "Noto Sans", sans-serif;
