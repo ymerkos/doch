@@ -11,7 +11,10 @@ function processStudyGuideTxt(txt) {
     )
     return laterPart;
 }
-function addGuidedBtn(p) {
+async function addGuidedBtn(p, type="sicha") {
+
+	var markdown = await getStudyGuide(type)
+    if(!markdown) return console.log("No ai yet for this!");
     // Create button element
     const button = document.createElement('button');
     button.className = 'ai-button-base ai-button-icon-opt2';
@@ -101,7 +104,6 @@ function addGuidedBtn(p) {
 
 
 		
-		var markdown = await getStudyGuide()
 		studyContent.innerHTML = markdownToHtml(
             processStudyGuideTxt(markdown)
         );
@@ -112,11 +114,11 @@ function addGuidedBtn(p) {
 		parent.prepend(overlay);
 
 	});
-`<div class="study-header"><div>Icon</div><div>Study Guide</div></div>`
+    
     p.prepend(button)
 }
 
-async function getStudyGuide() {
+async function getStudyGuide(type="sicha") {
     if(studyGuide) return studyGuide;
     
     var fire = new FirestoreClient(
@@ -126,7 +128,10 @@ async function getStudyGuide() {
 
     var sichaID = (p => p[p.length - 1])(location.pathname.split("/"));
     studyGuide = (await fire?.getDoc(
+        type == "sicha" ? 
         "books/Likkutei Sichos/Ai Sichos/" + sichaID
+        : type == "maamar" ?
+        "books/Meluket/Ai Maamarim/" + sichaID : "books"
     ))?.cool
     console.log(studyGuide)
 

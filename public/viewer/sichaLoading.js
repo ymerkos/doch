@@ -106,9 +106,9 @@ async function getMaamar(maamId) {
             window.userParagraphs = userParagraphs;
             window.currentData = data;
             console.log("maamar found: ", data,curVolume);
-            setTextToDoc(data, false); // Returns the document data
+            await setTextToDoc(data, false); // Returns the document data
         } else {
-            setTextToDoc("Not available (yet)", false)
+            await setTextToDoc("Not available (yet)", false)
             console.log("No such document!");
         }
     } catch (error) {
@@ -144,9 +144,9 @@ async function getSicha(sichaId) {
             console.log("Sicha found: ", data,window.curVolume);
 
 
-            setTextToDoc(data, true); // Returns the document data
+           await  setTextToDoc(data, true); // Returns the document data
         } else {
-            setTextToDoc("Not available (yet)", true)
+           await  setTextToDoc("Not available (yet)", true)
             console.log("No such document!");
         }
     } catch (error) {
@@ -202,7 +202,7 @@ async function getUserParagraphs(type, docId) {
 }
 
 
-function setTextToDoc(sicha, isSicha = false) {
+async function setTextToDoc(sicha, isSicha = false) {
    
     if(!sicha) {
         alert("problem")
@@ -276,7 +276,7 @@ function setTextToDoc(sicha, isSicha = false) {
 
         p.innerHTML = processText(mt,eng);
 
-        addGuidedBtn(p)
+        await addGuidedBtn(p)
         setSupsForP(p)
         callEvents()
     } else if(maamar) {
@@ -343,7 +343,7 @@ function setTextToDoc(sicha, isSicha = false) {
             
             volumify(vol,isSicha)
         }
-
+        await addGuidedBtn(p, "maamar")
         setSupsForP(p)
         callEvents();
 
