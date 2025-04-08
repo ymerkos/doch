@@ -1014,6 +1014,9 @@ body {
   body,html {
     user-select:none;
   }
+  .studyContent {
+    user-select: unset !important;
+  }
   .viewer .left-box {
     position: fixed;
 
