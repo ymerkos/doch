@@ -931,22 +931,29 @@ color: #CFCFCF;
 .home-code .book {
   display: flex;
   cursor: pointer;
+  transition: 0.3s;
+  background: #f1f1f1;
   flex-direction: column;
- /* flex-grow: 1;*/
   min-width: 200px;
   text-align: center;
   height: auto;
   align-items: center;
+  font-size: 18px;
   justify-content: center;
   gap: 10px;
   position: relative;
-  border-radius: 10px;
+
   overflow: hidden;
   padding: 25px;
-  border: 1px solid;
-  border-color: #c6c6c6;
+
 }
 
+
+
+a.book:hover {
+  background: #f5f5f5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
 
 
 .home-content-library {

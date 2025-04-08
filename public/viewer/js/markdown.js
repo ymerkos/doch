@@ -1,6 +1,6 @@
 //B"H
 
-import marked from "/static/js/marked.esm.js";
+import {marked} from "/static/js/marked.esm.js";
 function markdownToHTML(md) {
 	return marked.parse(md);
 }

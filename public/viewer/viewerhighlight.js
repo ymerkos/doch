@@ -46,7 +46,7 @@ function highlightParagraph() {
 }
 
 function setHash(pId) {
-   changeHashElement("par", pId)
+  // changeHashElement("par", pId)
 }
 
 function notificationalism(p, index) {
