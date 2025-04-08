@@ -1,45 +1,61 @@
 //B"H
-function markdownToHTML(markdown) {
-    let html = markdown;
-    
-    // Headings
-    html = html.replace(/^###### (.*$)/gim, '<h6>$1</h6>');
-    html = html.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
-    html = html.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
-    html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-    html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-    html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
-    
-    // Bold
-    html = html.replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>');
-    html = html.replace(/__(.*)__/gim, '<strong>$1</strong>');
-    
-    // Italic
-    html = html.replace(/\*(.*)\*/gim, '<em>$1</em>');
-    html = html.replace(/_(.*)_/gim, '<em>$1</em>');
-    
-    // Paragraphs (wrap text not matching other patterns in <p> tags)
-    html = html.split('\n\n').map(paragraph => {
-        if (!paragraph.match(/^<h[1-6]>|^<strong>|^<em>/i)) {
-            return `<p>${paragraph}</p>`;
-        }
-        return paragraph;
-    }).join('\n');
-    
-    // Line breaks
-    html = html.replace(/\n/gim, '<br>');
-    
-    return html;
+
+function markdownToHTML(md) {
+  // Escape HTML
+  md = md.replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;");
+
+  // Code blocks (```code```)
+  md = md.replace(/```([^`]+)```/g, (_, code) => {
+    return `<pre><code>${code.trim()}</code></pre>`;
+  });
+
+  // Inline code (`code`)
+  md = md.replace(/`([^`]+)`/g, (_, code) => {
+    return `<code>${code}</code>`;
+  });
+
+  // Headings (###### Heading)
+  md = md.replace(/^###### (.*)$/gm, "<h6>$1</h6>")
+         .replace(/^##### (.*)$/gm, "<h5>$1</h5>")
+         .replace(/^#### (.*)$/gm, "<h4>$1</h4>")
+         .replace(/^### (.*)$/gm, "<h3>$1</h3>")
+         .replace(/^## (.*)$/gm, "<h2>$1</h2>")
+         .replace(/^# (.*)$/gm, "<h1>$1</h1>");
+
+  // Blockquotes
+  md = md.replace(/^> (.*)$/gm, "<blockquote>$1</blockquote>");
+
+  // Bold (**bold** or __bold__)
+  md = md.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+         .replace(/__(.*?)__/g, "<strong>$1</strong>");
+
+  // Italics (*italic* or _italic_)
+  md = md.replace(/\*(.*?)\*/g, "<em>$1</em>")
+         .replace(/_(.*?)_/g, "<em>$1</em>");
+
+  // Images ![alt](url)
+  md = md.replace(/!\[([^\]]+)\]\(([^)]+)\)/g, '<img alt="$1" src="$2">');
+
+  // Links [text](url)
+  md = md.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+  // Ordered Lists
+  md = md.replace(/^(\d+)\. (.*)$/gm, "<ol><li>$2</li></ol>");
+  md = md.replace(/<\/ol>\s*<ol>/g, ""); // Merge ols
+
+  // Unordered Lists
+  md = md.replace(/^[-*+] (.*)$/gm, "<ul><li>$1</li></ul>");
+  md = md.replace(/<\/ul>\s*<ul>/g, ""); // Merge uls
+
+  // Paragraphs
+  md = md.replace(/^(?!<h\d|<ul|<ol|<li|<pre|<blockquote|<img|<p|<code)(.+)$/gm, "<p>$1</p>");
+
+  // Line breaks
+  md = md.replace(/\n{2,}/g, "</p><p>");
+
+  return md;
 }
-
-// Example usage:
-const markdownText = `
-# Hello World
-This is a **bold** and *italic* test.
-
-## Subheading
-Another paragraph with __bold__ text.
-`;
-
     
     export default markdownToHTML;

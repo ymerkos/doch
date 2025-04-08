@@ -60,6 +60,11 @@ function addGuidedBtn(p) {
         studyBody.classList.add("study-body")
 		overlay.appendChild(studyBody)
 
+        
+		var studyContent = document.createElement("div")
+        studyContent.classList.add("studyContent")
+		studyBody.appendChild(studyContent)
+
 
 		// Create the left div and img
 		var leftDiv = document.createElement("div");
@@ -97,7 +102,7 @@ function addGuidedBtn(p) {
 
 		
 		var markdown = await getStudyGuide()
-		studyBody.innerHTML = markdownToHtml(
+		studyContent.innerHTML = markdownToHtml(
             processStudyGuideTxt(markdown)
         );
 
