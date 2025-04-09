@@ -6,6 +6,7 @@ function toggleEnglish(e) {
         window.showingEnglish = true;
 
         btn.innerText = "א";
+        return;;
         var cd = window?.currentData;
         if(!cd) {
             console.log("no english");
@@ -33,6 +34,7 @@ function toggleEnglish(e) {
     } else {
         window.showingEnglish = false;
         btn.innerText = "A";
+        return;
         var eng = document.querySelectorAll(
             ".english-p"
         )

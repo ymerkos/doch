@@ -53,7 +53,7 @@ async function addGuidedBtn(p, type="sicha") {
 		// Create the overlay div
 		
 		var overlay = document.createElement("div");
-		overlay.classList.add("overlay");
+		overlay.classList.add("study overlay");
 	
 		var studyHeader = document.createElement("div");
 		studyHeader.classList.add("study-header");

@@ -226,6 +226,8 @@ replace search styles*/
   background:white;
   left: 0px;
   z-index: 231241244;
+
+  transition: left 1s ease;
 }
 
 
@@ -247,7 +249,9 @@ replace search styles*/
 	
   
     padding: 50px 30px;;
-  line-height:150%;
+  /*line-height:150%;*/ /*
+    causes issues when zooming in
+  */
 }
 
 .studyContent {
