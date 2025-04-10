@@ -1,39 +1,50 @@
 <!--B"H-->
 <!DOCTYPE html>
-<html lang="he">
+<html lang="en">
     <head>
         <title>Dach | דא״ח</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
     
-<link rel="stylesheet" href="https://dach.dev/likkutei-sichos/style.css">
+        <link rel="stylesheet" href="/style.css" />
     </head>
  
     <body>
         <div class="BH">
             ב"ה 
           </div>
+<div class="home-content">
+  <header class="header">
+    <div class="left">
+      <div class="logo"><a href="/">Dach | דא״ח</a></div>
+      <!--<div class="menu-item">Community</div>
+      <div class="menu-item">Texts</div>-->
+    </div>
+    <div class="right">
+     <!-- <div class="menu-btn">א</div>-->
+      <div class="menu-btn hidden loginBtn">Log in</div>
 
-  
+      <a href="mailto:info@dach.dev" class="menu-btn feedback">Feedback?</a>
+    </div>
+  </header>
+<link href="./style.css" type="text/css" rel="stylesheet">
+
 
 <!--B"H-->
-<div class="container">
-<!-- <div class="index-header">Meluket</div>-->
- 
-  <div class="tabs">
-
-          <div class="tab active" id="volTab">חלקים</div>
-          <div class="tab" id="monthTab">חודשים</div>
-          <div class="tab" id="yearTab">שנים</div>
-     
-  </div>
-  <div class="awtsmoos-section content active">
-         <div class="volume-grid etsem-grid">
-
-         </div>
+<div class="all">
+  <div class="index-header">Meluket</div>
+  <div class="index-main">
+      <div class="index-tabs">
+          <div class="tab active" id="volTab">Volumes</div>
+          <div class="tab" id="monthTab">Months</div>
+          <div class="tab" id="yearTab">Years</div>
+      </div>
+      <div class="main-section">
+         
+      </div>
   </div>
 </div>
 <script type="module">
-  var isHebrew = true;
+  var isHebrew = false;
   import years from "./indecies/yearsInOrder.js";
   import yearIndex from "./indecies/yearOfDocs.js";
   import monthIndex from "./indecies/monthsOfMaamarim.js";
@@ -58,10 +69,9 @@ window.monthsTxt = monthsTxt
 
   
 
-  var sl = document.querySelector(".awtsmoos-section .etsem-grid")
+  var sl = document.querySelector(".main-section")
   volTab.onclick = () => {
     
-      sl.className = "volume-grid"
       generateVolumes();
       setHashvar("year", null);
 
@@ -71,15 +81,12 @@ window.monthsTxt = monthsTxt
   }
 
   monthTab.onclick = () => {
-    sl.className = "parsha-grid"
       generateMonths();
       setHashvar("year", null);
       setHashvar("month", 1);
       setActive(monthTab)
   }
   yearTab.onclick = () => {
-
-      sl.className = "volume-grid"
       generateYears();
       setHashvar("year", 1);
       setActive(yearTab)
@@ -129,7 +136,7 @@ window.gny= generateYears;
         bt.textContent = isHebrew ? year 
         : ("5" + calculateGematria(year));
 
-        bt.className = "item"
+        bt.className = "tile"
         sl.appendChild(bt)
         bt.href = "/meluket/year/" + year;
 
@@ -160,7 +167,7 @@ window.gny= generateYears;
         bt.textContent = month[0][
           isHebrew ? 0  : 1 
         ]
-        bt.className = "item"
+        bt.className = "tile"
         sl.appendChild(bt)
         bt.href = "/meluket/month/" + i;
 
@@ -176,7 +183,7 @@ window.gny= generateYears;
       (i => {
         var bt = document.createElement("a")
         bt.textContent = !isHebrew ? i+1 : hebrew[i];
-        bt.className = "item"
+        bt.className = "tile"
         sl.appendChild(bt)
         bt.href = "/meluket/"+(i+1);
 

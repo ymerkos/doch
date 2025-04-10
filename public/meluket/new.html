@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>כרכים, חודשים ושנים</title>
+<link rel="stylesheet" href="https://dach.dev/likkutei-sichos/style.css">
+<style>
+  
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="tabs">
+        <div class="tab active" onclick="openTab(event, 'volumes')">חלקים</div>
+        <div class="tab" onclick="openTab(event, 'months')">חודשים</div>
+        <div class="tab" onclick="openTab(event, 'years')">שנים</div>
+    </div>
+
+    <!-- כרכים -->
+    <div id="volumes" class="content active">
+        <div class="volume-grid">
+           <!-- Items will be square -->
+            <div class="item">א</div>
+            <div class="item">ב</div>
+            <div class="item">ג</div>
+            <div class="item">ד</div>
+            <div class="item">ה</div>
+            <div class="item">ו</div>
+        </div>
+    </div>
+
+    <!-- חודשים -->
+    <div id="months" class="content">
+        <div class="parsha-grid">
+            <!-- Items will be square -->
+            <div class="item">תשרי</div>
+            <div class="item">חשון</div>
+            <div class="item">כסלו</div>
+            <div class="item">טבת</div>
+            <div class="item">שבט</div>
+            <div class="item">אדר</div>
+            <div class="item">ניסן</div>
+            <div class="item">אייר</div>
+            <div class="item">סיון</div>
+            <div class="item">תמוז</div>
+            <div class="item">אב</div>
+            <div class="item">אלול</div>
+        </div>
+    </div>
+
+    <!-- שנים -->
+    <div id="years" class="content">
+        <div class="volume-grid">
+            <!-- Items will be square -->
+            <div class="item">תשי"א</div> <div class="item">תשי"ב</div> <div class="item">תשי"ג</div> <div class="item">תשי"ד</div>
+            <div class="item">תשט"ו</div> <div class="item">תשט"ז</div> <div class="item">תשי"ז</div> <div class="item">תשי"ח</div>
+            <div class="item">תשי"ט</div> <div class="item">תש"כ</div>   <div class="item">תשכ"א</div> <div class="item">תשכ"ב</div>
+            <div class="item">תשכ"ג</div> <div class="item">תשכ"ד</div> <div class="item">תשכ"ה</div> <div class="item">תשכ"ו</div>
+            <div class="item">תשכ"ז</div> <div class="item">תשכ"ח</div> <div class="item">תשכ"ט</div> <div class="item">תש"ל</div>
+            <div class="item">תשל"א</div> <div class="item">תשל"ב</div> <div class="item">תשל"ג</div> <div class="item">תשל"ד</div>
+            <div class="item">תשל"ה</div> <div class="item">תשל"ו</div> <div class="item">תשל"ז</div> <div class="item">תשל"ח</div>
+            <div class="item">תשל"ט</div> <div class="item">תש"מ</div>   <div class="item">תשמ"א</div> <div class="item">תשמ"ב</div>
+            <div class="item">תשמ"ג</div> <div class="item">תשמ"ד</div> <div class="item">תשמ"ה</div> <div class="item">תשמ"ו</div>
+            <div class="item">תשמ"ז</div> <div class="item">תשמ"ח</div> <div class="item">תשמ"ט</div> <div class="item">תש"נ</div>
+            <div class="item">תשנ"א</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.querySelectorAll('.content');
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].classList.remove('active');
+        }
+        tablinks = document.querySelectorAll('.tab');
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove('active');
+        }
+        document.getElementById(tabName).classList.add('active');
+        evt.currentTarget.classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const activeTabButton = document.querySelector('.tab.active');
+        let defaultTabId = 'volumes';
+        if (activeTabButton) {
+            const onclickAttr = activeTabButton.getAttribute('onclick');
+            const targetIdMatch = onclickAttr.match(/openTab\(event, '([^']+)'\)/);
+            if (targetIdMatch && targetIdMatch[1]) {
+                 defaultTabId = targetIdMatch[1];
+            }
+        }
+        document.querySelectorAll('.content').forEach(content => {
+             if (content.id === defaultTabId) {
+                 content.classList.add('active');
+             } else {
+                 content.classList.remove('active');
+             }
+         });
+         document.querySelectorAll('.tab').forEach(tab => {
+             const onclickAttr = tab.getAttribute('onclick');
+             const targetIdMatch = onclickAttr ? onclickAttr.match(/openTab\(event, '([^']+)'\)/) : null;
+             const tabTargetId = targetIdMatch && targetIdMatch[1] ? targetIdMatch[1] : null;
+             if (tabTargetId === defaultTabId) {
+                 tab.classList.add('active');
+             } else {
+                  tab.classList.remove('active');
+             }
+         });
+    });
+</script>
+
+</body>
+</html>
